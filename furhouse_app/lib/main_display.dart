@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'package:furhouse_app/screens/home/home_content.dart';
+import 'package:furhouse_app/screens/home/home.dart';
+import 'package:furhouse_app/screens/login/login.dart';
+import 'package:furhouse_app/screens/register/register.dart';
 
 import 'package:furhouse_app/utilities/constants.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class MainDisplay extends StatelessWidget {
+  const MainDisplay({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,12 +16,15 @@ class HomeScreen extends StatelessWidget {
         body: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [darkBlueColor, lightBlueColor],
+              colors: [
+                darkBlueColor,
+                lightBlueColor,
+              ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
           ),
-          child: const HomeContent(),
+          child: Register(),
         ),
       ),
     );

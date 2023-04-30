@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:furhouse_app/screens/home/home_screen.dart';
+import 'package:furhouse_app/main_display.dart';
 
-void main() {
-  runApp(const HomeScreen());
-}
+void main() => runApp(const MainDisplay());

@@ -3,28 +3,30 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:furhouse_app/utilities/constants.dart';
 
-class ElevatedButtonStyle extends StatelessWidget {
+class OutlinedButtonStyle extends StatelessWidget {
   final String buttonText;
 
-  const ElevatedButtonStyle({
+  const OutlinedButtonStyle({
     super.key,
     required this.buttonText,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: darkBlueColor,
-        shadowColor: darkBlueColor,
-        textStyle: GoogleFonts.merriweather(
-          fontSize: 15,
-          fontWeight: FontWeight.bold,
+    return OutlinedButton(
+      style: OutlinedButton.styleFrom(
+        side: const BorderSide(
+          color: lightBlueColor,
         ),
       ),
       onPressed: () {},
       child: Text(
         buttonText,
+        style: GoogleFonts.merriweather(
+          color: Colors.white,
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }

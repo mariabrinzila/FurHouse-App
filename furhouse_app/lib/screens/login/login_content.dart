@@ -3,9 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:furhouse_app/screens/register/register.dart';
 
-import 'package:furhouse_app/utilities/cupertino_text_field_style.dart';
-import 'package:furhouse_app/utilities/outlined_button_style.dart';
-import 'package:furhouse_app/utilities/elevated_button_style.dart';
+import 'package:furhouse_app/common/cupertino_text_field_style.dart';
+import 'package:furhouse_app/common/outlined_button_style.dart';
+import 'package:furhouse_app/common/elevated_button_style.dart';
 
 class LoginContent extends StatelessWidget {
   final TextEditingController _usernameController = TextEditingController();
@@ -13,7 +13,7 @@ class LoginContent extends StatelessWidget {
 
   LoginContent({super.key});
 
-  void navigateToRegister(BuildContext context) {
+  void _navigateToRegister(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -43,6 +43,9 @@ class LoginContent extends StatelessWidget {
             width: 270,
             child: CupertinoTextFieldStyle(
               placeholderText: 'Username',
+              icon: const Icon(
+                Icons.person,
+              ),
               obscureText: false,
               textFieldController: _usernameController,
             ),
@@ -54,6 +57,9 @@ class LoginContent extends StatelessWidget {
             width: 270,
             child: CupertinoTextFieldStyle(
               placeholderText: 'Password',
+              icon: const Icon(
+                Icons.password,
+              ),
               obscureText: true,
               textFieldController: _passwordController,
             ),
@@ -91,7 +97,7 @@ class LoginContent extends StatelessWidget {
               OutlinedButtonStyle(
                 buttonText: 'Register',
                 onTap: () {
-                  navigateToRegister(context);
+                  _navigateToRegister(context);
                 },
               ),
             ],

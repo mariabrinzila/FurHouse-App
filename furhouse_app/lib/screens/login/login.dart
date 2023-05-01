@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:furhouse_app/screens/login/login_content.dart';
 
-import 'package:furhouse_app/utilities/constants.dart';
+import 'package:furhouse_app/common/constants.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});

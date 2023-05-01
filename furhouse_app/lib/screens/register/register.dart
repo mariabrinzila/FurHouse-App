@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:furhouse_app/screens/register/register_content.dart';
 
-import 'package:furhouse_app/utilities/constants.dart';
+import 'package:furhouse_app/common/constants.dart';
 
 class Register extends StatelessWidget {
   const Register({super.key});

@@ -4,12 +4,12 @@ import 'package:furhouse_app/screens/landing/image_animation.dart';
 import 'package:furhouse_app/screens/login/login.dart';
 import 'package:furhouse_app/screens/register/register.dart';
 
-import 'package:furhouse_app/utilities/elevated_button_style.dart';
+import 'package:furhouse_app/common/elevated_button_style.dart';
 
 class Landing extends StatelessWidget {
   const Landing({super.key});
 
-  void navigateToLogin(BuildContext context) {
+  void _navigateToLogin(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -18,7 +18,7 @@ class Landing extends StatelessWidget {
     );
   }
 
-  void navigateToRegister(BuildContext context) {
+  void _navigateToRegister(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -39,7 +39,7 @@ class Landing extends StatelessWidget {
             child: ElevatedButtonStyle(
               buttonText: 'Sign into account',
               onTap: () {
-                navigateToLogin(context);
+                _navigateToLogin(context);
               },
             ),
           ),
@@ -51,7 +51,7 @@ class Landing extends StatelessWidget {
             child: ElevatedButtonStyle(
               buttonText: 'Create account',
               onTap: () {
-                navigateToRegister(context);
+                _navigateToRegister(context);
               },
             ),
           ),

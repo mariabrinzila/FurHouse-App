@@ -3,9 +3,10 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:furhouse_app/screens/login/login.dart';
 
-import 'package:furhouse_app/utilities/cupertino_text_field_style.dart';
-import 'package:furhouse_app/utilities/outlined_button_style.dart';
-import 'package:furhouse_app/utilities/elevated_button_style.dart';
+import 'package:furhouse_app/common/cupertino_text_field_style.dart';
+import 'package:furhouse_app/common/cupertino_text_field_date_picker.dart';
+import 'package:furhouse_app/common/outlined_button_style.dart';
+import 'package:furhouse_app/common/elevated_button_style.dart';
 
 class RegisterContent extends StatelessWidget {
   final TextEditingController _firstNameController = TextEditingController();
@@ -18,7 +19,7 @@ class RegisterContent extends StatelessWidget {
 
   RegisterContent({super.key});
 
-  void navigateToLogin(BuildContext context) {
+  void _navigateToLogin(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -52,6 +53,9 @@ class RegisterContent extends StatelessWidget {
                   width: 170,
                   child: CupertinoTextFieldStyle(
                     placeholderText: 'First name',
+                    icon: const Icon(
+                      Icons.person_outline,
+                    ),
                     obscureText: false,
                     textFieldController: _firstNameController,
                   ),
@@ -63,6 +67,9 @@ class RegisterContent extends StatelessWidget {
                   width: 170,
                   child: CupertinoTextFieldStyle(
                     placeholderText: 'Last Name',
+                    icon: const Icon(
+                      Icons.person_outline,
+                    ),
                     obscureText: false,
                     textFieldController: _lastNameController,
                   ),
@@ -79,6 +86,9 @@ class RegisterContent extends StatelessWidget {
                   width: 170,
                   child: CupertinoTextFieldStyle(
                     placeholderText: 'Username',
+                    icon: const Icon(
+                      Icons.person_pin,
+                    ),
                     obscureText: false,
                     textFieldController: _usernameController,
                   ),
@@ -88,9 +98,7 @@ class RegisterContent extends StatelessWidget {
                 ),
                 SizedBox(
                   width: 170,
-                  child: CupertinoTextFieldStyle(
-                    placeholderText: 'Birthday',
-                    obscureText: false,
+                  child: CupertinoTextFieldDatePicker(
                     textFieldController: _birthdayController,
                   ),
                 ),
@@ -106,6 +114,9 @@ class RegisterContent extends StatelessWidget {
                   width: 170,
                   child: CupertinoTextFieldStyle(
                     placeholderText: 'Password',
+                    icon: const Icon(
+                      Icons.password_rounded,
+                    ),
                     obscureText: true,
                     textFieldController: _passwordController,
                   ),
@@ -117,6 +128,9 @@ class RegisterContent extends StatelessWidget {
                   width: 170,
                   child: CupertinoTextFieldStyle(
                     placeholderText: 'Confirm password',
+                    icon: const Icon(
+                      Icons.password_rounded,
+                    ),
                     obscureText: true,
                     textFieldController: _confirmPasswordController,
                   ),
@@ -142,7 +156,7 @@ class RegisterContent extends StatelessWidget {
                 OutlinedButtonStyle(
                   buttonText: 'Login',
                   onTap: () {
-                    navigateToLogin(context);
+                    _navigateToLogin(context);
                   },
                 ),
               ],

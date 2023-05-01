@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:furhouse_app/utilities/constants.dart';
+import 'package:furhouse_app/common/constants.dart';
 
 class ElevatedButtonStyle extends StatelessWidget {
   final String buttonText;

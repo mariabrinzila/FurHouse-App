@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:furhouse_app/screens/landing/landing.dart';
 
-import 'package:furhouse_app/utilities/constants.dart';
+import 'package:furhouse_app/common/constants.dart';
 
 class MainDisplay extends StatelessWidget {
   const MainDisplay({super.key});

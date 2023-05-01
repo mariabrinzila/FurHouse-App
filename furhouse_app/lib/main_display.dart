@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:furhouse_app/screens/home/home.dart';
-import 'package:furhouse_app/screens/login/login.dart';
-import 'package:furhouse_app/screens/register/register.dart';
+import 'package:furhouse_app/screens/landing/landing.dart';
 
 import 'package:furhouse_app/utilities/constants.dart';
 
@@ -24,7 +22,7 @@ class MainDisplay extends StatelessWidget {
               end: Alignment.bottomRight,
             ),
           ),
-          child: Register(),
+          child: const Landing(),
         ),
       ),
     );

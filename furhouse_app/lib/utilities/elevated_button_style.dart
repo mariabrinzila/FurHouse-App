@@ -5,10 +5,12 @@ import 'package:furhouse_app/utilities/constants.dart';
 
 class ElevatedButtonStyle extends StatelessWidget {
   final String buttonText;
+  final void Function() onTap;
 
   const ElevatedButtonStyle({
     super.key,
     required this.buttonText,
+    required this.onTap,
   });
 
   @override
@@ -22,7 +24,7 @@ class ElevatedButtonStyle extends StatelessWidget {
           fontWeight: FontWeight.bold,
         ),
       ),
-      onPressed: () {},
+      onPressed: onTap,
       child: Text(
         buttonText,
       ),

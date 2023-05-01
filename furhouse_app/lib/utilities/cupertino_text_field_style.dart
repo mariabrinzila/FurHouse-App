@@ -18,6 +18,9 @@ class CupertinoTextFieldStyle extends StatelessWidget {
       placeholder: placeholderText,
       obscureText: obscureText,
       controller: textFieldController,
+      /*onEditingComplete: () {
+        print(textFieldController.value);
+      },*/
     );
   }
 }

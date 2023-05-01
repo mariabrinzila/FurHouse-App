@@ -5,10 +5,12 @@ import 'package:furhouse_app/utilities/constants.dart';
 
 class OutlinedButtonStyle extends StatelessWidget {
   final String buttonText;
+  final void Function() onTap;
 
   const OutlinedButtonStyle({
     super.key,
     required this.buttonText,
+    required this.onTap,
   });
 
   @override
@@ -19,7 +21,7 @@ class OutlinedButtonStyle extends StatelessWidget {
           color: lightBlueColor,
         ),
       ),
-      onPressed: () {},
+      onPressed: onTap,
       child: Text(
         buttonText,
         style: GoogleFonts.merriweather(

@@ -11,7 +11,7 @@ import 'package:furhouse_app/common/elevated_button_style.dart';
 class RegisterContent extends StatelessWidget {
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _birthdayController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
@@ -50,21 +50,21 @@ class RegisterContent extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  width: 170,
+                  width: 185,
                   child: CupertinoTextFieldStyle(
                     placeholderText: 'First name',
                     icon: const Icon(
-                      Icons.person_outline,
+                      Icons.person,
                     ),
                     obscureText: false,
                     textFieldController: _firstNameController,
                   ),
                 ),
                 const SizedBox(
-                  width: 30,
+                  width: 15,
                 ),
                 SizedBox(
-                  width: 170,
+                  width: 185,
                   child: CupertinoTextFieldStyle(
                     placeholderText: 'Last Name',
                     icon: const Icon(
@@ -83,21 +83,21 @@ class RegisterContent extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  width: 170,
+                  width: 185,
                   child: CupertinoTextFieldStyle(
-                    placeholderText: 'Username',
+                    placeholderText: 'Email',
                     icon: const Icon(
-                      Icons.person_pin,
+                      Icons.email_outlined,
                     ),
                     obscureText: false,
-                    textFieldController: _usernameController,
+                    textFieldController: _emailController,
                   ),
                 ),
                 const SizedBox(
-                  width: 30,
+                  width: 15,
                 ),
                 SizedBox(
-                  width: 170,
+                  width: 185,
                   child: CupertinoTextFieldDatePicker(
                     textFieldController: _birthdayController,
                   ),
@@ -111,7 +111,7 @@ class RegisterContent extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  width: 170,
+                  width: 185,
                   child: CupertinoTextFieldStyle(
                     placeholderText: 'Password',
                     icon: const Icon(
@@ -122,10 +122,10 @@ class RegisterContent extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(
-                  width: 30,
+                  width: 15,
                 ),
                 SizedBox(
-                  width: 170,
+                  width: 185,
                   child: CupertinoTextFieldStyle(
                     placeholderText: 'Confirm password',
                     icon: const Icon(
@@ -162,7 +162,7 @@ class RegisterContent extends StatelessWidget {
               ],
             ),
             const SizedBox(
-              height: 25,
+              height: 20,
             ),
             SizedBox(
               width: 170,

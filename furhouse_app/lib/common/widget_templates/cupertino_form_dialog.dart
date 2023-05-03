@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:furhouse_app/common/constants.dart';
+import 'package:furhouse_app/common/constants/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CupertinoFormDialog extends StatelessWidget {

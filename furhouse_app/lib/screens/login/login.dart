@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'package:furhouse_app/screens/login/login_content.dart';
 
-import 'package:furhouse_app/common/constants.dart';
+import 'package:furhouse_app/common/constants/colors.dart';
 
 class Login extends StatelessWidget {
-  const Login({super.key});
+  const Login({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import 'package:furhouse_app/common/cupertino_text_field_icon.dart';
+import 'package:furhouse_app/common/widget_templates/cupertino_text_field_icon.dart';
 
 class CupertinoTextFieldStyle extends StatelessWidget {
   String placeholderText;

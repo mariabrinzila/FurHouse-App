@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:furhouse_app/screens/login/login.dart';
+import 'package:furhouse_app/screens/home/home.dart';
 
-import 'package:furhouse_app/common/cupertino_text_field_style.dart';
-import 'package:furhouse_app/common/cupertino_text_field_date_picker.dart';
-import 'package:furhouse_app/common/outlined_button_style.dart';
-import 'package:furhouse_app/common/elevated_button_style.dart';
+import 'package:furhouse_app/common/functions/form_validation.dart';
+import 'package:furhouse_app/common/widget_templates/cupertino_text_field_style.dart';
+import 'package:furhouse_app/common/widget_templates/cupertino_text_field_date_picker.dart';
+import 'package:furhouse_app/common/widget_templates/outlined_button_style.dart';
+import 'package:furhouse_app/common/widget_templates/elevated_button_style.dart';
+import 'package:furhouse_app/common/widget_templates/cupertino_form_dialog.dart';
+
+import 'package:furhouse_app/services/authentication.dart';
 
 class RegisterContent extends StatelessWidget {
   final TextEditingController _firstNameController = TextEditingController();
@@ -19,11 +25,77 @@ class RegisterContent extends StatelessWidget {
 
   RegisterContent({super.key});
 
+  void _formFieldValidation(BuildContext context) async {
+    if (nameValidation(_firstNameController.text, 'first', context)) {
+      return;
+    }
+
+    if (nameValidation(_lastNameController.text, 'last', context)) {
+      return;
+    }
+
+    if (emailValidation(_emailController.text, context)) {
+      return;
+    }
+
+    if (nonEmptyField(_birthdayController.text, 'birthday', context)) {
+      return;
+    }
+
+    if (passwordValidation(_passwordController.text, context)) {
+      return;
+    }
+
+    if (confirmPasswordValidation(
+        _passwordController.text, _confirmPasswordController.text, context)) {
+      return;
+    }
+
+    final message = await Authentication().register(
+      firstName: _firstNameController.text,
+      lastName: _lastNameController.text,
+      email: _emailController.text,
+      birthday: _birthdayController.text,
+      password: _passwordController.text,
+    );
+
+    if (message == 'Success') {
+      if (context.mounted) {
+        _navigateToHome(context);
+      }
+    } else {
+      if (context.mounted) {
+        showCupertinoDialog(
+          context: context,
+          builder: (context) {
+            return CupertinoFormDialog(
+              title: const Text(
+                'Authentication error',
+              ),
+              content: Text(
+                message,
+              ),
+            );
+          },
+        );
+      }
+    }
+  }
+
   void _navigateToLogin(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => const Login(),
+      ),
+    );
+  }
+
+  void _navigateToHome(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Home(userEmail: _emailController.text),
       ),
     );
   }
@@ -168,7 +240,9 @@ class RegisterContent extends StatelessWidget {
               width: 170,
               child: ElevatedButtonStyle(
                 buttonText: 'Sign Up',
-                onTap: () {},
+                onTap: () {
+                  _formFieldValidation(context);
+                },
               ),
             ),
           ],

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:furhouse_app/common/constants.dart';
+import 'package:furhouse_app/common/constants/colors.dart';
 
 class OutlinedButtonStyle extends StatelessWidget {
   final String buttonText;

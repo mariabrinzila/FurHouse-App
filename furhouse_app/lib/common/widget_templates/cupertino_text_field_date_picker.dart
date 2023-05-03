@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'package:furhouse_app/common/cupertino_text_field_icon.dart';
+import 'package:furhouse_app/common/widget_templates/cupertino_text_field_icon.dart';
 
 class CupertinoTextFieldDatePicker extends StatefulWidget {
   TextEditingController textFieldController;
@@ -24,7 +24,7 @@ class _CupertinoTextFieldDatePickerState
   void initState() {
     super.initState();
 
-    widget.textFieldController.text = "";
+    widget.textFieldController.text = '';
   }
 
   void _toggleDatePicker(BuildContext context) {

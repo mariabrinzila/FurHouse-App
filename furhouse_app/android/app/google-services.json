@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1000021958499",
+    "project_id": "furhouse-app",
+    "storage_bucket": "furhouse-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1000021958499:android:d1d5c919aa23c452f03d56",
+        "android_client_info": {
+          "package_name": "com.example.furhouse_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1000021958499-u7p5k1lc0dvs0obid9mfau1mieimqm9k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2HTtfObeQTFAxBWeRdbDJ6wlxDs_DPJk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1000021958499-u7p5k1lc0dvs0obid9mfau1mieimqm9k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

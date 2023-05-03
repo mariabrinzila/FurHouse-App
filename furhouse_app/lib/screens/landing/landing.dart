@@ -4,10 +4,12 @@ import 'package:furhouse_app/screens/landing/image_animation.dart';
 import 'package:furhouse_app/screens/login/login.dart';
 import 'package:furhouse_app/screens/register/register.dart';
 
-import 'package:furhouse_app/common/elevated_button_style.dart';
+import 'package:furhouse_app/common/widget_templates/elevated_button_style.dart';
 
 class Landing extends StatelessWidget {
-  const Landing({super.key});
+  const Landing({
+    super.key,
+  });
 
   void _navigateToLogin(BuildContext context) {
     Navigator.push(

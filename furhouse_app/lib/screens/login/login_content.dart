@@ -1,14 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:email_validator/email_validator.dart';
 
 import 'package:furhouse_app/screens/register/register.dart';
 
-import 'package:furhouse_app/common/cupertino_text_field_style.dart';
-import 'package:furhouse_app/common/outlined_button_style.dart';
-import 'package:furhouse_app/common/elevated_button_style.dart';
-import 'package:furhouse_app/common/cupertino_form_dialog.dart';
+import 'package:furhouse_app/common/functions/form_validation.dart';
+import 'package:furhouse_app/common/widget_templates/cupertino_text_field_style.dart';
+import 'package:furhouse_app/common/widget_templates/outlined_button_style.dart';
+import 'package:furhouse_app/common/widget_templates/elevated_button_style.dart';
 
 class LoginContent extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -26,72 +24,11 @@ class LoginContent extends StatelessWidget {
   }
 
   void _formFieldValidation(BuildContext context) {
-    if (_emailController.text.isEmpty) {
-      _toggleValidationAlert(
-        context,
-        const Text(
-          'Empty email',
-        ),
-        const Text(
-          'The email must not be empty!',
-        ),
-      );
-    } else if (!EmailValidator.validate(_emailController.text)) {
-      _toggleValidationAlert(
-        context,
-        const Text(
-          'Incorrect email',
-        ),
-        const Text(
-          'The email must have the correct format, for example johnDoe@gmail.com!',
-        ),
-      );
-    } else if (_passwordController.text.isEmpty) {
-      _toggleValidationAlert(
-        context,
-        const Text(
-          'Empty password',
-        ),
-        const Text(
-          'The password must not be empty!',
-        ),
-      );
-    } else if (_passwordController.text.length < 8) {
-      _toggleValidationAlert(
-        context,
-        const Text(
-          'Short password',
-        ),
-        const Text(
-          'The password must be at least 8 characters in length!',
-        ),
-      );
-    } else if (RegExp(
-            r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~])$')
-        .hasMatch(_emailController.text)) {
-      _toggleValidationAlert(
-        context,
-        const Text(
-          'Password not secure enough',
-        ),
-        const Text(
-          'The password must contain at least one lower case character, one upper case character, one digit, one special character!',
-        ),
-      );
+    if (emailValidation(_emailController.text, context)) {
+      return;
     }
-  }
 
-  void _toggleValidationAlert(
-      BuildContext context, Widget title, Widget content) {
-    showCupertinoDialog(
-      context: context,
-      builder: (context) {
-        return CupertinoFormDialog(
-          title: title,
-          content: content,
-        );
-      },
-    );
+    passwordValidation(_passwordController.text, context);
   }
 
   @override

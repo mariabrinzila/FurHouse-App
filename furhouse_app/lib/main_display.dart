@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'package:furhouse_app/screens/landing/landing.dart';
 
-import 'package:furhouse_app/common/constants.dart';
+import 'package:furhouse_app/common/constants/colors.dart';
 
 class MainDisplay extends StatelessWidget {
-  const MainDisplay({super.key});
+  const MainDisplay({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

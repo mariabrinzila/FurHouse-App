@@ -5,11 +5,8 @@ import 'package:furhouse_app/main_display.dart';
 import 'package:furhouse_app/services/authentication.dart';
 
 class HomeContent extends StatefulWidget {
-  final String userEmail;
-
   const HomeContent({
     super.key,
-    required this.userEmail,
   });
 
   @override
@@ -40,13 +37,6 @@ class _HomeContentState extends State<HomeContent> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            widget.userEmail,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 25,
-            ),
-          ),
           ElevatedButton(
             child: const Text(
               'Logout',

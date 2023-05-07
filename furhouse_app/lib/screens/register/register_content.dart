@@ -86,9 +86,7 @@ class RegisterContent extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => Home(
-          userEmail: _emailController.text,
-        ),
+        builder: (context) => const Home(),
       ),
     );
   }

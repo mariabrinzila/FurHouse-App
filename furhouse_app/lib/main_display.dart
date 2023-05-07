@@ -18,9 +18,7 @@ class MainDisplay extends StatelessWidget {
     var currentUser = Authentication().getCurrentUser();
 
     if (currentUser != null) {
-      widgetToDisplay = Home(
-        userEmail: currentUser.email as String,
-      );
+      widgetToDisplay = const Home();
     }
 
     return MainTheme(

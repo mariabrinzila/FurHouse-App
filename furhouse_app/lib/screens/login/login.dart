@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:furhouse_app/main_theme.dart';
 import 'package:furhouse_app/screens/login/login_content.dart';
-
-import 'package:furhouse_app/common/constants/colors.dart';
 
 class Login extends StatelessWidget {
   const Login({
@@ -11,22 +10,8 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                darkBlueColor,
-                lightBlueColor,
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
-          child: LoginContent(),
-        ),
-      ),
+    return MainTheme(
+      childWidget: LoginContent(),
     );
   }
 }

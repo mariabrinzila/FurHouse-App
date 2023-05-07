@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:furhouse_app/screens/register/register.dart';
+import 'package:furhouse_app/screens/home/home.dart';
 
-import 'package:furhouse_app/common/functions/form_validation.dart';
+import 'package:furhouse_app/services/authentication.dart';
+
 import 'package:furhouse_app/common/widget_templates/cupertino_text_field_style.dart';
 import 'package:furhouse_app/common/widget_templates/outlined_button_style.dart';
 import 'package:furhouse_app/common/widget_templates/elevated_button_style.dart';
+import 'package:furhouse_app/common/functions/exception_code_handler.dart';
 
 class LoginContent extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -23,12 +26,32 @@ class LoginContent extends StatelessWidget {
     );
   }
 
-  void _formFieldValidation(BuildContext context) {
-    if (emailValidation(_emailController.text, context)) {
-      return;
-    }
+  void _onLogin(BuildContext context) async {
+    final message = await Authentication().login(
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
 
-    passwordValidation(_passwordController.text, context);
+    if (message == 'Success') {
+      if (context.mounted) {
+        _navigateToHome(context);
+      }
+    } else {
+      if (context.mounted) {
+        loginExceptionHandler(context, message);
+      }
+    }
+  }
+
+  void _navigateToHome(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Home(
+          userEmail: _emailController.text,
+        ),
+      ),
+    );
   }
 
   @override
@@ -119,7 +142,7 @@ class LoginContent extends StatelessWidget {
             child: ElevatedButtonStyle(
               buttonText: 'Sign In',
               onTap: () {
-                _formFieldValidation(context);
+                _onLogin(context);
               },
             ),
           ),

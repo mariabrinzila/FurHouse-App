@@ -1,19 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
+import 'package:furhouse_app/models/userVM.dart';
+
 class Authentication {
-  Future<String> register({
-    required String firstName,
-    required String lastName,
-    required String email,
-    required String birthday,
-    required String password,
-  }) async {
+  Future<String> register(UserVM user) async {
     try {
       // authentication
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
+        email: user.email,
+        password: user.password,
       );
 
       // add user in Realtime database
@@ -21,10 +17,10 @@ class Authentication {
 
       try {
         await databaseRef.set({
-          "first_name": firstName,
-          "last_name": lastName,
-          "email": email,
-          "birthday": birthday,
+          "first_name": user.firstName,
+          "last_name": user.lastName,
+          "email": user.email,
+          "birthday": user.birthday,
         });
       } catch (e) {
         return e.toString();
@@ -36,5 +32,32 @@ class Authentication {
     } catch (e) {
       return e.toString();
     }
+  }
+
+  Future<String> login({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      // authentication
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      return 'Success';
+    } on FirebaseAuthException catch (e) {
+      return e.code;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  void logout() {
+    FirebaseAuth.instance.signOut();
+  }
+
+  User? getCurrentUser() {
+    return FirebaseAuth.instance.currentUser;
   }
 }

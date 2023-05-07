@@ -28,6 +28,9 @@ class _CupertinoTextFieldDatePickerState
   }
 
   void _toggleDatePicker(BuildContext context) {
+    // only accept users that are at least 18 years old
+    var maximumDateTime = DateTime(DateTime.now().year - 17);
+
     showCupertinoModalPopup<void>(
       context: context,
       builder: (context) {
@@ -40,7 +43,8 @@ class _CupertinoTextFieldDatePickerState
             top: false,
             child: CupertinoDatePicker(
               backgroundColor: Colors.white,
-              initialDateTime: DateTime.now(),
+              initialDateTime: maximumDateTime,
+              maximumDate: maximumDateTime,
               mode: CupertinoDatePickerMode.date,
               onDateTimeChanged: (DateTime pickedDate) {
                 var formattedDate = DateFormat.yMMMd().format(pickedDate);

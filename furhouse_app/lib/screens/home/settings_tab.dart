@@ -4,18 +4,11 @@ import 'package:furhouse_app/main_display.dart';
 
 import 'package:furhouse_app/services/authentication.dart';
 
-class HomeContent extends StatefulWidget {
-  const HomeContent({
+class SettingsTab extends StatelessWidget {
+  const SettingsTab({
     super.key,
   });
 
-  @override
-  State<HomeContent> createState() {
-    return _HomeContentState();
-  }
-}
-
-class _HomeContentState extends State<HomeContent> {
   void _onLogout(BuildContext context) {
     Authentication().logout();
 
@@ -38,12 +31,12 @@ class _HomeContentState extends State<HomeContent> {
         mainAxisSize: MainAxisSize.min,
         children: [
           ElevatedButton(
-            child: const Text(
-              'Logout',
-            ),
             onPressed: () {
               _onLogout(context);
             },
+            child: const Text(
+              'Logout',
+            ),
           )
         ],
       ),

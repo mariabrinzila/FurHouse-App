@@ -4,6 +4,7 @@ class UserVM {
   final String email;
   final String birthday;
   final String password;
+  final bool admin = false;
 
   UserVM({
     required this.firstName,

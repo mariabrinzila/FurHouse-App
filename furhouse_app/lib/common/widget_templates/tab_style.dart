@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 
 class TabStyle extends StatelessWidget {
   final IconData iconData;
-  final String tabLabel;
 
   const TabStyle({
     super.key,
     required this.iconData,
-    required this.tabLabel,
   });
 
   @override
@@ -16,7 +14,6 @@ class TabStyle extends StatelessWidget {
       icon: Icon(
         iconData,
       ),
-      text: tabLabel,
     );
   }
 }

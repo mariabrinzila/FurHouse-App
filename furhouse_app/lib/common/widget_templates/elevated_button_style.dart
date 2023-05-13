@@ -17,8 +17,8 @@ class ElevatedButtonStyle extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: darkBlueColor,
-        shadowColor: darkBlueColor,
+        backgroundColor: darkerBlueColor,
+        shadowColor: darkerBlueColor,
         textStyle: GoogleFonts.merriweather(
           fontSize: 15,
           fontWeight: FontWeight.bold,

@@ -22,7 +22,7 @@ class CupertinoFormDialog extends StatelessWidget {
       actions: [
         TextButton(
           style: TextButton.styleFrom(
-            foregroundColor: darkBlueColor,
+            foregroundColor: darkerBlueColor,
             textStyle: GoogleFonts.merriweather(
               fontSize: 15,
               fontWeight: FontWeight.bold,

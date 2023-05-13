@@ -18,7 +18,7 @@ class MainTheme extends StatelessWidget {
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                darkBlueColor,
+                darkerBlueColor,
                 lightBlueColor,
               ],
               begin: Alignment.topLeft,

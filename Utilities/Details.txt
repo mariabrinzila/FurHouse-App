@@ -1,0 +1,5 @@
+TabBar icons meaning: 
+	- pets <=> all available pets for adoption (will contains pets up for adoption, lost pets, breeds)
+	- add <=> put pet up for adoption (add pet)
+	- search <=> search for pets 
+	- settings <=> user settings (account settings, admin settings, logout)

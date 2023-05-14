@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class CupertinoTextFieldIcon extends StatelessWidget {
+class CupertinoTextFieldSuffixIcon extends StatelessWidget {
   final Icon icon;
 
-  const CupertinoTextFieldIcon({
+  const CupertinoTextFieldSuffixIcon({
     super.key,
     required this.icon,
   });
@@ -13,7 +12,7 @@ class CupertinoTextFieldIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(
-        left: 10,
+        right: 10,
       ),
       child: icon,
     );

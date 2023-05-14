@@ -14,6 +14,7 @@ class MainTheme extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(

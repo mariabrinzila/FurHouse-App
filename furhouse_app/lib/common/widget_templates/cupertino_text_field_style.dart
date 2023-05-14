@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import 'package:furhouse_app/common/widget_templates/cupertino_text_field_icon.dart';
+import 'package:furhouse_app/common/widget_templates/cupertino_text_field_prefix_icon.dart';
 
 class CupertinoTextFieldStyle extends StatelessWidget {
   String placeholderText;
@@ -20,7 +20,7 @@ class CupertinoTextFieldStyle extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoTextField(
       placeholder: placeholderText,
-      prefix: CupertinoTextFieldIcon(
+      prefix: CupertinoTextFieldPrefixIcon(
         icon: icon,
       ),
       obscureText: obscureText,

@@ -95,6 +95,10 @@ class RegisterContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: SingleChildScrollView(
+        padding: EdgeInsets.only(
+          // MediaQuery.of(context).viewInsets.bottom <=> the height of the keyboard
+          bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,

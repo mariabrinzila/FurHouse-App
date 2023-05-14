@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ImageAnimation extends StatefulWidget {
-  const ImageAnimation({super.key});
+  const ImageAnimation({
+    super.key,
+  });
 
   @override
   State<ImageAnimation> createState() {
@@ -14,11 +16,11 @@ class _ImageAnimationState extends State<ImageAnimation> {
 
   @override
   void initState() {
-    super.initState();
-
     // this makes sure that _changeOpacity() is executed after the widget has been rendered (change the state automatically when the widget is rendered)
     WidgetsBinding.instance
         .addPostFrameCallback((timeStamp) => _changeOpacity());
+
+    super.initState();
   }
 
   void _changeOpacity() {

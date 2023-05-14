@@ -1,12 +1,13 @@
 const categoryValues = [
   'Cat',
   'Dog',
-  'Bunny',
+  'Rabbit',
   'Rodent',
   'Bird',
-  'Other',
 ];
 
 List<String> catBreedValues = [];
-
 List<String> dogBreedValues = [];
+List<String> rabbitBreedValues = [];
+List<String> rodentBreedValues = [];
+List<String> birdBreedValues = [];

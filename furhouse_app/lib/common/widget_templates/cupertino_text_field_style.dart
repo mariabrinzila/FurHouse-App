@@ -3,12 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:furhouse_app/common/widget_templates/cupertino_text_field_prefix_icon.dart';
 
 class CupertinoTextFieldStyle extends StatelessWidget {
-  String placeholderText;
-  bool obscureText;
-  TextEditingController textFieldController;
-  Icon icon;
+  final String placeholderText;
+  final bool obscureText;
+  final TextEditingController textFieldController;
+  final Icon icon;
 
-  CupertinoTextFieldStyle({
+  const CupertinoTextFieldStyle({
     super.key,
     required this.placeholderText,
     required this.icon,

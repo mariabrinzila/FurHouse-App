@@ -2,6 +2,17 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:furhouse_app/common/widget_templates/cupertino_form_dialog.dart';
 
+Widget _dialogBuilder(BuildContext context, String title, String content) {
+  return CupertinoFormDialog(
+    title: Text(
+      title,
+    ),
+    content: Text(
+      content,
+    ),
+  );
+}
+
 void loginExceptionHandler(BuildContext context, String exceptionCode) {
   var message = '';
 
@@ -28,14 +39,7 @@ void loginExceptionHandler(BuildContext context, String exceptionCode) {
   showCupertinoDialog(
     context: context,
     builder: (context) {
-      return CupertinoFormDialog(
-        title: const Text(
-          'Authentication error',
-        ),
-        content: Text(
-          message,
-        ),
-      );
+      return _dialogBuilder(context, 'Authentication error', message);
     },
   );
 }
@@ -66,14 +70,7 @@ void registerExceptionHandler(BuildContext context, String exceptionCode) {
   showCupertinoDialog(
     context: context,
     builder: (context) {
-      return CupertinoFormDialog(
-        title: const Text(
-          'Authentication error',
-        ),
-        content: Text(
-          message,
-        ),
-      );
+      return _dialogBuilder(context, 'Authentication error', message);
     },
   );
 }

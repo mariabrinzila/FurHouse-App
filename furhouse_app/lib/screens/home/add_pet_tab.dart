@@ -7,6 +7,8 @@ import 'package:furhouse_app/common/widget_templates/cupertino_text_field_suffix
 import 'package:furhouse_app/common/widget_templates/cupertino_text_field_dropdown.dart';
 import 'package:furhouse_app/common/constants/picker_values.dart';
 
+// TO DO: when the category changes, the previous breed selection should be deleted
+
 class AddPetTab extends StatefulWidget {
   final TextEditingController _categoryController = TextEditingController();
   final TextEditingController _breedController = TextEditingController();
@@ -44,6 +46,42 @@ class _AddPetTabState extends State<AddPetTab> {
       CupertinoIcons.arrow_down_square_fill,
     ),
   );
+
+  var breedPickerValues = catBreedValues;
+
+  @override
+  void initState() {
+    // controller.addListener(() {}) <=> listen on any changes to the controller and do something whenever it does change
+    widget._categoryController.addListener(() {
+      setState(() {
+        _computeBreedPickerValues(widget._categoryController.text);
+      });
+    });
+
+    super.initState();
+  }
+
+  void _computeBreedPickerValues(String category) {
+    if (breedPickerValues != catBreedValues && category == 'Cat') {
+      breedPickerValues = catBreedValues;
+    }
+
+    if (category == 'Dog') {
+      breedPickerValues = dogBreedValues;
+    }
+
+    if (category == 'Rabbit') {
+      breedPickerValues = rabbitBreedValues;
+    }
+
+    if (category == 'Rodent') {
+      breedPickerValues = rodentBreedValues;
+    }
+
+    if (category == 'Bird') {
+      breedPickerValues = birdBreedValues;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +125,7 @@ class _AddPetTabState extends State<AddPetTab> {
                     textFieldController: widget._breedController,
                     prefixIcon: prefixIcon,
                     suffixIcon: suffixIcon,
-                    pickerValues: catBreedValues,
+                    pickerValues: breedPickerValues,
                   ),
                 ),
               ],

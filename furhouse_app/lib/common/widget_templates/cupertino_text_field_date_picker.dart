@@ -24,9 +24,9 @@ class _CupertinoTextFieldDatePickerState
 
   @override
   void initState() {
-    super.initState();
-
     widget.textFieldController.text = '';
+
+    super.initState();
   }
 
   void _toggleDatePicker(BuildContext context) {

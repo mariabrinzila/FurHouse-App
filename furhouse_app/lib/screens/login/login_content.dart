@@ -4,18 +4,20 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:furhouse_app/screens/register/register.dart';
 import 'package:furhouse_app/screens/home/home.dart';
 
-import 'package:furhouse_app/services/authentication.dart';
-
 import 'package:furhouse_app/common/widget_templates/cupertino_text_field_style.dart';
 import 'package:furhouse_app/common/widget_templates/outlined_button_style.dart';
 import 'package:furhouse_app/common/widget_templates/elevated_button_style.dart';
 import 'package:furhouse_app/common/functions/exception_code_handler.dart';
 
+import 'package:furhouse_app/services/authentication.dart';
+
 class LoginContent extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  LoginContent({super.key});
+  LoginContent({
+    super.key,
+  });
 
   void _navigateToRegister(BuildContext context) {
     Navigator.push(

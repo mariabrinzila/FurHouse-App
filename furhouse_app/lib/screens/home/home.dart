@@ -5,10 +5,11 @@ import 'package:furhouse_app/screens/home/home_tab.dart';
 import 'package:furhouse_app/screens/home/add_pet_tab.dart';
 import 'package:furhouse_app/screens/home/settings_tab.dart';
 
-import 'package:furhouse_app/services/web_scraper.dart';
 import 'package:furhouse_app/common/constants/picker_values.dart';
-import 'package:furhouse_app/common/constants/colors.dart';
 import 'package:furhouse_app/common/widget_templates/tab_style.dart';
+import 'package:furhouse_app/common/constants/colors.dart';
+
+import 'package:furhouse_app/services/web_scraper.dart';
 
 class Home extends StatefulWidget {
   const Home({
@@ -47,6 +48,10 @@ class _HomeState extends State<Home> {
   void initState() {
     var scraper = WebScraper();
     scraper.scrapCatBreeds(catBreedValues);
+    scraper.scrapDogBreeds(dogBreedValues);
+    scraper.scrapRabbitBreeds(rabbitBreedValues);
+    scraper.scrapRodentBreeds(rodentBreedValues);
+    scraper.scrapBirdBreeds(birdBreedValues);
 
     super.initState();
   }

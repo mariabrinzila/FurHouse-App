@@ -4,6 +4,10 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:furhouse_app/models/userVM.dart';
 
 class Authentication {
+  User? getCurrentUser() {
+    return FirebaseAuth.instance.currentUser;
+  }
+
   Future<String> register(UserVM user) async {
     try {
       // authentication
@@ -55,9 +59,5 @@ class Authentication {
 
   void logout() {
     FirebaseAuth.instance.signOut();
-  }
-
-  User? getCurrentUser() {
-    return FirebaseAuth.instance.currentUser;
   }
 }

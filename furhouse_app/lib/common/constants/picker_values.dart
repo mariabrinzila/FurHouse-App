@@ -11,3 +11,9 @@ List<String> dogBreedValues = [];
 List<String> rabbitBreedValues = [];
 List<String> rodentBreedValues = [];
 List<String> birdBreedValues = [];
+
+const ageUnitValues = [
+  'Days',
+  'Months',
+  'Years',
+];

@@ -4,6 +4,7 @@ import 'package:furhouse_app/common/widget_templates/cupertino_text_field_prefix
 import 'package:furhouse_app/common/widget_templates/cupertino_text_field_suffix_icon.dart';
 
 class CupertinoTextFieldDropdown extends StatefulWidget {
+  final double dropdownHeight;
   final String placeholderText;
   final TextEditingController textFieldController;
   final CupertinoTextFieldPrefixIcon prefixIcon;
@@ -12,6 +13,7 @@ class CupertinoTextFieldDropdown extends StatefulWidget {
 
   const CupertinoTextFieldDropdown({
     super.key,
+    required this.dropdownHeight,
     required this.placeholderText,
     required this.textFieldController,
     required this.prefixIcon,
@@ -40,7 +42,7 @@ class _CupertinoTextFieldDropdownState
 
   Widget _popupBuilder(BuildContext context) {
     return Container(
-      height: 200,
+      height: widget.dropdownHeight,
       color: CupertinoColors.systemBackground.resolveFrom(context),
       child: SafeArea(
         top: false,

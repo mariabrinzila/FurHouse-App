@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 
 import 'package:furhouse_app/common/widget_templates/cupertino_text_field_prefix_icon.dart';
 
@@ -7,6 +8,7 @@ class CupertinoTextFieldStyle extends StatelessWidget {
   final bool obscureText;
   final TextEditingController textFieldController;
   final Icon icon;
+  final List<TextInputFormatter>? inputFormatters;
 
   const CupertinoTextFieldStyle({
     super.key,
@@ -14,6 +16,7 @@ class CupertinoTextFieldStyle extends StatelessWidget {
     required this.icon,
     required this.obscureText,
     required this.textFieldController,
+    this.inputFormatters,
   });
 
   @override
@@ -25,6 +28,7 @@ class CupertinoTextFieldStyle extends StatelessWidget {
       ),
       obscureText: obscureText,
       controller: textFieldController,
+      inputFormatters: inputFormatters,
     );
   }
 }

@@ -74,3 +74,31 @@ void registerExceptionHandler(BuildContext context, String exceptionCode) {
     },
   );
 }
+
+void locationServicesExceptionHandler(
+    BuildContext context, String exceptionCode) {
+  var message = '';
+
+  if (exceptionCode == 'disabled') {
+    message = 'The location services on this device are currently disabled!';
+  }
+
+  if (exceptionCode == 'denied-forever') {
+    message = 'The location services on this device are forever denied!';
+  }
+
+  if (exceptionCode == 'denied') {
+    message = 'The location services on this device are currently denied!';
+  }
+
+  if (message == '') {
+    message = 'Location services are currently unavailable!';
+  }
+
+  showCupertinoDialog(
+    context: context,
+    builder: (context) {
+      return _dialogBuilder(context, 'Location services error', message);
+    },
+  );
+}

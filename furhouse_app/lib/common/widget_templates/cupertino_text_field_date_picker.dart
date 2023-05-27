@@ -75,7 +75,7 @@ class _CupertinoTextFieldDatePickerState
   Widget build(BuildContext context) {
     return CupertinoTextField(
       readOnly: true,
-      placeholder: "Birthday",
+      placeholder: 'Birthday',
       prefix: const CupertinoTextFieldPrefixIcon(
         icon: Icon(
           Icons.calendar_today_rounded,

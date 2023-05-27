@@ -17,3 +17,17 @@ const ageUnitValues = [
   'Months',
   'Years',
 ];
+
+const detailsValues = [
+  'Vaccinated',
+  'Sterilized',
+  'Past trauma',
+  'Injured',
+  'None',
+];
+
+const priorityValues = [
+  'Low',
+  'Medium',
+  'High',
+];

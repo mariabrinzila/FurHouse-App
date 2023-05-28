@@ -10,22 +10,24 @@ class Authentication {
 
   Future<String> register(UserVM user) async {
     try {
-      // authentication
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: user.email,
-        password: user.password,
-      );
-
       // add user in Realtime database
-      DatabaseReference databaseRef = FirebaseDatabase.instance.ref('users');
+      DatabaseReference databaseRef =
+          FirebaseDatabase.instance.ref().child("users");
 
       try {
-        await databaseRef.set({
+        await databaseRef.push().set({
           "first_name": user.firstName,
           "last_name": user.lastName,
           "email": user.email,
           "birthday": user.birthday,
+          "admin": user.admin,
         });
+
+        // authentication
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: user.email,
+          password: user.password,
+        );
       } catch (e) {
         return e.toString();
       }

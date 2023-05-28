@@ -60,6 +60,7 @@ class RegisterContent extends StatelessWidget {
       email: _emailController.text,
       birthday: _birthdayController.text,
       password: _passwordController.text,
+      admin: false,
     );
 
     final message = await Authentication().register(user);

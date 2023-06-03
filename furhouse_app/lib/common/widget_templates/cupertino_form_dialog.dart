@@ -33,7 +33,7 @@ class CupertinoFormDialog extends StatelessWidget {
             Navigator.of(context).pop();
           },
           child: const Text('OK'),
-        )
+        ),
       ],
     );
   }

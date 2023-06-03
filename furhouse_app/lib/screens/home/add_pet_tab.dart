@@ -9,6 +9,7 @@ import 'package:furhouse_app/common/widget_templates/cupertino_text_field_dropdo
 import 'package:furhouse_app/common/constants/picker_values.dart';
 import 'package:furhouse_app/common/widget_templates/cupertino_text_field_style.dart';
 import 'package:furhouse_app/common/widget_templates/cupertino_text_field_location.dart';
+import 'package:furhouse_app/common/widget_templates/cupertino_text_field_image_picker.dart';
 import 'package:furhouse_app/common/widget_templates/elevated_button_style.dart';
 
 class AddPetTab extends StatefulWidget {
@@ -259,6 +260,16 @@ class _AddPetTabState extends State<AddPetTab> {
                   ),
                   obscureText: false,
                   textFieldController: widget._descriptionController,
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              SizedBox(
+                width: 250,
+                child: CupertinoTextFieldImagePicker(
+                  placeholderText: 'Pet photo',
+                  textFieldController: widget._photoController,
                 ),
               ),
               const SizedBox(

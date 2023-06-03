@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+
+import 'package:furhouse_app/screens/home/home.dart';
 
 import 'package:furhouse_app/common/widget_templates/cupertino_text_field_prefix_icon.dart';
 import 'package:furhouse_app/common/widget_templates/cupertino_text_field_suffix_icon.dart';
@@ -11,6 +14,13 @@ import 'package:furhouse_app/common/widget_templates/cupertino_text_field_style.
 import 'package:furhouse_app/common/widget_templates/cupertino_text_field_location.dart';
 import 'package:furhouse_app/common/widget_templates/cupertino_text_field_image_picker.dart';
 import 'package:furhouse_app/common/widget_templates/elevated_button_style.dart';
+import 'package:furhouse_app/common/functions/form_validation.dart';
+import 'package:furhouse_app/common/functions/exception_code_handler.dart';
+
+import 'package:furhouse_app/models/petVM.dart';
+
+import 'package:furhouse_app/services/authentication.dart';
+import 'package:furhouse_app/services/pets.dart';
 
 class AddPetTab extends StatefulWidget {
   final TextEditingController _nameController = TextEditingController();
@@ -23,6 +33,7 @@ class AddPetTab extends StatefulWidget {
   final TextEditingController _priorityController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _photoController = TextEditingController();
+  final XFile _petPhoto = XFile('');
 
   AddPetTab({
     super.key,
@@ -85,6 +96,86 @@ class _AddPetTabState extends State<AddPetTab> {
     }
   }
 
+  void _onAddPet(BuildContext context) async {
+    if (nameValidation(widget._nameController.text, 'pet', context)) {
+      return;
+    }
+
+    if (nonEmptyField(widget._categoryController.text, 'category', context)) {
+      return;
+    }
+
+    if (nonEmptyField(widget._breedController.text, 'breed', context)) {
+      return;
+    }
+
+    if (nonEmptyField(widget._ageUnitController.text, 'age unit', context)) {
+      return;
+    }
+
+    if (nonEmptyField(widget._ageValueController.text, 'age value', context)) {
+      return;
+    }
+
+    if (nonEmptyField(
+        widget._locationController.text, 'pet location', context)) {
+      return;
+    }
+
+    if (nonEmptyField(widget._detailsController.text, 'details', context)) {
+      return;
+    }
+
+    if (nonEmptyField(widget._priorityController.text, 'priority', context)) {
+      return;
+    }
+
+    if (nonEmptyField(widget._photoController.text, 'pet photo', context)) {
+      return;
+    }
+
+    var currentUser = Authentication().getCurrentUser();
+    String currentUserEmail = currentUser?.email ?? '';
+    var photoName = widget._nameController.text + currentUserEmail;
+
+    PetVM pet = PetVM(
+      name: widget._nameController.text,
+      category: widget._categoryController.text,
+      breed: widget._breedController.text,
+      ageUnit: widget._ageUnitController.text,
+      ageValue: int.parse(widget._ageValueController.text),
+      location: widget._locationController.text,
+      details: widget._detailsController.text,
+      priority: widget._priorityController.text,
+      description: widget._descriptionController.text,
+      photoName: photoName,
+      photo: widget._petPhoto,
+      userEmail: currentUserEmail,
+    );
+
+    final message = await Pets().add(pet);
+    print(message);
+
+    if (message == 'Success') {
+      if (context.mounted) {
+        _navigateToHome(context);
+      }
+    } else {
+      if (context.mounted) {
+        addPetExceptionHandler(context, message);
+      }
+    }
+  }
+
+  void _navigateToHome(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const Home(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -117,20 +208,6 @@ class _AddPetTabState extends State<AddPetTab> {
                 children: [
                   SizedBox(
                     width: 175,
-                    child: CupertinoTextFieldDropdown(
-                      dropdownHeight: 150,
-                      placeholderText: 'Category',
-                      textFieldController: widget._categoryController,
-                      prefixIcon: prefixIcon,
-                      suffixIcon: suffixIcon,
-                      pickerValues: categoryValues,
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  SizedBox(
-                    width: 175,
                     child: CupertinoTextFieldStyle(
                       placeholderText: 'Pet name',
                       icon: const Icon(
@@ -138,6 +215,20 @@ class _AddPetTabState extends State<AddPetTab> {
                       ),
                       obscureText: false,
                       textFieldController: widget._nameController,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  SizedBox(
+                    width: 175,
+                    child: CupertinoTextFieldDropdown(
+                      dropdownHeight: 150,
+                      placeholderText: 'Category',
+                      textFieldController: widget._categoryController,
+                      prefixIcon: prefixIcon,
+                      suffixIcon: suffixIcon,
+                      pickerValues: categoryValues,
                     ),
                   ),
                 ],
@@ -270,6 +361,7 @@ class _AddPetTabState extends State<AddPetTab> {
                 child: CupertinoTextFieldImagePicker(
                   placeholderText: 'Pet photo',
                   textFieldController: widget._photoController,
+                  photo: widget._petPhoto,
                 ),
               ),
               const SizedBox(
@@ -279,7 +371,9 @@ class _AddPetTabState extends State<AddPetTab> {
                 width: 170,
                 child: ElevatedButtonStyle(
                   buttonText: 'Add Pet',
-                  onTap: () {},
+                  onTap: () {
+                    _onAddPet(context);
+                  },
                 ),
               ),
             ],

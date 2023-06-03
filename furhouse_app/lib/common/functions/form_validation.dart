@@ -243,3 +243,57 @@ bool nonEmptyField(String fieldValue, String field, BuildContext context) {
 
   return false;
 }
+
+bool onlyCharactersTextField(
+    String fieldValue, String field, BuildContext context) {
+  if (fieldValue.isNotEmpty) {
+    if (fieldValue.length < 2) {
+      _toggleValidationAlert(
+        context,
+        Text(
+          'Short $field',
+        ),
+        Text(
+          'The $field must be at least 2 characters in length!',
+        ),
+      );
+
+      return true;
+    }
+
+    var hasDigit = fieldValue.contains(RegExp(r'[0-9]'));
+
+    if (hasDigit) {
+      _toggleValidationAlert(
+        context,
+        Text(
+          'Wrong $field',
+        ),
+        Text(
+          'The $field must only contain upper and lower case characters!',
+        ),
+      );
+
+      return true;
+    }
+
+    var hasSpecialCharacter =
+        fieldValue.contains(RegExp(r'[~`!@#$%^&*()_+-={[}]|\:;"<,>.?/}]/'));
+
+    if (hasSpecialCharacter) {
+      _toggleValidationAlert(
+        context,
+        Text(
+          'Wrong $field',
+        ),
+        Text(
+          'The $field must only contain upper and lower case characters!',
+        ),
+      );
+
+      return true;
+    }
+  }
+
+  return false;
+}

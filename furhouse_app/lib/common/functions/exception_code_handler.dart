@@ -102,3 +102,14 @@ void locationServicesExceptionHandler(
     },
   );
 }
+
+void addPetExceptionHandler(BuildContext context, String exceptionCode) {
+  var message = 'Adding a pet is currently unavailable!';
+
+  showCupertinoDialog(
+    context: context,
+    builder: (context) {
+      return _dialogBuilder(context, 'Pet service error', message);
+    },
+  );
+}

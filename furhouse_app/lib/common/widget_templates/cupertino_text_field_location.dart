@@ -28,7 +28,6 @@ class _CupertinoTextFieldLocationState
 
     if (locationPermission == 'permitted') {
       var location = await Location().getLocation();
-      print(location);
 
       if (location.contains('error:')) {
         if (context.mounted) {

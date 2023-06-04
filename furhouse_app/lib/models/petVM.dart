@@ -1,5 +1,3 @@
-import 'package:image_picker/image_picker.dart';
-
 class PetVM {
   final String name;
   final String category;
@@ -10,9 +8,8 @@ class PetVM {
   final String details;
   final String priority;
   final String? description;
-  final String photoName;
-  final XFile photo;
   final String userEmail;
+  final String photoPath;
 
   PetVM({
     required this.name,
@@ -24,8 +21,7 @@ class PetVM {
     required this.details,
     required this.priority,
     required this.description,
-    required this.photoName,
-    required this.photo,
     required this.userEmail,
+    required this.photoPath,
   });
 }

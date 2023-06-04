@@ -12,7 +12,7 @@ class Pets {
           FirebaseDatabase.instance.ref().child("pets");
 
       // add pet in the pets collection
-      /*await databaseRef.push().set({
+      await databaseRef.push().set({
         "name": pet.name,
         "cateogory": pet.category,
         "breed": pet.breed,
@@ -23,12 +23,15 @@ class Pets {
         "priority": pet.priority,
         "description": pet.description,
         "userEmail": pet.userEmail,
-      });*/
+      });
 
       // add pet photo in the storage
-      var photo = File(pet.photo.path);
+      var photo = File(pet.photoPath);
 
-      await FirebaseStorage.instance.ref().child(pet.photoName).putFile(photo);
+      await FirebaseStorage.instance
+          .ref(pet.userEmail)
+          .child(pet.name)
+          .putFile(photo);
 
       return 'Success';
     } catch (e) {

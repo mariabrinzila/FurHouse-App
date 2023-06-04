@@ -47,6 +47,12 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     var scraper = WebScraper();
+    catBreedValues = [];
+    dogBreedValues = [];
+    rabbitBreedValues = [];
+    rodentBreedValues = [];
+    birdBreedValues = [];
+
     scraper.scrapCatBreeds(catBreedValues);
     scraper.scrapDogBreeds(dogBreedValues);
     scraper.scrapRabbitBreeds(rabbitBreedValues);

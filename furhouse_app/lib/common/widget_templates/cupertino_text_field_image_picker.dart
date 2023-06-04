@@ -9,14 +9,12 @@ import 'package:furhouse_app/common/widget_templates/cupertino_form_dialog.dart'
 
 class CupertinoTextFieldImagePicker extends StatefulWidget {
   final String placeholderText;
-  final TextEditingController textFieldController;
-  XFile photo;
+  final TextEditingController photoController;
 
-  CupertinoTextFieldImagePicker({
+  const CupertinoTextFieldImagePicker({
     super.key,
     required this.placeholderText,
-    required this.textFieldController,
-    required this.photo,
+    required this.photoController,
   });
 
   @override
@@ -86,8 +84,7 @@ class _CupertinoTextFieldImagePickerState
       }
 
       setState(() {
-        widget.photo = image;
-        widget.textFieldController.text = widget.photo.name;
+        widget.photoController.text = image.path;
       });
     } catch (e) {
       showCupertinoDialog(
@@ -116,7 +113,7 @@ class _CupertinoTextFieldImagePickerState
           CupertinoIcons.photo,
         ),
       ),
-      controller: widget.textFieldController,
+      controller: widget.photoController,
       onTap: _onTapImageField,
     );
   }

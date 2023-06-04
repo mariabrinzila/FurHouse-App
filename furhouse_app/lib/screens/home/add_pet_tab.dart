@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
 
 import 'package:furhouse_app/screens/home/home.dart';
 
@@ -33,7 +32,6 @@ class AddPetTab extends StatefulWidget {
   final TextEditingController _priorityController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _photoController = TextEditingController();
-  final XFile _petPhoto = XFile('');
 
   AddPetTab({
     super.key,
@@ -136,7 +134,6 @@ class _AddPetTabState extends State<AddPetTab> {
 
     var currentUser = Authentication().getCurrentUser();
     String currentUserEmail = currentUser?.email ?? '';
-    var photoName = widget._nameController.text + currentUserEmail;
 
     PetVM pet = PetVM(
       name: widget._nameController.text,
@@ -148,13 +145,11 @@ class _AddPetTabState extends State<AddPetTab> {
       details: widget._detailsController.text,
       priority: widget._priorityController.text,
       description: widget._descriptionController.text,
-      photoName: photoName,
-      photo: widget._petPhoto,
       userEmail: currentUserEmail,
+      photoPath: widget._photoController.text,
     );
 
     final message = await Pets().add(pet);
-    print(message);
 
     if (message == 'Success') {
       if (context.mounted) {
@@ -360,8 +355,7 @@ class _AddPetTabState extends State<AddPetTab> {
                 width: 250,
                 child: CupertinoTextFieldImagePicker(
                   placeholderText: 'Pet photo',
-                  textFieldController: widget._photoController,
-                  photo: widget._petPhoto,
+                  photoController: widget._photoController,
                 ),
               ),
               const SizedBox(

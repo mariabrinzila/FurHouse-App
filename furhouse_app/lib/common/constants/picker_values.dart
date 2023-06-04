@@ -1,3 +1,8 @@
+const genderValues = [
+  'Male',
+  'Female',
+];
+
 const categoryValues = [
   'Cat',
   'Dog',

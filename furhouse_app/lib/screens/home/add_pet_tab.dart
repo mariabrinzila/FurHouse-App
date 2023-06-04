@@ -3,7 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
 
-import 'package:furhouse_app/screens/home/home.dart';
+import 'package:furhouse_app/screens/pet/pet-page-theme.dart';
+import 'package:furhouse_app/screens/pet/pet_page.dart';
 
 import 'package:furhouse_app/common/widget_templates/cupertino_text_field_prefix_icon.dart';
 import 'package:furhouse_app/common/widget_templates/cupertino_text_field_suffix_icon.dart';
@@ -23,6 +24,7 @@ import 'package:furhouse_app/services/pets.dart';
 
 class AddPetTab extends StatefulWidget {
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _genderController = TextEditingController();
   final TextEditingController _categoryController = TextEditingController();
   final TextEditingController _breedController = TextEditingController();
   final TextEditingController _ageUnitController = TextEditingController();
@@ -99,6 +101,10 @@ class _AddPetTabState extends State<AddPetTab> {
       return;
     }
 
+    if (nonEmptyField(widget._genderController.text, 'gender', context)) {
+      return;
+    }
+
     if (nonEmptyField(widget._categoryController.text, 'category', context)) {
       return;
     }
@@ -137,6 +143,7 @@ class _AddPetTabState extends State<AddPetTab> {
 
     PetVM pet = PetVM(
       name: widget._nameController.text,
+      gender: widget._genderController.text,
       category: widget._categoryController.text,
       breed: widget._breedController.text,
       ageUnit: widget._ageUnitController.text,
@@ -153,7 +160,7 @@ class _AddPetTabState extends State<AddPetTab> {
 
     if (message == 'Success') {
       if (context.mounted) {
-        _navigateToHome(context);
+        _navigateToPetPage(context);
       }
     } else {
       if (context.mounted) {
@@ -162,11 +169,13 @@ class _AddPetTabState extends State<AddPetTab> {
     }
   }
 
-  void _navigateToHome(BuildContext context) {
+  void _navigateToPetPage(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const Home(),
+        builder: (context) => const PetPageTheme(
+          childWidget: PetPage(),
+        ),
       ),
     );
   }
@@ -218,6 +227,29 @@ class _AddPetTabState extends State<AddPetTab> {
                   SizedBox(
                     width: 175,
                     child: CupertinoTextFieldDropdown(
+                      dropdownHeight: 100,
+                      placeholderText: 'Gender',
+                      textFieldController: widget._genderController,
+                      prefixIcon: const CupertinoTextFieldPrefixIcon(
+                        icon: Icon(
+                          Icons.female_rounded,
+                        ),
+                      ),
+                      suffixIcon: suffixIcon,
+                      pickerValues: genderValues,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 175,
+                    child: CupertinoTextFieldDropdown(
                       dropdownHeight: 150,
                       placeholderText: 'Category',
                       textFieldController: widget._categoryController,
@@ -226,21 +258,21 @@ class _AddPetTabState extends State<AddPetTab> {
                       pickerValues: categoryValues,
                     ),
                   ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  SizedBox(
+                    width: 175,
+                    child: CupertinoTextFieldDropdown(
+                      dropdownHeight: 150,
+                      placeholderText: 'Breed',
+                      textFieldController: widget._breedController,
+                      prefixIcon: prefixIcon,
+                      suffixIcon: suffixIcon,
+                      pickerValues: breedPickerValues,
+                    ),
+                  ),
                 ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              SizedBox(
-                width: 360,
-                child: CupertinoTextFieldDropdown(
-                  dropdownHeight: 200,
-                  placeholderText: 'Breed',
-                  textFieldController: widget._breedController,
-                  prefixIcon: prefixIcon,
-                  suffixIcon: suffixIcon,
-                  pickerValues: breedPickerValues,
-                ),
               ),
               const SizedBox(
                 height: 20,

@@ -1,5 +1,6 @@
 class PetVM {
   final String name;
+  final String gender;
   final String category;
   final String breed;
   final String ageUnit;
@@ -13,6 +14,7 @@ class PetVM {
 
   PetVM({
     required this.name,
+    required this.gender,
     required this.category,
     required this.breed,
     required this.ageUnit,

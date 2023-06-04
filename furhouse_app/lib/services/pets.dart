@@ -14,6 +14,7 @@ class Pets {
       // add pet in the pets collection
       await databaseRef.push().set({
         "name": pet.name,
+        "gender": pet.gender,
         "cateogory": pet.category,
         "breed": pet.breed,
         "ageUnit": pet.ageUnit,

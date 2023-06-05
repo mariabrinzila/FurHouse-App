@@ -160,7 +160,7 @@ class _AddPetTabState extends State<AddPetTab> {
 
     if (message == 'Success') {
       if (context.mounted) {
-        _navigateToPetPage(context);
+        _navigateToPetPage(context, pet);
       }
     } else {
       if (context.mounted) {
@@ -169,12 +169,14 @@ class _AddPetTabState extends State<AddPetTab> {
     }
   }
 
-  void _navigateToPetPage(BuildContext context) {
+  void _navigateToPetPage(BuildContext context, PetVM pet) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const PetPageTheme(
-          childWidget: PetPage(),
+        builder: (context) => PetPageTheme(
+          childWidget: PetPage(
+            petObject: pet,
+          ),
         ),
       ),
     );
@@ -372,7 +374,8 @@ class _AddPetTabState extends State<AddPetTab> {
                 width: 330,
                 height: 50,
                 child: CupertinoTextFieldStyle(
-                  placeholderText: 'Pet description',
+                  placeholderText:
+                      'Pet description (character, house trained, special needs, good with other pets etc.)',
                   icon: const Icon(
                     CupertinoIcons.text_justify,
                   ),

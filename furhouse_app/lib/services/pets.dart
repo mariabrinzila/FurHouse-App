@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -37,6 +36,18 @@ class Pets {
       return 'Success';
     } catch (e) {
       return e.toString();
+    }
+  }
+
+  Future<String> getPetPhoneDownloadURL(
+      String userEmail, String petName) async {
+    try {
+      return await FirebaseStorage.instance
+          .ref(userEmail)
+          .child(petName)
+          .getDownloadURL();
+    } catch (e) {
+      rethrow;
     }
   }
 }

@@ -113,3 +113,12 @@ void addPetExceptionHandler(BuildContext context, String exceptionCode) {
     },
   );
 }
+
+void otherExceptionsHandler(BuildContext context, String exceptionCode) {
+  showCupertinoDialog(
+    context: context,
+    builder: (context) {
+      return _dialogBuilder(context, 'An error occurred', exceptionCode);
+    },
+  );
+}

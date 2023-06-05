@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:furhouse_app/common/widget_templates/pet-information-container.dart';
+import 'package:furhouse_app/common/constants/colors.dart';
+import 'package:furhouse_app/common/widget_templates/pet_information_container.dart';
 import 'package:furhouse_app/common/functions/exception_code_handler.dart';
 
 import 'package:furhouse_app/models/petVM.dart';
@@ -23,7 +24,7 @@ class PetPage extends StatefulWidget {
 }
 
 class _PetPageState extends State<PetPage> {
-  late String petPhotoURl;
+  late String petPhotoURL;
   late String ageUnit;
   String petDescription = 'No description';
 
@@ -43,7 +44,7 @@ class _PetPageState extends State<PetPage> {
           widget.petObject.userEmail, widget.petObject.name);
 
       setState(() {
-        petPhotoURl = url;
+        petPhotoURL = url;
       });
     } catch (e) {
       otherExceptionsHandler(context, e.toString());
@@ -63,11 +64,13 @@ class _PetPageState extends State<PetPage> {
           widget.petObject.ageUnit.substring(0, unitLength - 1).toLowerCase();
     }
 
-    return Scrollbar(
+    return RawScrollbar(
       thumbVisibility: true,
+      thumbColor: darkerBlueColor,
       thickness: 6,
       radius: const Radius.circular(20),
       scrollbarOrientation: ScrollbarOrientation.right,
+      minThumbLength: 10,
       child: SingleChildScrollView(
         padding: EdgeInsets.only(
           bottom: MediaQuery.of(context).viewInsets.bottom + 5,
@@ -90,7 +93,7 @@ class _PetPageState extends State<PetPage> {
                   child: FittedBox(
                     fit: BoxFit.contain,
                     child: Image.network(
-                      petPhotoURl,
+                      petPhotoURL,
                     ),
                   ),
                 ),

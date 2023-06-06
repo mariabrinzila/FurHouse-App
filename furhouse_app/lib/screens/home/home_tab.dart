@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 
+import 'package:furhouse_app/screens/home/home_pet_grid.dart';
+
 import 'package:furhouse_app/common/constants/colors.dart';
-import 'package:furhouse_app/common/widget_templates/pet_card_button.dart';
+import 'package:furhouse_app/common/functions/exception_code_handler.dart';
+
+import 'package:furhouse_app/models/petVM.dart';
+
+import 'package:furhouse_app/services/pets.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({
@@ -15,31 +21,45 @@ class HomeTab extends StatefulWidget {
 }
 
 class _HomeContentState extends State<HomeTab> {
+  late Map<String, PetVM> petMap = <String, PetVM>{};
+
+  Widget childWidget = const Center(
+    child: CircularProgressIndicator(
+      color: darkerBlueColor,
+    ),
+  );
+
+  @override
+  void initState() {
+    _getAllPets().then((value) {
+      setState(() {
+        petMap = value;
+      });
+    });
+
+    super.initState();
+  }
+
+  Future<Map<String, PetVM>> _getAllPets() async {
+    try {
+      var pets = await Pets().getAllPets();
+
+      return pets;
+    } catch (e) {
+      otherExceptionsHandler(context, e.toString());
+
+      return <String, PetVM>{};
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return RawScrollbar(
-      thumbVisibility: true,
-      thumbColor: darkerBlueColor,
-      thickness: 6,
-      radius: const Radius.circular(20),
-      scrollbarOrientation: ScrollbarOrientation.right,
-      minThumbLength: 5,
-      child: GridView.count(
-        crossAxisCount: 2,
-        children: List.generate(
-          20,
-          (index) {
-            return Container(
-              margin: const EdgeInsets.only(
-                top: 25,
-                left: 15,
-                right: 15,
-              ),
-              child: const PetCardButton(),
-            );
-          },
-        ),
-      ),
-    );
+    if (petMap.isNotEmpty) {
+      childWidget = HomePetGrid(
+        petMap: petMap,
+      );
+    }
+
+    return childWidget;
   }
 }

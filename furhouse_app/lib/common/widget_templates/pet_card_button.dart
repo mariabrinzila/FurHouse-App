@@ -7,13 +7,13 @@ import 'package:furhouse_app/common/constants/colors.dart';
 import 'package:furhouse_app/models/petVM.dart';
 
 class PetCardButton extends StatelessWidget {
-  //final PetVM petObject;
-  //final String petPhotoURL;
+  final PetVM petObject;
+  final String petPhotoURL;
 
   const PetCardButton({
     super.key,
-    //required this.petObject,
-    //required this.petPhotoURL,
+    required this.petObject,
+    required this.petPhotoURL,
   });
 
   @override
@@ -36,18 +36,17 @@ class PetCardButton extends StatelessWidget {
             height: 100,
             child: FittedBox(
               fit: BoxFit.contain,
-              child: Image.asset('assets/images/cat.jpg'),
-              /*Image.network(
+              child: Image.network(
                 petPhotoURL,
-              ),*/
+              ),
             ),
           ),
           const SizedBox(
             height: 10,
           ),
-          const Text(
-            'Pet name',
-            style: TextStyle(
+          Text(
+            petObject.name,
+            style: const TextStyle(
               fontSize: 15,
             ),
           ),
@@ -61,9 +60,9 @@ class PetCardButton extends StatelessWidget {
           const SizedBox(
             height: 5,
           ),
-          const Text(
-            'Alaskan Klee Kai',
-            style: TextStyle(
+          Text(
+            petObject.breed,
+            style: const TextStyle(
               fontSize: 12,
             ),
           ),

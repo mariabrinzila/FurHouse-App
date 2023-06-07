@@ -169,17 +169,27 @@ class _AddPetTabState extends State<AddPetTab> {
     }
   }
 
-  void _navigateToPetPage(BuildContext context, PetVM pet) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => PetPageTheme(
-          childWidget: PetPage(
-            petObject: pet,
+  void _navigateToPetPage(BuildContext context, PetVM pet) async {
+    try {
+      var petPhotoURL =
+          await Pets().getPetPhoneDownloadURL(pet.userEmail, pet.name);
+
+      if (context.mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PetPageTheme(
+              childWidget: PetPage(
+                petObject: pet,
+                petPhotoURL: petPhotoURL,
+              ),
+            ),
           ),
-        ),
-      ),
-    );
+        );
+      }
+    } catch (e) {
+      otherExceptionsHandler(context, e.toString());
+    }
   }
 
   @override

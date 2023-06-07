@@ -3,18 +3,17 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:furhouse_app/common/constants/colors.dart';
 import 'package:furhouse_app/common/widget_templates/pet_information_container.dart';
-import 'package:furhouse_app/common/functions/exception_code_handler.dart';
 
 import 'package:furhouse_app/models/petVM.dart';
 
-import 'package:furhouse_app/services/pets.dart';
-
 class PetPage extends StatefulWidget {
   final PetVM petObject;
+  final String petPhotoURL;
 
   const PetPage({
     super.key,
     required this.petObject,
+    required this.petPhotoURL,
   });
 
   @override
@@ -24,7 +23,6 @@ class PetPage extends StatefulWidget {
 }
 
 class _PetPageState extends State<PetPage> {
-  late String petPhotoURL;
   late String ageUnit;
   String petDescription = 'No description';
 
@@ -38,23 +36,8 @@ class _PetPageState extends State<PetPage> {
     super.initState();
   }
 
-  void _getPetPhotoURL(BuildContext context) async {
-    try {
-      var url = await Pets().getPetPhoneDownloadURL(
-          widget.petObject.userEmail, widget.petObject.name);
-
-      setState(() {
-        petPhotoURL = url;
-      });
-    } catch (e) {
-      otherExceptionsHandler(context, e.toString());
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    _getPetPhotoURL(context);
-
     ageUnit = widget.petObject.ageUnit.toLowerCase();
 
     if (widget.petObject.ageValue == 1) {
@@ -93,7 +76,7 @@ class _PetPageState extends State<PetPage> {
                   child: FittedBox(
                     fit: BoxFit.contain,
                     child: Image.network(
-                      petPhotoURL,
+                      widget.petPhotoURL,
                     ),
                   ),
                 ),

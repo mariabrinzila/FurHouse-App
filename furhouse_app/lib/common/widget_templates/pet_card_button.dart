@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'package:furhouse_app/screens/pet/pet-page-theme.dart';
+import 'package:furhouse_app/screens/pet/pet_page.dart';
+
 import 'package:furhouse_app/common/constants/colors.dart';
 
 import 'package:furhouse_app/models/petVM.dart';
@@ -16,6 +19,20 @@ class PetCardButton extends StatelessWidget {
     required this.petPhotoURL,
   });
 
+  void _navigateToPetPage(BuildContext context) async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PetPageTheme(
+          childWidget: PetPage(
+            petObject: petObject,
+            petPhotoURL: petPhotoURL,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
@@ -27,7 +44,9 @@ class PetCardButton extends StatelessWidget {
           fontWeight: FontWeight.bold,
         ),
       ),
-      onPressed: () {},
+      onPressed: () {
+        _navigateToPetPage(context);
+      },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

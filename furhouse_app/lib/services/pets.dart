@@ -55,7 +55,6 @@ class Pets {
   Future<Map<String, PetVM>> getAllPets() async {
     DatabaseReference databaseRef =
         FirebaseDatabase.instance.ref().child("pets");
-    Map<String, PetVM> petDataMap = <String, PetVM>{};
 
     try {
       var snapshot = await databaseRef.get();
@@ -64,35 +63,44 @@ class Pets {
         throw 'No available data!';
       }
 
-      var petData = Map<String, dynamic>.from(snapshot.value as LinkedHashMap);
-
-      for (var key in petData.keys) {
-        var petObject = petData[key];
-
-        var currentPet = PetVM(
-          name: petObject["name"],
-          gender: petObject["gender"],
-          category: petObject["category"],
-          breed: petObject["breed"],
-          ageUnit: petObject["ageUnit"],
-          ageValue: petObject["ageValue"],
-          location: petObject["location"],
-          details: petObject["details"],
-          priority: petObject["priority"],
-          description: petObject["description"],
-          userEmail: petObject["userEmail"],
-          photoPath: '',
-        );
-
-        var photoURL =
-            await getPetPhoneDownloadURL(currentPet.userEmail, currentPet.name);
-
-        petDataMap.addEntries(<String, PetVM>{photoURL: currentPet}.entries);
-      }
+      var petDataMap = await _mapDatabaseSnapshotToPetObject(snapshot);
 
       return petDataMap;
     } catch (e) {
       rethrow;
     }
+  }
+
+  Future<Map<String, PetVM>> _mapDatabaseSnapshotToPetObject(
+      DataSnapshot snapshot) async {
+    Map<String, PetVM> petDataMap = <String, PetVM>{};
+
+    var petData = Map<String, dynamic>.from(snapshot.value as LinkedHashMap);
+
+    for (var key in petData.keys) {
+      var petObject = petData[key];
+
+      var currentPet = PetVM(
+        name: petObject["name"],
+        gender: petObject["gender"],
+        category: petObject["category"],
+        breed: petObject["breed"],
+        ageUnit: petObject["ageUnit"],
+        ageValue: petObject["ageValue"],
+        location: petObject["location"],
+        details: petObject["details"],
+        priority: petObject["priority"],
+        description: petObject["description"],
+        userEmail: petObject["userEmail"],
+        photoPath: '',
+      );
+
+      var photoURL =
+          await getPetPhoneDownloadURL(currentPet.userEmail, currentPet.name);
+
+      petDataMap.addEntries(<String, PetVM>{photoURL: currentPet}.entries);
+    }
+
+    return petDataMap;
   }
 }

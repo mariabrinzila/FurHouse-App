@@ -1,7 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'dart:io';
 import 'dart:collection';
+import 'dart:io';
 
 import 'package:furhouse_app/models/petVM.dart';
 
@@ -10,6 +10,22 @@ class Pets {
     try {
       DatabaseReference databaseRef =
           FirebaseDatabase.instance.ref().child("pets");
+
+      var snapshot = await databaseRef.limitToLast(1).get();
+
+      if (!snapshot.exists) {
+        throw 'Adding a pet is currently unavailable!';
+      }
+
+      var petData = Map<String, dynamic>.from(snapshot.value as LinkedHashMap);
+      int index = 1;
+
+      for (var key in petData.keys) {
+        var petObject = petData[key];
+        index = petObject["index"];
+      }
+
+      index++;
 
       // add pet in the pets collection
       await databaseRef.push().set({
@@ -24,6 +40,7 @@ class Pets {
         "priority": pet.priority,
         "description": pet.description,
         "userEmail": pet.userEmail,
+        "index": index,
       });
 
       // add pet photo in the storage
@@ -52,12 +69,16 @@ class Pets {
     }
   }
 
-  Future<Map<String, PetVM>> getAllPets() async {
+  Future<Map<String, PetVM>> getAllPaginatedPets(int index, int limit) async {
     DatabaseReference databaseRef =
         FirebaseDatabase.instance.ref().child("pets");
 
     try {
-      var snapshot = await databaseRef.get();
+      var snapshot = await databaseRef
+          .orderByChild("index")
+          .startAt(index)
+          .limitToFirst(limit)
+          .get();
 
       if (!snapshot.exists) {
         throw 'No available data!';

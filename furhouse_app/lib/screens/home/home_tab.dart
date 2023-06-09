@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-
-import 'package:furhouse_app/screens/home/home_pet_grid.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:furhouse_app/common/constants/colors.dart';
 import 'package:furhouse_app/common/functions/exception_code_handler.dart';
+import 'package:furhouse_app/common/widget_templates/pet_card_button.dart';
 
 import 'package:furhouse_app/models/petVM.dart';
 
@@ -21,17 +21,16 @@ class HomeTab extends StatefulWidget {
 }
 
 class _HomeContentState extends State<HomeTab> {
-  late Map<String, PetVM> petMap = <String, PetVM>{};
+  Map<String, PetVM> petMap = <String, PetVM>{};
+  final ScrollController _homeScrollbar = ScrollController();
 
-  Widget childWidget = const Center(
-    child: CircularProgressIndicator(
-      color: darkerBlueColor,
-    ),
-  );
+  int currentPage = 1;
+  final int limit = 6;
+  int startIndex = 1;
 
   @override
   void initState() {
-    _getAllPets().then((value) {
+    _getAllPets(startIndex, limit).then((value) {
       setState(() {
         petMap = value;
       });
@@ -40,9 +39,9 @@ class _HomeContentState extends State<HomeTab> {
     super.initState();
   }
 
-  Future<Map<String, PetVM>> _getAllPets() async {
+  Future<Map<String, PetVM>> _getAllPets(int index, int limit) async {
     try {
-      var pets = await Pets().getAllPets();
+      var pets = await Pets().getAllPaginatedPets(index, limit);
 
       return pets;
     } catch (e) {
@@ -52,14 +51,124 @@ class _HomeContentState extends State<HomeTab> {
     }
   }
 
+  Widget _generateListItemContainer(int index) {
+    return Container(
+      margin: const EdgeInsets.only(
+        top: 25,
+        left: 15,
+        right: 15,
+      ),
+      child: PetCardButton(
+        petObject: petMap.entries.elementAt(index).value,
+        petPhotoURL: petMap.entries.elementAt(index).key,
+      ),
+    );
+  }
+
+  void _previousPage() {
+    setState(() {
+      currentPage--;
+      startIndex -= limit;
+
+      petMap = <String, PetVM>{};
+
+      _getAllPets(startIndex, limit).then((value) {
+        setState(() {
+          petMap = value;
+        });
+      });
+    });
+  }
+
+  void _nextPage() {
+    setState(() {
+      currentPage++;
+      startIndex += limit;
+
+      petMap = <String, PetVM>{};
+
+      _getAllPets(startIndex, limit).then((value) {
+        setState(() {
+          petMap = value;
+        });
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (petMap.isNotEmpty) {
-      childWidget = HomePetGrid(
-        petMap: petMap,
+    if (petMap.isEmpty) {
+      return const Center(
+        child: CircularProgressIndicator(
+          color: darkerBlueColor,
+        ),
       );
     }
 
-    return childWidget;
+    return RawScrollbar(
+      thumbVisibility: true,
+      thumbColor: darkerBlueColor,
+      thickness: 6,
+      radius: const Radius.circular(20),
+      scrollbarOrientation: ScrollbarOrientation.right,
+      minThumbLength: 5,
+      controller: _homeScrollbar,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Expanded(
+            child: GridView.count(
+              crossAxisCount: 2,
+              controller: _homeScrollbar,
+              children: List.generate(
+                petMap.length,
+                (index) {
+                  return _generateListItemContainer(index);
+                },
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 40,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                if (currentPage > 1) ...[
+                  IconButton(
+                    color: darkerBlueColor,
+                    onPressed: _previousPage,
+                    icon: const Icon(
+                      CupertinoIcons.arrow_left_circle_fill,
+                    ),
+                  ),
+                ],
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: const CircleBorder(),
+                  ),
+                  onPressed: null,
+                  child: Text(
+                    currentPage.toString(),
+                    style: const TextStyle(
+                      color: darkerBlueColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                if (petMap.length == limit) ...[
+                  IconButton(
+                    color: darkerBlueColor,
+                    onPressed: _nextPage,
+                    icon: const Icon(
+                      CupertinoIcons.arrow_right_circle_fill,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

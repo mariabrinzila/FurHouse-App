@@ -92,6 +92,39 @@ class Pets {
     }
   }
 
+  Future<Map<String, PetVM>> getAllSortedPets(
+      String sortOption, bool sortOrderAscending, int index, int limit) async {
+    DatabaseReference databaseRef =
+        FirebaseDatabase.instance.ref().child("pets");
+
+    try {
+      DataSnapshot snapshot;
+
+      if (sortOrderAscending) {
+        snapshot = await databaseRef.orderByChild("index").get();
+      } else {
+        snapshot = await databaseRef
+            .orderByChild(sortOption)
+            .startAt(index)
+            .limitToLast(limit)
+            .get();
+      }
+
+      if (!snapshot.exists) {
+        throw 'No available data!';
+      }
+
+      var length = snapshot.value.toString();
+      print(length);
+
+      var petDataMap = await _mapDatabaseSnapshotToPetObject(snapshot);
+
+      return petDataMap;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<Map<String, PetVM>> _mapDatabaseSnapshotToPetObject(
       DataSnapshot snapshot) async {
     Map<String, PetVM> petDataMap = <String, PetVM>{};

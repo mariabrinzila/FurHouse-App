@@ -11,6 +11,8 @@ class PetVM {
   final String? description;
   final String userEmail;
   final String photoPath;
+  final String dateAdded;
+  final bool adopted;
 
   PetVM({
     required this.name,
@@ -25,5 +27,26 @@ class PetVM {
     required this.description,
     required this.userEmail,
     required this.photoPath,
+    required this.dateAdded,
+    required this.adopted,
   });
+
+  Map<String, dynamic> toMap(int id) {
+    return {
+      "pet_id": id,
+      "name": name,
+      "gender": gender,
+      "category": category,
+      "breed": breed,
+      "age_unit": ageUnit,
+      "age_value": ageValue,
+      "location": location,
+      "details": details,
+      "priority": priority,
+      "description": description,
+      "user_email": userEmail,
+      "date_added": dateAdded,
+      "adopted": adopted == false ? 0 : 1,
+    };
+  }
 }

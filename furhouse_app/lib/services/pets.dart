@@ -1,3 +1,6 @@
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:collection';
@@ -6,7 +9,210 @@ import 'dart:io';
 import 'package:furhouse_app/models/petVM.dart';
 
 class Pets {
-  Future<String> add(PetVM pet) async {
+  late Database _database;
+
+  static const _databaseName = "furhouse-app.db";
+  static const _databaseVersion = 1;
+  static const _table = "pets";
+
+  Future<void> init() async {
+    final documentsDirectory = await getApplicationDocumentsDirectory();
+    final path = join(documentsDirectory.path, _databaseName);
+
+    _database = await openDatabase(
+      path,
+      version: _databaseVersion,
+      onCreate: _onCreate,
+    );
+  }
+
+  Future _onCreate(Database database, int version) async {
+    await database.execute(
+      '''
+          CREATE TABLE IF NOT EXISTS $_table (
+            pet_id INTEGER PRIMARY KEY,
+            name TEXT NOT NULL,
+            gender TEXT NOT NULL,
+            category TEXT NOT NULL,
+            breed TEXT NOT NULL,
+            age_unit TEXT NOT NULL,
+            age_value INTEGER NOT NULL,
+            location TEXT NOT NULL,
+            details TEXT NOT NULL,
+            priority TEXT NOT NULL,
+            description TEXT,
+            user_email TEXT NOT NULL,
+            date_added TEXT NOT NULL,
+            adopted INTEGER NOT NULL
+          )
+      ''',
+    );
+  }
+
+  Future<Map<String, PetVM>> selectPaginatedPets(int index, int limit) async {
+    try {
+      await init();
+
+      // select pets with an id >= the page and limit results by the given limit
+      final List<Map<String, dynamic>> pets = await _database.query(
+        _table,
+        where: "pet_id >= ?",
+        whereArgs: [index],
+        limit: limit,
+      );
+
+      if (pets.isEmpty) {
+        throw "No available data!";
+      }
+
+      // compute PetVM object from database data and get corresponding pet photos
+      var petDataMap = <String, PetVM>{};
+
+      for (var pet in pets) {
+        var currentPet = PetVM(
+          name: pet["name"],
+          gender: pet["gender"],
+          category: pet["category"],
+          breed: pet["breed"],
+          ageUnit: pet["age_unit"],
+          ageValue: pet["age_value"],
+          location: pet["location"],
+          details: pet["details"],
+          priority: pet["priority"],
+          description: pet["description"],
+          userEmail: pet["user_email"],
+          photoPath: "",
+          dateAdded: pet["date_added"],
+          adopted: pet["adopted"] == 0 ? false : true,
+        );
+
+        var photoURL =
+            await getPetPhoneDownloadURL(currentPet.userEmail, currentPet.name);
+
+        petDataMap.addEntries(<String, PetVM>{photoURL: currentPet}.entries);
+      }
+
+      await closeDatabase();
+
+      return petDataMap;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, PetVM>> selectSortedPets(
+      String sortOption, bool sortOrderAscending) async {
+    try {
+      await init();
+
+      // select pets with an id >= the page and limit results by the given limit
+      final List<Map<String, dynamic>> pets;
+
+      if (sortOrderAscending) {
+        pets = await _database.query(
+          _table,
+          orderBy: "name ASC",
+        );
+      } else {
+        pets = await _database.query(
+          _table,
+          orderBy: "name DESC",
+        );
+      }
+
+      if (pets.isEmpty) {
+        throw "No available data!";
+      }
+
+      // compute PetVM object from database data and get corresponding pet photos
+      var petDataMap = <String, PetVM>{};
+
+      for (var pet in pets) {
+        var currentPet = PetVM(
+          name: pet["name"],
+          gender: pet["gender"],
+          category: pet["category"],
+          breed: pet["breed"],
+          ageUnit: pet["age_unit"],
+          ageValue: pet["age_value"],
+          location: pet["location"],
+          details: pet["details"],
+          priority: pet["priority"],
+          description: pet["description"],
+          userEmail: pet["user_email"],
+          photoPath: "",
+          dateAdded: pet["date_added"],
+          adopted: pet["adopted"] == 0 ? false : true,
+        );
+
+        var photoURL =
+            await getPetPhoneDownloadURL(currentPet.userEmail, currentPet.name);
+
+        petDataMap.addEntries(<String, PetVM>{photoURL: currentPet}.entries);
+      }
+
+      await closeDatabase();
+
+      return petDataMap;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<String> getPetPhoneDownloadURL(
+      String userEmail, String petName) async {
+    try {
+      return await FirebaseStorage.instance
+          .ref(userEmail)
+          .child(petName)
+          .getDownloadURL();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<String> insert(PetVM pet) async {
+    try {
+      await init();
+
+      var id = 1;
+
+      // get the id of the pet added last
+      final List<Map<String, dynamic>> lastAddedPet =
+          await _database.query(_table, orderBy: "pet_id DESC", limit: 1);
+
+      if (lastAddedPet.isNotEmpty) {
+        id = lastAddedPet[0]["pet_id"] + 1;
+      }
+
+      // add pet in the database
+      await _database.insert(
+        _table,
+        pet.toMap(id),
+        conflictAlgorithm: ConflictAlgorithm.rollback,
+      );
+
+      // add pet photo in the storage
+      var photo = File(pet.photoPath);
+
+      await FirebaseStorage.instance
+          .ref(pet.userEmail)
+          .child(pet.name)
+          .putFile(photo);
+
+      await closeDatabase();
+
+      return "Success";
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  closeDatabase() async {
+    await _database.close();
+  }
+
+  Future<String> addPet(PetVM pet) async {
     try {
       DatabaseReference databaseRef =
           FirebaseDatabase.instance.ref().child("pets");
@@ -14,7 +220,7 @@ class Pets {
       var snapshot = await databaseRef.limitToLast(1).get();
 
       if (!snapshot.exists) {
-        throw 'Adding a pet is currently unavailable!';
+        throw "Adding a pet is currently unavailable!";
       }
 
       var petData = Map<String, dynamic>.from(snapshot.value as LinkedHashMap);
@@ -57,18 +263,6 @@ class Pets {
     }
   }
 
-  Future<String> getPetPhoneDownloadURL(
-      String userEmail, String petName) async {
-    try {
-      return await FirebaseStorage.instance
-          .ref(userEmail)
-          .child(petName)
-          .getDownloadURL();
-    } catch (e) {
-      rethrow;
-    }
-  }
-
   Future<Map<String, PetVM>> getAllPaginatedPets(int index, int limit) async {
     DatabaseReference databaseRef =
         FirebaseDatabase.instance.ref().child("pets");
@@ -81,7 +275,7 @@ class Pets {
           .get();
 
       if (!snapshot.exists) {
-        throw 'No available data!';
+        throw "No available data!";
       }
 
       var petDataMap = await _mapDatabaseSnapshotToPetObject(snapshot);
@@ -111,11 +305,8 @@ class Pets {
       }
 
       if (!snapshot.exists) {
-        throw 'No available data!';
+        throw "No available data!";
       }
-
-      var length = snapshot.value.toString();
-      print(length);
 
       var petDataMap = await _mapDatabaseSnapshotToPetObject(snapshot);
 
@@ -147,6 +338,8 @@ class Pets {
         description: petObject["description"],
         userEmail: petObject["userEmail"],
         photoPath: '',
+        dateAdded: petObject["date_added"],
+        adopted: petObject["adopted"],
       );
 
       var photoURL =

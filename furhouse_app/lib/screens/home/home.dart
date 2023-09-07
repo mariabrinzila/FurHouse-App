@@ -9,6 +9,7 @@ import 'package:furhouse_app/common/constants/picker_values.dart';
 import 'package:furhouse_app/common/widget_templates/tab_style.dart';
 import 'package:furhouse_app/common/constants/colors.dart';
 
+import 'package:furhouse_app/services/pets.dart';
 import 'package:furhouse_app/services/web_scraper.dart';
 
 class Home extends StatefulWidget {
@@ -100,9 +101,9 @@ class _HomeState extends State<Home> {
             ),
             child: TabBarView(
               children: [
-                const HomeTab(),
+                HomeTab(),
                 AddPetTab(),
-                const HomeTab(),
+                HomeTab(),
                 const SettingsTab(),
               ],
             ),

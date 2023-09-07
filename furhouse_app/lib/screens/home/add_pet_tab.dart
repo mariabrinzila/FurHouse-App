@@ -154,9 +154,11 @@ class _AddPetTabState extends State<AddPetTab> {
       description: widget._descriptionController.text,
       userEmail: currentUserEmail,
       photoPath: widget._photoController.text,
+      dateAdded: DateTime.now().toString(),
+      adopted: false,
     );
 
-    final message = await Pets().add(pet);
+    final message = await Pets().insert(pet);
 
     if (message == 'Success') {
       if (context.mounted) {

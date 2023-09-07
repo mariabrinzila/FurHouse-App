@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:furhouse_app/common/constants/colors.dart';
@@ -47,6 +48,9 @@ class _PetPageState extends State<PetPage> {
           widget.petObject.ageUnit.substring(0, unitLength - 1).toLowerCase();
     }
 
+    var date = DateTime.parse(widget.petObject.dateAdded);
+    var addedDate = DateFormat.yMMMMd().format(date);
+
     return RawScrollbar(
       thumbVisibility: true,
       thumbColor: darkerBlueColor,
@@ -89,7 +93,8 @@ class _PetPageState extends State<PetPage> {
                     PetInformationContainer(
                       containerHeight: 30,
                       containerWidth: 200,
-                      text: widget.petObject.name,
+                      text:
+                          "${widget.petObject.name}, ${widget.petObject.category}",
                     ),
                     const SizedBox(
                       width: 10,
@@ -109,7 +114,7 @@ class _PetPageState extends State<PetPage> {
                   children: [
                     PetInformationContainer(
                       containerHeight: 30,
-                      containerWidth: 200,
+                      containerWidth: 130,
                       text: widget.petObject.gender,
                     ),
                     const SizedBox(
@@ -117,8 +122,8 @@ class _PetPageState extends State<PetPage> {
                     ),
                     PetInformationContainer(
                       containerHeight: 30,
-                      containerWidth: 150,
-                      text: widget.petObject.category,
+                      containerWidth: 220,
+                      text: "Added on $addedDate",
                     ),
                   ],
                 ),

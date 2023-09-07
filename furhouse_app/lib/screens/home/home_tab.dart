@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:furhouse_app/common/constants/colors.dart';
-import 'package:furhouse_app/common/constants/picker_values.dart';
 import 'package:furhouse_app/common/functions/exception_code_handler.dart';
 import 'package:furhouse_app/common/functions/modal_popup.dart';
 import 'package:furhouse_app/common/widget_templates/pet_card_button.dart';
@@ -30,6 +29,8 @@ class _HomeContentState extends State<HomeTab> {
   final int limit = 6;
   int startIndex = 1;
 
+  bool sortedOrFiltered = false;
+
   @override
   void initState() {
     _getAllPets(startIndex, limit).then((value) {
@@ -43,7 +44,7 @@ class _HomeContentState extends State<HomeTab> {
 
   Future<Map<String, PetVM>> _getAllPets(int index, int limit) async {
     try {
-      var pets = await Pets().getAllPaginatedPets(index, limit);
+      var pets = await Pets().selectPaginatedPets(index, limit);
 
       return pets;
     } catch (e) {
@@ -109,19 +110,18 @@ class _HomeContentState extends State<HomeTab> {
 
     petMap = <String, PetVM>{};
 
-    _getAllSortedPets(sortOption, sortOrderAscending, startIndex, limit)
-        .then((value) {
+    _getAllSortedPets(sortOption, sortOrderAscending).then((value) {
       setState(() {
         petMap = value;
+        sortedOrFiltered = true;
       });
     });
   }
 
   Future<Map<String, PetVM>> _getAllSortedPets(
-      String sortOption, bool sortOrderAscending, int index, int limit) async {
+      String sortOption, bool sortOrderAscending) async {
     try {
-      var pets = await Pets()
-          .getAllSortedPets(sortOption, sortOrderAscending, index, limit);
+      var pets = await Pets().selectSortedPets(sortOption, sortOrderAscending);
 
       return pets;
     } catch (e) {
@@ -198,45 +198,47 @@ class _HomeContentState extends State<HomeTab> {
             ),
           ),
         ),
-        SizedBox(
-          height: 40,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              if (currentPage > 1) ...[
-                IconButton(
-                  color: darkerBlueColor,
-                  onPressed: _previousPage,
-                  icon: const Icon(
-                    CupertinoIcons.arrow_left_circle_fill,
-                  ),
-                ),
-              ],
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: const CircleBorder(),
-                ),
-                onPressed: null,
-                child: Text(
-                  currentPage.toString(),
-                  style: const TextStyle(
+        if (!sortedOrFiltered) ...[
+          SizedBox(
+            height: 40,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                if (currentPage > 1) ...[
+                  IconButton(
                     color: darkerBlueColor,
-                    fontWeight: FontWeight.bold,
+                    onPressed: _previousPage,
+                    icon: const Icon(
+                      CupertinoIcons.arrow_left_circle_fill,
+                    ),
+                  ),
+                ],
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: const CircleBorder(),
+                  ),
+                  onPressed: null,
+                  child: Text(
+                    currentPage.toString(),
+                    style: const TextStyle(
+                      color: darkerBlueColor,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-              ),
-              if (petMap.length == limit) ...[
-                IconButton(
-                  color: darkerBlueColor,
-                  onPressed: _nextPage,
-                  icon: const Icon(
-                    CupertinoIcons.arrow_right_circle_fill,
+                if (petMap.length == limit) ...[
+                  IconButton(
+                    color: darkerBlueColor,
+                    onPressed: _nextPage,
+                    icon: const Icon(
+                      CupertinoIcons.arrow_right_circle_fill,
+                    ),
                   ),
-                ),
+                ],
               ],
-            ],
+            ),
           ),
-        ),
+        ]
       ],
     );
   }

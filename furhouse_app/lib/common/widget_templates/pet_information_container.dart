@@ -16,21 +16,24 @@ class PetInformationContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: darkBlueColor,
-      height: containerHeight,
-      width: containerWidth,
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10),
       child: Container(
-        margin: const EdgeInsets.only(
-          left: 10,
-          right: 10,
-        ),
-        child: Center(
-          child: Text(
-            text,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+        color: darkBlueColor,
+        height: containerHeight,
+        width: containerWidth,
+        child: Container(
+          margin: const EdgeInsets.only(
+            left: 10,
+            right: 10,
+          ),
+          child: Center(
+            child: Text(
+              text,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),

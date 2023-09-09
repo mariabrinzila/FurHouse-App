@@ -41,14 +41,14 @@ Future<String?> sortOptionModalPopup(BuildContext context) async {
         ),
         CupertinoActionSheetAction(
           onPressed: () {
-            _sortOrderModalPopup(context, "priority");
+            _sortOrderModalPopup(context, "date");
           },
           child: const Text(
             style: TextStyle(
               color: darkBlueColor,
               fontWeight: FontWeight.w400,
             ),
-            "Priority",
+            "Date",
           ),
         ),
       ],

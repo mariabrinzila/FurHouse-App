@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:furhouse_app/common/constants/colors.dart';
 import 'package:furhouse_app/common/functions/exception_code_handler.dart';
 import 'package:furhouse_app/common/functions/modal_popup.dart';
+import 'package:furhouse_app/common/widget_templates/header_infornation_with_button.dart';
 import 'package:furhouse_app/common/widget_templates/pet_card_button.dart';
 
 import 'package:furhouse_app/models/petVM.dart';
@@ -29,6 +30,8 @@ class _HomeContentState extends State<HomeTab> {
   final int limit = 6;
   int startIndex = 1;
 
+  String sortedBy = "";
+  bool sortOrderAscending = true;
   bool sortedOrFiltered = false;
 
   @override
@@ -113,7 +116,13 @@ class _HomeContentState extends State<HomeTab> {
     _getAllSortedPets(sortOption, sortOrderAscending).then((value) {
       setState(() {
         petMap = value;
+
+        sortedBy = sortOption;
+        this.sortOrderAscending = sortOrderAscending;
         sortedOrFiltered = true;
+
+        startIndex = 1;
+        currentPage = 1;
       });
     });
   }
@@ -131,13 +140,51 @@ class _HomeContentState extends State<HomeTab> {
     }
   }
 
+  void _clearSortedOptions() {
+    _getAllPets(startIndex, limit).then((value) {
+      setState(() {
+        petMap = value;
+
+        sortedBy = "";
+        sortedOrFiltered = false;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     if (petMap.isEmpty) {
       return const Center(
-        child: CircularProgressIndicator(
+        child: CupertinoActivityIndicator(
           color: darkerBlueColor,
+          radius: 30,
         ),
+      );
+    }
+
+    Widget sortWidget = ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        shape: const CircleBorder(),
+        backgroundColor: darkBlueColor,
+        elevation: 5,
+      ),
+      onPressed: () {
+        _sortModal(context);
+      },
+      child: const Icon(
+        Icons.sort_outlined,
+        color: Colors.white,
+      ),
+    );
+
+    if (sortedBy.isNotEmpty) {
+      var sortedOrder = sortOrderAscending ? "ascending" : "descending";
+
+      sortWidget = HeaderInformationWithButton(
+        containerHeight: 25,
+        containerWidth: 250,
+        text: "Sorted by $sortedBy, $sortedOrder",
+        onPressed: _clearSortedOptions,
       );
     }
 
@@ -149,20 +196,7 @@ class _HomeContentState extends State<HomeTab> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: const CircleBorder(),
-                  backgroundColor: darkBlueColor,
-                  elevation: 5,
-                ),
-                onPressed: () {
-                  _sortModal(context);
-                },
-                child: const Icon(
-                  Icons.sort_outlined,
-                  color: Colors.white,
-                ),
-              ),
+              sortWidget,
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   shape: const CircleBorder(),

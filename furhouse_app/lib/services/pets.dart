@@ -1,26 +1,51 @@
-import 'package:path/path.dart';
+//import 'package:flutter/foundation.dart';
+//import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:path_provider/path_provider.dart';
+//import 'package:path_provider/path_provider.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:collection';
 import 'dart:io';
+//import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
 
 import 'package:furhouse_app/models/petVM.dart';
 
 class Pets {
   late Database _database;
 
-  static const _databaseName = "furhouse-app.db";
+  static const _databaseName = "furhouse-app-database.db";
   static const _databaseVersion = 1;
   static const _table = "pets";
 
   Future<void> init() async {
-    final documentsDirectory = await getApplicationDocumentsDirectory();
-    final path = join(documentsDirectory.path, _databaseName);
+    //final documentsDirectory = await getApplicationDocumentsDirectory();
+    //final path = join(documentsDirectory.path, _databaseName);
+
+    //final databasesPath = await getDatabasesPath();
+    //final path = join(databasesPath, _databaseName);
+
+    /*var path = _databaseName;
+
+    if (kIsWeb) {
+      // Change default factory on the web
+      databaseFactory = databaseFactoryFfiWeb;
+      path = "F:/sqlite/furhouse-app-database.db";
+
+      // open the database
+      _database = await openDatabase(path);
+
+      // create table, if it doesn't already exist
+      await _onCreate(_database, _databaseVersion);
+    } else {
+      _database = await openDatabase(
+        _databaseName,
+        version: _databaseVersion,
+        onCreate: _onCreate,
+      );
+    }*/
 
     _database = await openDatabase(
-      path,
+      _databaseName,
       version: _databaseVersion,
       onCreate: _onCreate,
     );
@@ -65,32 +90,7 @@ class Pets {
         throw "No available data!";
       }
 
-      // compute PetVM object from database data and get corresponding pet photos
-      var petDataMap = <String, PetVM>{};
-
-      for (var pet in pets) {
-        var currentPet = PetVM(
-          name: pet["name"],
-          gender: pet["gender"],
-          category: pet["category"],
-          breed: pet["breed"],
-          ageUnit: pet["age_unit"],
-          ageValue: pet["age_value"],
-          location: pet["location"],
-          details: pet["details"],
-          priority: pet["priority"],
-          description: pet["description"],
-          userEmail: pet["user_email"],
-          photoPath: "",
-          dateAdded: pet["date_added"],
-          adopted: pet["adopted"] == 0 ? false : true,
-        );
-
-        var photoURL =
-            await getPetPhoneDownloadURL(currentPet.userEmail, currentPet.name);
-
-        petDataMap.addEntries(<String, PetVM>{photoURL: currentPet}.entries);
-      }
+      var petDataMap = _computePetMapFromDatabaseData(pets);
 
       await closeDatabase();
 
@@ -100,23 +100,61 @@ class Pets {
     }
   }
 
+  Future<Map<String, PetVM>> _computePetMapFromDatabaseData(
+      List<Map<String, dynamic>> pets) async {
+    // compute PetVM object from database data and get corresponding pet photos
+    var petDataMap = <String, PetVM>{};
+
+    for (var pet in pets) {
+      var currentPet = PetVM(
+        name: pet["name"],
+        gender: pet["gender"],
+        category: pet["category"],
+        breed: pet["breed"],
+        ageUnit: pet["age_unit"],
+        ageValue: pet["age_value"],
+        location: pet["location"],
+        details: pet["details"],
+        priority: pet["priority"],
+        description: pet["description"],
+        userEmail: pet["user_email"],
+        photoPath: "",
+        dateAdded: pet["date_added"],
+        adopted: pet["adopted"] == 0 ? false : true,
+      );
+
+      var photoURL =
+          await getPetPhoneDownloadURL(currentPet.userEmail, currentPet.name);
+
+      petDataMap.addEntries(<String, PetVM>{photoURL: currentPet}.entries);
+    }
+
+    return petDataMap;
+  }
+
   Future<Map<String, PetVM>> selectSortedPets(
       String sortOption, bool sortOrderAscending) async {
     try {
       await init();
 
-      // select pets with an id >= the page and limit results by the given limit
       final List<Map<String, dynamic>> pets;
+      var sortOrder = "ASC";
 
-      if (sortOrderAscending) {
+      if (!sortOrderAscending) {
+        sortOrder = "DESC";
+      }
+
+      if (sortOption != "age") {
+        var option = sortOption == "name" ? sortOption : "date_added";
+
         pets = await _database.query(
           _table,
-          orderBy: "name ASC",
+          orderBy: "$option $sortOrder",
         );
       } else {
         pets = await _database.query(
           _table,
-          orderBy: "name DESC",
+          orderBy: "age_unit $sortOrder, age_value $sortOrder",
         );
       }
 
@@ -124,32 +162,7 @@ class Pets {
         throw "No available data!";
       }
 
-      // compute PetVM object from database data and get corresponding pet photos
-      var petDataMap = <String, PetVM>{};
-
-      for (var pet in pets) {
-        var currentPet = PetVM(
-          name: pet["name"],
-          gender: pet["gender"],
-          category: pet["category"],
-          breed: pet["breed"],
-          ageUnit: pet["age_unit"],
-          ageValue: pet["age_value"],
-          location: pet["location"],
-          details: pet["details"],
-          priority: pet["priority"],
-          description: pet["description"],
-          userEmail: pet["user_email"],
-          photoPath: "",
-          dateAdded: pet["date_added"],
-          adopted: pet["adopted"] == 0 ? false : true,
-        );
-
-        var photoURL =
-            await getPetPhoneDownloadURL(currentPet.userEmail, currentPet.name);
-
-        petDataMap.addEntries(<String, PetVM>{photoURL: currentPet}.entries);
-      }
+      var petDataMap = _computePetMapFromDatabaseData(pets);
 
       await closeDatabase();
 

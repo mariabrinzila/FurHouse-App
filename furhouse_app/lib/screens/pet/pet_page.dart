@@ -162,7 +162,9 @@ class _PetPageState extends State<PetPage> {
                     PetInformationContainer(
                       containerHeight: 30,
                       containerWidth: 200,
-                      text: widget.petObject.details,
+                      text: widget.petObject.details == "None"
+                          ? "No details"
+                          : widget.petObject.details,
                     ),
                     const SizedBox(
                       width: 10,

@@ -101,9 +101,9 @@ class _HomeState extends State<Home> {
             ),
             child: TabBarView(
               children: [
-                HomeTab(),
+                const HomeTab(),
                 AddPetTab(),
-                HomeTab(),
+                const HomeTab(),
                 const SettingsTab(),
               ],
             ),

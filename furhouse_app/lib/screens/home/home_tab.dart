@@ -4,12 +4,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:furhouse_app/common/constants/colors.dart';
 import 'package:furhouse_app/common/functions/exception_code_handler.dart';
 import 'package:furhouse_app/common/functions/modal_popup.dart';
-import 'package:furhouse_app/common/widget_templates/header_infornation_with_button.dart';
+import 'package:furhouse_app/common/widget_templates/header_information_with_button.dart';
 import 'package:furhouse_app/common/widget_templates/pet_card_button.dart';
 
 import 'package:furhouse_app/models/petVM.dart';
 
 import 'package:furhouse_app/services/pets.dart';
+
+import '../../common/constants/picker_values.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({
@@ -151,6 +153,32 @@ class _HomeContentState extends State<HomeTab> {
     });
   }
 
+  void _filterModal(BuildContext context) async {
+    var filterModalResult = await filterOptionModalPopup(context);
+    print(filterModalResult);
+
+    /*if (sortModalResult == "cancel" || sortModalResult == null) return;
+
+    var sortOptionsArray = sortModalResult.split(", ");
+    var sortOption = sortOptionsArray[0];
+    var sortOrderAscending = sortOptionsArray[1] == "ascending";
+
+    petMap = <String, PetVM>{};
+
+    _getAllSortedPets(sortOption, sortOrderAscending).then((value) {
+      setState(() {
+        petMap = value;
+
+        sortedBy = sortOption;
+        this.sortOrderAscending = sortOrderAscending;
+        sortedOrFiltered = true;
+
+        startIndex = 1;
+        currentPage = 1;
+      });
+    });*/
+  }
+
   @override
   Widget build(BuildContext context) {
     if (petMap.isEmpty) {
@@ -202,7 +230,9 @@ class _HomeContentState extends State<HomeTab> {
                   shape: const CircleBorder(),
                   backgroundColor: darkBlueColor,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  _filterModal(context);
+                },
                 child: const Icon(
                   Icons.filter_alt_rounded,
                   color: Colors.white,

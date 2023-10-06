@@ -9,7 +9,6 @@ import 'package:furhouse_app/common/constants/picker_values.dart';
 import 'package:furhouse_app/common/widget_templates/tab_style.dart';
 import 'package:furhouse_app/common/constants/colors.dart';
 
-import 'package:furhouse_app/services/pets.dart';
 import 'package:furhouse_app/services/web_scraper.dart';
 
 class Home extends StatefulWidget {
@@ -53,12 +52,13 @@ class _HomeState extends State<Home> {
     rabbitBreedValues = [];
     rodentBreedValues = [];
     birdBreedValues = [];
+    allBreedValues = [];
 
-    scraper.scrapCatBreeds(catBreedValues);
-    scraper.scrapDogBreeds(dogBreedValues);
-    scraper.scrapRabbitBreeds(rabbitBreedValues);
-    scraper.scrapRodentBreeds(rodentBreedValues);
-    scraper.scrapBirdBreeds(birdBreedValues);
+    scraper.scrapCatBreeds();
+    scraper.scrapDogBreeds();
+    scraper.scrapRabbitBreeds();
+    scraper.scrapRodentBreeds();
+    scraper.scrapBirdBreeds();
 
     super.initState();
   }

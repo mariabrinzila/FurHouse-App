@@ -1,12 +1,8 @@
-//import 'package:flutter/foundation.dart';
-//import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-//import 'package:path_provider/path_provider.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:collection';
 import 'dart:io';
-//import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
 
 import 'package:furhouse_app/models/petVM.dart';
 

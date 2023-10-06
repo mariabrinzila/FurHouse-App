@@ -1,7 +1,8 @@
 import 'package:chaleno/chaleno.dart';
+import 'package:furhouse_app/common/constants/picker_values.dart';
 
 class WebScraper {
-  void scrapCatBreeds(List<String> catBreedValues) async {
+  void scrapCatBreeds() async {
     var url = 'https://vetschoice.guildinsurance.com.au/cats/cat-breeds';
 
     var response = await Chaleno().load(url);
@@ -18,9 +19,11 @@ class WebScraper {
     }
 
     catBreedValues.sort();
+
+    allBreedValues.addAll(catBreedValues);
   }
 
-  void scrapDogBreeds(List<String> dogBreedValues) async {
+  void scrapDogBreeds() async {
     var url = 'https://vetschoice.guildinsurance.com.au/dogs/dog-breeds';
 
     var response = await Chaleno().load(url);
@@ -37,29 +40,32 @@ class WebScraper {
     }
 
     dogBreedValues.sort();
+
+    allBreedValues.addAll(dogBreedValues);
   }
 
-  void scrapRabbitBreeds(List<String> rabbitBreedValues) async {
-    var url =
-        'https://www.goodhousekeeping.com/life/pets/g26950009/best-rabbit-breeds/';
+  void scrapRabbitBreeds() async {
+    var url = 'https://rabbitpedia.com/rabbit-breeds/';
 
     var response = await Chaleno().load(url);
 
     if (response != null) {
-      var breeds = response.getElementsByClassName('css-13wrog e1tmud0h7');
+      var breeds = response.getElementsByClassName('wp-caption-text');
       int j, breedsSize = breeds.length;
 
       for (j = 0; j < breedsSize; j++) {
-        if (breeds[j].text != null) {
+        if (breeds[j].text != null && breeds[j].text != "") {
           rabbitBreedValues.add(breeds[j].text as String);
         }
       }
     }
 
     rabbitBreedValues.sort();
+
+    allBreedValues.addAll(rabbitBreedValues);
   }
 
-  void scrapRodentBreeds(List<String> rodentBreedValues) async {
+  void scrapRodentBreeds() async {
     var url = 'https://www.thesprucepets.com/small-rodents-as-pets-1237271';
 
     var response = await Chaleno().load(url);
@@ -77,9 +83,11 @@ class WebScraper {
     }
 
     rodentBreedValues.sort();
+
+    allBreedValues.addAll(rodentBreedValues);
   }
 
-  void scrapBirdBreeds(List<String> birdBreedValues) async {
+  void scrapBirdBreeds() async {
     var url = 'https://lafeber.com/pet-birds/types-of-birds/';
 
     var response = await Chaleno().load(url);
@@ -96,5 +104,7 @@ class WebScraper {
     }
 
     birdBreedValues.sort();
+
+    allBreedValues.addAll(birdBreedValues);
   }
 }

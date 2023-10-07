@@ -128,31 +128,92 @@ class Pets {
     return petDataMap;
   }
 
-  Future<Map<String, PetVM>> selectSortedPets(
-      String sortOption, bool sortOrderAscending) async {
+  Future<Map<String, PetVM>> selectSortedFilteredPets(
+      String sortOption,
+      bool sortOrderAscending,
+      String filterOption,
+      String filterCriteria) async {
     try {
       await init();
 
       final List<Map<String, dynamic>> pets;
-      var sortOrder = "ASC";
 
-      if (!sortOrderAscending) {
-        sortOrder = "DESC";
+      // sorted and filtered
+      if (sortOption.isNotEmpty && filterOption.isNotEmpty) {
+        var sortOrder = "ASC";
+
+        if (!sortOrderAscending) {
+          sortOrder = "DESC";
+        }
+
+        if (sortOption != "age") {
+          var option = sortOption == "name" ? sortOption : "date_added";
+
+          pets = await _database.query(
+            _table,
+            where: "$filterOption = ?",
+            whereArgs: [filterCriteria],
+            orderBy: "$option $sortOrder",
+          );
+        } else {
+          pets = await _database.query(
+            _table,
+            where: "$filterOption = ?",
+            whereArgs: [filterCriteria],
+            orderBy: "age_unit $sortOrder, age_value $sortOrder",
+          );
+        }
+
+        if (pets.isEmpty) {
+          throw "No available data!";
+        }
+
+        var petDataMap = _computePetMapFromDatabaseData(pets);
+
+        await closeDatabase();
+
+        return petDataMap;
       }
 
-      if (sortOption != "age") {
-        var option = sortOption == "name" ? sortOption : "date_added";
+      // sorted
+      if (sortOption.isNotEmpty && filterOption.isEmpty) {
+        var sortOrder = "ASC";
 
-        pets = await _database.query(
-          _table,
-          orderBy: "$option $sortOrder",
-        );
-      } else {
-        pets = await _database.query(
-          _table,
-          orderBy: "age_unit $sortOrder, age_value $sortOrder",
-        );
+        if (!sortOrderAscending) {
+          sortOrder = "DESC";
+        }
+
+        if (sortOption != "age") {
+          var option = sortOption == "name" ? sortOption : "date_added";
+
+          pets = await _database.query(
+            _table,
+            orderBy: "$option $sortOrder",
+          );
+        } else {
+          pets = await _database.query(
+            _table,
+            orderBy: "age_unit $sortOrder, age_value $sortOrder",
+          );
+        }
+
+        if (pets.isEmpty) {
+          throw "No available data!";
+        }
+
+        var petDataMap = _computePetMapFromDatabaseData(pets);
+
+        await closeDatabase();
+
+        return petDataMap;
       }
+
+      // filtered
+      pets = await _database.query(
+        _table,
+        where: "$filterOption = ?",
+        whereArgs: [filterCriteria],
+      );
 
       if (pets.isEmpty) {
         throw "No available data!";

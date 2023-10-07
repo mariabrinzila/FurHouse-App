@@ -12,19 +12,5 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  /*var scraper = WebScraper();
-  catBreedValues = [];
-  dogBreedValues = [];
-  rabbitBreedValues = [];
-  rodentBreedValues = [];
-  birdBreedValues = [];
-  allBreedValues = [];
-
-  scraper.scrapCatBreeds();
-  scraper.scrapDogBreeds();
-  scraper.scrapRabbitBreeds();
-  scraper.scrapRodentBreeds();
-  scraper.scrapBirdBreeds();*/
-
   runApp(MainDisplay());
 }

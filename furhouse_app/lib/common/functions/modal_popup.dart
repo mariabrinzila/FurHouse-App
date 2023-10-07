@@ -231,6 +231,8 @@ void _filterCriteriaModalPopup(BuildContext context, String option) {
       }
 
       if (option == "breed") {
+        allBreedValues.sort();
+
         return _popupBuilder(context, 200, allBreedValues, option);
       }
 
@@ -288,7 +290,7 @@ Widget _popupBuilder(BuildContext context, double dropdownHeight,
         ),
       ),
       const SizedBox(
-        height: 5,
+        height: 7,
       ),
       Container(
         margin: const EdgeInsets.only(

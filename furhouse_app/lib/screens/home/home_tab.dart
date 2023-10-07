@@ -11,8 +11,6 @@ import 'package:furhouse_app/models/petVM.dart';
 
 import 'package:furhouse_app/services/pets.dart';
 
-import '../../common/constants/picker_values.dart';
-
 class HomeTab extends StatefulWidget {
   const HomeTab({
     super.key,
@@ -34,7 +32,11 @@ class _HomeContentState extends State<HomeTab> {
 
   String sortedBy = "";
   bool sortOrderAscending = true;
+  String filterBy = "";
+  String filteredCriteria = "";
   bool sortedOrFiltered = false;
+
+  double? headerHeight = 50;
 
   @override
   void initState() {
@@ -132,7 +134,8 @@ class _HomeContentState extends State<HomeTab> {
   Future<Map<String, PetVM>> _getAllSortedPets(
       String sortOption, bool sortOrderAscending) async {
     try {
-      var pets = await Pets().selectSortedPets(sortOption, sortOrderAscending);
+      var pets = await Pets().selectSortedFilteredPets(
+          sortOption, sortOrderAscending, filterBy, filteredCriteria);
 
       return pets;
     } catch (e) {
@@ -143,40 +146,103 @@ class _HomeContentState extends State<HomeTab> {
   }
 
   void _clearSortedOptions() {
-    _getAllPets(startIndex, limit).then((value) {
-      setState(() {
-        petMap = value;
+    if (filterBy.isNotEmpty) {
+      sortedBy = "";
 
-        sortedBy = "";
-        sortedOrFiltered = false;
+      _getAllFilteredPets(filterBy, filteredCriteria).then((value) {
+        setState(() {
+          petMap = value;
+
+          sortedBy = "";
+          sortedOrFiltered = true;
+
+          startIndex = 1;
+          currentPage = 1;
+        });
       });
-    });
+    } else {
+      _getAllPets(startIndex, limit).then((value) {
+        setState(() {
+          petMap = value;
+
+          sortedBy = "";
+          sortedOrFiltered = false;
+
+          headerHeight = 50;
+        });
+      });
+    }
   }
 
   void _filterModal(BuildContext context) async {
     var filterModalResult = await filterOptionModalPopup(context);
-    print(filterModalResult);
 
-    /*if (sortModalResult == "cancel" || sortModalResult == null) return;
+    if (filterModalResult == "cancel" || filterModalResult == null) return;
 
-    var sortOptionsArray = sortModalResult.split(", ");
-    var sortOption = sortOptionsArray[0];
-    var sortOrderAscending = sortOptionsArray[1] == "ascending";
+    var filterOptionArray = filterModalResult.split(", ");
+    var filterOption = filterOptionArray[0];
+    var filterCriteria = filterOptionArray[1];
 
     petMap = <String, PetVM>{};
 
-    _getAllSortedPets(sortOption, sortOrderAscending).then((value) {
+    _getAllFilteredPets(filterOption, filterCriteria).then((value) {
       setState(() {
         petMap = value;
 
-        sortedBy = sortOption;
-        this.sortOrderAscending = sortOrderAscending;
+        filterBy = filterOption;
+        filteredCriteria = filterCriteria;
         sortedOrFiltered = true;
 
         startIndex = 1;
         currentPage = 1;
       });
-    });*/
+    });
+  }
+
+  Future<Map<String, PetVM>> _getAllFilteredPets(
+      String filterOption, String filterCriteria) async {
+    try {
+      var pets = await Pets().selectSortedFilteredPets(
+          sortedBy, sortOrderAscending, filterOption, filterCriteria);
+
+      return pets;
+    } catch (e) {
+      otherExceptionsHandler(context, e.toString());
+
+      return <String, PetVM>{};
+    }
+  }
+
+  void _clearFilteredOptions() {
+    if (sortedBy.isNotEmpty) {
+      filterBy = "";
+      filteredCriteria = "";
+
+      _getAllSortedPets(sortedBy, sortOrderAscending).then((value) {
+        setState(() {
+          petMap = value;
+
+          filterBy = "";
+          filteredCriteria = "";
+          sortedOrFiltered = true;
+
+          startIndex = 1;
+          currentPage = 1;
+        });
+      });
+    } else {
+      _getAllPets(startIndex, limit).then((value) {
+        setState(() {
+          petMap = value;
+
+          filterBy = "";
+          filteredCriteria = "";
+          sortedOrFiltered = false;
+
+          headerHeight = 50;
+        });
+      });
+    }
   }
 
   @override
@@ -205,6 +271,29 @@ class _HomeContentState extends State<HomeTab> {
       ),
     );
 
+    Widget filterWidget = ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        shape: const CircleBorder(),
+        backgroundColor: darkBlueColor,
+        elevation: 5,
+      ),
+      onPressed: () {
+        _filterModal(context);
+      },
+      child: const Icon(
+        Icons.filter_alt_rounded,
+        color: Colors.white,
+      ),
+    );
+
+    Widget headerWidget = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        sortWidget,
+        filterWidget,
+      ],
+    );
+
     if (sortedBy.isNotEmpty) {
       var sortedOrder = sortOrderAscending ? "ascending" : "descending";
 
@@ -214,32 +303,53 @@ class _HomeContentState extends State<HomeTab> {
         text: "Sorted by $sortedBy, $sortedOrder",
         onPressed: _clearSortedOptions,
       );
+
+      headerHeight = 100;
+
+      headerWidget = Container(
+        margin: const EdgeInsets.only(
+          top: 15,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            sortWidget,
+            filterWidget,
+          ],
+        ),
+      );
+    }
+
+    if (filterBy.isNotEmpty) {
+      filterWidget = HeaderInformationWithButton(
+        containerHeight: 25,
+        containerWidth: 350,
+        text: "Filtered by $filterBy, $filteredCriteria",
+        onPressed: _clearFilteredOptions,
+      );
+
+      headerHeight = 100;
+
+      headerWidget = Container(
+        margin: const EdgeInsets.only(
+          bottom: 15,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            sortWidget,
+            filterWidget,
+          ],
+        ),
+      );
     }
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         SizedBox(
-          height: 50,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              sortWidget,
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: const CircleBorder(),
-                  backgroundColor: darkBlueColor,
-                ),
-                onPressed: () {
-                  _filterModal(context);
-                },
-                child: const Icon(
-                  Icons.filter_alt_rounded,
-                  color: Colors.white,
-                ),
-              ),
-            ],
-          ),
+          height: headerHeight,
+          child: headerWidget,
         ),
         Expanded(
           child: RawScrollbar(

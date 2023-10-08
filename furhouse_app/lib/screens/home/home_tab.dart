@@ -30,13 +30,17 @@ class _HomeContentState extends State<HomeTab> {
   final int limit = 6;
   int startIndex = 1;
 
-  String sortedBy = "";
+  String sortBy = "";
   bool sortOrderAscending = true;
   String filterBy = "";
-  String filteredCriteria = "";
-  bool sortedOrFiltered = false;
+  String filterByCriteria = "";
+  String searchFor = "";
+  String searchForCriteria = "";
+  bool sortFilterSearch = false;
 
   double? headerHeight = 50;
+
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -117,13 +121,15 @@ class _HomeContentState extends State<HomeTab> {
 
     petMap = <String, PetVM>{};
 
-    _getAllSortedPets(sortOption, sortOrderAscending).then((value) {
+    _getAllSortFilterSearchPets(sortOption, sortOrderAscending, filterBy,
+            filterByCriteria, searchFor, searchForCriteria)
+        .then((value) {
       setState(() {
         petMap = value;
 
-        sortedBy = sortOption;
+        sortBy = sortOption;
         this.sortOrderAscending = sortOrderAscending;
-        sortedOrFiltered = true;
+        sortFilterSearch = true;
 
         startIndex = 1;
         currentPage = 1;
@@ -131,11 +137,21 @@ class _HomeContentState extends State<HomeTab> {
     });
   }
 
-  Future<Map<String, PetVM>> _getAllSortedPets(
-      String sortOption, bool sortOrderAscending) async {
+  Future<Map<String, PetVM>> _getAllSortFilterSearchPets(
+      String sortOption,
+      bool sortOrderAscending,
+      String filterOption,
+      String filterCriteria,
+      String searchOption,
+      String searchCriteria) async {
     try {
-      var pets = await Pets().selectSortedFilteredPets(
-          sortOption, sortOrderAscending, filterBy, filteredCriteria);
+      var pets = await Pets().selectSortFilterSearchPets(
+          sortOption,
+          sortOrderAscending,
+          filterOption,
+          filterCriteria,
+          searchOption,
+          searchCriteria);
 
       return pets;
     } catch (e) {
@@ -145,16 +161,18 @@ class _HomeContentState extends State<HomeTab> {
     }
   }
 
-  void _clearSortedOptions() {
-    if (filterBy.isNotEmpty) {
-      sortedBy = "";
+  void _clearSortOptions() {
+    if (filterBy.isNotEmpty || searchFor.isNotEmpty) {
+      sortBy = "";
 
-      _getAllFilteredPets(filterBy, filteredCriteria).then((value) {
+      _getAllSortFilterSearchPets(sortBy, sortOrderAscending, filterBy,
+              filterByCriteria, searchFor, searchForCriteria)
+          .then((value) {
         setState(() {
           petMap = value;
 
-          sortedBy = "";
-          sortedOrFiltered = true;
+          sortBy = "";
+          sortFilterSearch = true;
 
           startIndex = 1;
           currentPage = 1;
@@ -165,8 +183,8 @@ class _HomeContentState extends State<HomeTab> {
         setState(() {
           petMap = value;
 
-          sortedBy = "";
-          sortedOrFiltered = false;
+          sortBy = "";
+          sortFilterSearch = false;
 
           headerHeight = 50;
         });
@@ -185,13 +203,15 @@ class _HomeContentState extends State<HomeTab> {
 
     petMap = <String, PetVM>{};
 
-    _getAllFilteredPets(filterOption, filterCriteria).then((value) {
+    _getAllSortFilterSearchPets(sortBy, sortOrderAscending, filterOption,
+            filterCriteria, searchFor, searchForCriteria)
+        .then((value) {
       setState(() {
         petMap = value;
 
         filterBy = filterOption;
-        filteredCriteria = filterCriteria;
-        sortedOrFiltered = true;
+        filterByCriteria = filterCriteria;
+        sortFilterSearch = true;
 
         startIndex = 1;
         currentPage = 1;
@@ -199,32 +219,20 @@ class _HomeContentState extends State<HomeTab> {
     });
   }
 
-  Future<Map<String, PetVM>> _getAllFilteredPets(
-      String filterOption, String filterCriteria) async {
-    try {
-      var pets = await Pets().selectSortedFilteredPets(
-          sortedBy, sortOrderAscending, filterOption, filterCriteria);
-
-      return pets;
-    } catch (e) {
-      otherExceptionsHandler(context, e.toString());
-
-      return <String, PetVM>{};
-    }
-  }
-
-  void _clearFilteredOptions() {
-    if (sortedBy.isNotEmpty) {
+  void _clearFilterOptions() {
+    if (sortBy.isNotEmpty || searchFor.isNotEmpty) {
       filterBy = "";
-      filteredCriteria = "";
+      filterByCriteria = "";
 
-      _getAllSortedPets(sortedBy, sortOrderAscending).then((value) {
+      _getAllSortFilterSearchPets(sortBy, sortOrderAscending, filterBy,
+              filterByCriteria, searchFor, searchForCriteria)
+          .then((value) {
         setState(() {
           petMap = value;
 
           filterBy = "";
-          filteredCriteria = "";
-          sortedOrFiltered = true;
+          filterByCriteria = "";
+          sortFilterSearch = true;
 
           startIndex = 1;
           currentPage = 1;
@@ -236,8 +244,72 @@ class _HomeContentState extends State<HomeTab> {
           petMap = value;
 
           filterBy = "";
-          filteredCriteria = "";
-          sortedOrFiltered = false;
+          filterByCriteria = "";
+          sortFilterSearch = false;
+
+          headerHeight = 50;
+        });
+      });
+    }
+  }
+
+  void _searchModal(BuildContext context) async {
+    var searchModalResult =
+        await searchOptionModalPopup(context, _searchController);
+
+    if (searchModalResult == "cancel" || searchModalResult == null) return;
+
+    var searchOptionArray = searchModalResult.split(", ");
+    var searchOption = searchOptionArray[0];
+    var searchCriteria = searchOptionArray[1];
+
+    petMap = <String, PetVM>{};
+
+    _getAllSortFilterSearchPets(sortBy, sortOrderAscending, filterBy,
+            filterByCriteria, searchOption, searchCriteria)
+        .then((value) {
+      setState(() {
+        petMap = value;
+
+        searchFor = searchOption;
+        searchForCriteria = searchCriteria;
+        sortFilterSearch = true;
+
+        startIndex = 1;
+        currentPage = 1;
+      });
+    });
+
+    _searchController.clear();
+  }
+
+  void _clearSearchOptions() {
+    if (sortBy.isNotEmpty || filterBy.isNotEmpty) {
+      searchFor = "";
+      searchForCriteria = "";
+
+      _getAllSortFilterSearchPets(sortBy, sortOrderAscending, filterBy,
+              filterByCriteria, searchFor, searchForCriteria)
+          .then((value) {
+        setState(() {
+          petMap = value;
+
+          searchFor = "";
+          searchForCriteria = "";
+          sortFilterSearch = true;
+
+          startIndex = 1;
+          currentPage = 1;
+        });
+      });
+    } else {
+      _getAllPets(startIndex, limit).then((value) {
+        setState(() {
+          petMap = value;
+
+          searchFor = "";
+          searchForCriteria = "";
+          sortFilterSearch = false;
 
           headerHeight = 50;
         });
@@ -247,15 +319,6 @@ class _HomeContentState extends State<HomeTab> {
 
   @override
   Widget build(BuildContext context) {
-    if (petMap.isEmpty) {
-      return const Center(
-        child: CupertinoActivityIndicator(
-          color: darkerBlueColor,
-          radius: 30,
-        ),
-      );
-    }
-
     Widget sortWidget = ElevatedButton(
       style: ElevatedButton.styleFrom(
         shape: const CircleBorder(),
@@ -266,7 +329,7 @@ class _HomeContentState extends State<HomeTab> {
         _sortModal(context);
       },
       child: const Icon(
-        Icons.sort_outlined,
+        CupertinoIcons.sort_up,
         color: Colors.white,
       ),
     );
@@ -286,25 +349,41 @@ class _HomeContentState extends State<HomeTab> {
       ),
     );
 
+    Widget searchWidget = ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        shape: const CircleBorder(),
+        backgroundColor: darkBlueColor,
+        elevation: 5,
+      ),
+      onPressed: () {
+        _searchModal(context);
+      },
+      child: const Icon(
+        CupertinoIcons.search,
+        color: Colors.white,
+      ),
+    );
+
     Widget headerWidget = Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         sortWidget,
+        searchWidget,
         filterWidget,
       ],
     );
 
-    if (sortedBy.isNotEmpty) {
+    if (sortBy.isNotEmpty) {
       var sortedOrder = sortOrderAscending ? "ascending" : "descending";
 
       sortWidget = HeaderInformationWithButton(
         containerHeight: 25,
         containerWidth: 250,
-        text: "Sorted by $sortedBy, $sortedOrder",
-        onPressed: _clearSortedOptions,
+        text: "Sorted by $sortBy, $sortedOrder",
+        onPressed: _clearSortOptions,
       );
 
-      headerHeight = 100;
+      headerHeight = 150;
 
       headerWidget = Container(
         margin: const EdgeInsets.only(
@@ -314,6 +393,7 @@ class _HomeContentState extends State<HomeTab> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             sortWidget,
+            searchWidget,
             filterWidget,
           ],
         ),
@@ -321,25 +401,99 @@ class _HomeContentState extends State<HomeTab> {
     }
 
     if (filterBy.isNotEmpty) {
+      var criteria = filterByCriteria;
+      double containerWidth = 340;
+
+      if (filterByCriteria.length > 20) {
+        criteria = "${filterByCriteria.substring(0, 19)}...";
+
+        containerWidth = 380;
+      }
+
       filterWidget = HeaderInformationWithButton(
         containerHeight: 25,
-        containerWidth: 350,
-        text: "Filtered by $filterBy, $filteredCriteria",
-        onPressed: _clearFilteredOptions,
+        containerWidth: containerWidth,
+        text: "Filtered by $filterBy, $criteria",
+        onPressed: _clearFilterOptions,
       );
 
-      headerHeight = 100;
+      headerHeight = 140;
 
       headerWidget = Container(
         margin: const EdgeInsets.only(
-          bottom: 15,
+          bottom: 10,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             sortWidget,
+            searchWidget,
             filterWidget,
           ],
+        ),
+      );
+    }
+
+    if (searchFor.isNotEmpty) {
+      var criteria = searchForCriteria;
+      double containerWidth = 340;
+
+      if (searchForCriteria.length > 20) {
+        criteria = "${searchForCriteria.substring(0, 19)}...";
+
+        containerWidth = 380;
+      }
+
+      searchWidget = HeaderInformationWithButton(
+        containerHeight: 25,
+        containerWidth: containerWidth,
+        text: "Search for $searchFor, $criteria",
+        onPressed: _clearSearchOptions,
+      );
+
+      headerHeight = 150;
+
+      headerWidget = Container(
+        margin: const EdgeInsets.only(
+          bottom: 10,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            sortWidget,
+            searchWidget,
+            filterWidget,
+          ],
+        ),
+      );
+    }
+
+    if (petMap.isEmpty && sortFilterSearch) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: headerHeight,
+            child: headerWidget,
+          ),
+          Container(
+            margin: const EdgeInsets.only(
+              top: 100,
+            ),
+            child: const CupertinoActivityIndicator(
+              color: darkerBlueColor,
+              radius: 30,
+            ),
+          ),
+        ],
+      );
+    }
+
+    if (petMap.isEmpty) {
+      return const Center(
+        child: CupertinoActivityIndicator(
+          color: darkerBlueColor,
+          radius: 30,
         ),
       );
     }
@@ -372,7 +526,7 @@ class _HomeContentState extends State<HomeTab> {
             ),
           ),
         ),
-        if (!sortedOrFiltered) ...[
+        if (!sortFilterSearch) ...[
           SizedBox(
             height: 40,
             child: Row(

@@ -64,6 +64,18 @@ class _AddPetTabState extends State<AddPetTab> {
 
   @override
   void initState() {
+    widget._nameController.clear();
+    widget._genderController.clear();
+    widget._categoryController.clear();
+    widget._breedController.clear();
+    widget._ageUnitController.clear();
+    widget._ageValueController.clear();
+    widget._locationController.clear();
+    widget._detailsController.clear();
+    widget._priorityController.clear();
+    widget._descriptionController.clear();
+    widget._photoController.clear();
+
     // controller.addListener(() {}) <=> listen on any changes to the controller and do something whenever it does change
     widget._categoryController.addListener(() {
       setState(() {

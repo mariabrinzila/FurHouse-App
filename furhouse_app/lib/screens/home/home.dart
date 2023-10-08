@@ -60,6 +60,8 @@ class _HomeState extends State<Home> {
     scraper.scrapRodentBreeds();
     scraper.scrapBirdBreeds();
 
+    allBreedValues.sort();
+
     super.initState();
   }
 

@@ -218,36 +218,47 @@ Future<String?> filterOptionModalPopup(BuildContext context) async {
   );
 }
 
+int currentItemIndex = 0;
+
 void _filterCriteriaModalPopup(BuildContext context, String option) {
   showCupertinoModalPopup(
     context: context,
     builder: (context) {
-      if (option == "gender") {
-        return _popupBuilder(context, 100, genderValues, option);
-      }
-
-      if (option == "category") {
-        return _popupBuilder(context, 150, categoryValues, option);
-      }
-
-      if (option == "breed") {
-        allBreedValues.sort();
-
-        return _popupBuilder(context, 200, allBreedValues, option);
-      }
-
-      if (option == "details") {
-        return _popupBuilder(context, 150, detailsValues, option);
-      }
-
-      return _popupBuilder(context, 100, priorityValues, option);
+      return _computePopupBuilderValues(context, option);
     },
   );
 }
 
-int currentItemIndex = 0;
+Widget _computePopupBuilderValues(BuildContext context, String option) {
+  List<String> pickerValues = priorityValues;
+  double? dropdownHeight = 100;
+  currentItemIndex = 0;
 
-Widget _popupBuilder(BuildContext context, double dropdownHeight,
+  switch (option) {
+    case "gender":
+      pickerValues = genderValues;
+      break;
+
+    case "category":
+      pickerValues = categoryValues;
+      dropdownHeight = 150;
+      break;
+
+    case "breed":
+      pickerValues = allBreedValues;
+      dropdownHeight = 265;
+      break;
+
+    case "details":
+      pickerValues = detailsValues;
+      dropdownHeight = 150;
+      break;
+  }
+
+  return _filterPopupBuilder(context, dropdownHeight, pickerValues, option);
+}
+
+Widget _filterPopupBuilder(BuildContext context, double dropdownHeight,
     List<String> pickerValues, String option) {
   return Column(
     mainAxisSize: MainAxisSize.min,
@@ -277,7 +288,7 @@ Widget _popupBuilder(BuildContext context, double dropdownHeight,
               initialItem: currentItemIndex,
             ),
             onSelectedItemChanged: (selectedItemIndex) {
-              _onItemPick(context, selectedItemIndex);
+              currentItemIndex = selectedItemIndex;
             },
             children: pickerValues.map((element) {
               return Center(
@@ -322,7 +333,7 @@ Widget _popupBuilder(BuildContext context, double dropdownHeight,
             Navigator.pop(context, "$option, $selectedItem");
           },
           child: const Text(
-            "Choose criteria",
+            "Filter",
             style: TextStyle(
               color: Colors.black,
             ),
@@ -370,30 +381,216 @@ Widget _popupBuilder(BuildContext context, double dropdownHeight,
   );
 }
 
-void _onItemPick(BuildContext context, selectedItemIndex) {
-  currentItemIndex = selectedItemIndex;
+Future<String?> searchOptionModalPopup(
+    BuildContext context, TextEditingController textEditingController) async {
+  return await showCupertinoModalPopup<String>(
+    context: context,
+    builder: (BuildContext context) => CupertinoActionSheet(
+      title: const Text(
+        style: TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+        ),
+        "Choose search option",
+      ),
+      actions: <Widget>[
+        CupertinoActionSheetAction(
+          onPressed: () {
+            _searchCriteriaModalPopup(
+                context, "Location", textEditingController);
+          },
+          child: const Text(
+            style: TextStyle(
+              color: darkBlueColor,
+              fontWeight: FontWeight.w400,
+            ),
+            "Location",
+          ),
+        ),
+        CupertinoActionSheetAction(
+          onPressed: () {
+            _searchCriteriaModalPopup(
+                context, "Description", textEditingController);
+          },
+          child: const Text(
+            style: TextStyle(
+              color: darkBlueColor,
+              fontWeight: FontWeight.w400,
+            ),
+            "Description",
+          ),
+        ),
+      ],
+      cancelButton: CupertinoActionSheetAction(
+        isDefaultAction: true,
+        onPressed: () {
+          Navigator.pop(context, "cancel");
+        },
+        child: const Text(
+          "Cancel",
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    ),
+  );
 }
 
-/*List<Widget> _listToWidgetList(BuildContext context, List<String> options) {
-  var length = options.length, i = 0;
-  List<Widget> widgetList = [];
+void _searchCriteriaModalPopup(BuildContext context, String option,
+    TextEditingController textEditingController) {
+  showCupertinoModalPopup(
+    context: context,
+    builder: (context) {
+      return _searchPopupBuilder(context, option, textEditingController);
+    },
+  );
+}
 
-  for (i = 0; i < length; i++) {
-    var option = CupertinoActionSheetAction(
-      onPressed: () {
-        Navigator.pop(context, options[i]);
-      },
-      child: Text(
-        style: const TextStyle(
-          color: darkBlueColor,
-          fontWeight: FontWeight.w400,
+Widget _searchPopupBuilder(BuildContext context, String option,
+    TextEditingController textEditingController) {
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Container(
+        height: 135,
+        margin: const EdgeInsets.only(
+          left: 5,
+          right: 5,
         ),
-        options[i],
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 234, 238, 241).withOpacity(
+            0.9,
+          ),
+          borderRadius: const BorderRadius.all(
+            Radius.circular(
+              15,
+            ),
+          ),
+        ),
+        child: SafeArea(
+          top: false,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              DefaultTextStyle(
+                style: GoogleFonts.roboto(
+                  color: Colors.black,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+                child: const Text(
+                  "Search Criteria",
+                ),
+              ),
+              const SizedBox(
+                height: 7,
+              ),
+              const Divider(
+                color: Colors.black,
+                height: 10,
+              ),
+              CupertinoActionSheetAction(
+                onPressed: () {},
+                child: SizedBox(
+                  height: 45,
+                  child: CupertinoTextField(
+                    placeholder: option,
+                    controller: textEditingController,
+                    prefix: Container(
+                      margin: const EdgeInsets.only(
+                        left: 10,
+                        right: 5,
+                      ),
+                      child: const Icon(
+                        CupertinoIcons.search_circle_fill,
+                        color: darkBlueColor,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
-    );
-
-    widgetList.add(option);
-  }
-
-  return widgetList;
-}*/
+      const SizedBox(
+        height: 7,
+      ),
+      Container(
+        margin: const EdgeInsets.only(
+          left: 5,
+          right: 5,
+        ),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+            minimumSize: const Size.fromHeight(
+              60,
+            ),
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(
+                  15,
+                ),
+              ),
+            ),
+            textStyle: GoogleFonts.roboto(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          onPressed: () {
+            Navigator.pop(context, "cancel");
+            Navigator.pop(context,
+                "${option.toLowerCase()}, ${textEditingController.text}");
+          },
+          child: const Text(
+            "Search",
+            style: TextStyle(
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ),
+      const SizedBox(
+        height: 7,
+      ),
+      Container(
+        margin: const EdgeInsets.only(
+          left: 5,
+          right: 5,
+        ),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+            minimumSize: const Size.fromHeight(
+              60,
+            ),
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(
+                  15,
+                ),
+              ),
+            ),
+            textStyle: GoogleFonts.roboto(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          onPressed: () {
+            Navigator.pop(context, "cancel");
+          },
+          child: const Text(
+            "Cancel",
+            style: TextStyle(
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ),
+    ],
+  );
+}

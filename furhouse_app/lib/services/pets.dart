@@ -14,32 +14,6 @@ class Pets {
   static const _table = "pets";
 
   Future<void> init() async {
-    //final documentsDirectory = await getApplicationDocumentsDirectory();
-    //final path = join(documentsDirectory.path, _databaseName);
-
-    //final databasesPath = await getDatabasesPath();
-    //final path = join(databasesPath, _databaseName);
-
-    /*var path = _databaseName;
-
-    if (kIsWeb) {
-      // Change default factory on the web
-      databaseFactory = databaseFactoryFfiWeb;
-      path = "F:/sqlite/furhouse-app-database.db";
-
-      // open the database
-      _database = await openDatabase(path);
-
-      // create table, if it doesn't already exist
-      await _onCreate(_database, _databaseVersion);
-    } else {
-      _database = await openDatabase(
-        _databaseName,
-        version: _databaseVersion,
-        onCreate: _onCreate,
-      );
-    }*/
-
     _database = await openDatabase(
       _databaseName,
       version: _databaseVersion,
@@ -128,19 +102,37 @@ class Pets {
     return petDataMap;
   }
 
-  Future<Map<String, PetVM>> selectSortedFilteredPets(
+  Future<Map<String, PetVM>> selectSortFilterSearchPets(
       String sortOption,
       bool sortOrderAscending,
       String filterOption,
-      String filterCriteria) async {
+      String filterCriteria,
+      String searchOption,
+      String searchCriteria) async {
     try {
       await init();
 
       final List<Map<String, dynamic>> pets;
+      String query = "SELECT * FROM $_table";
+      List<String> queryParameters = [];
 
-      // sorted and filtered
-      if (sortOption.isNotEmpty && filterOption.isNotEmpty) {
+      if (filterOption.isNotEmpty) {
+        query = "$query WHERE $filterOption = ?";
+
+        queryParameters.add(filterCriteria);
+      }
+
+      if (searchOption.isNotEmpty) {
+        if (queryParameters.isEmpty) {
+          query = "$query WHERE $searchOption LIKE '%$searchCriteria%'";
+        } else {
+          query = "$query AND $searchOption LIKE '%$searchCriteria%'";
+        }
+      }
+
+      if (sortOption.isNotEmpty) {
         var sortOrder = "ASC";
+        var orderBy = "";
 
         if (!sortOrderAscending) {
           sortOrder = "DESC";
@@ -148,72 +140,19 @@ class Pets {
 
         if (sortOption != "age") {
           var option = sortOption == "name" ? sortOption : "date_added";
-
-          pets = await _database.query(
-            _table,
-            where: "$filterOption = ?",
-            whereArgs: [filterCriteria],
-            orderBy: "$option $sortOrder",
-          );
+          orderBy = "$option $sortOrder";
         } else {
-          pets = await _database.query(
-            _table,
-            where: "$filterOption = ?",
-            whereArgs: [filterCriteria],
-            orderBy: "age_unit $sortOrder, age_value $sortOrder",
-          );
+          orderBy = "age_unit $sortOrder, age_value $sortOrder";
         }
 
-        if (pets.isEmpty) {
-          throw "No available data!";
-        }
-
-        var petDataMap = _computePetMapFromDatabaseData(pets);
-
-        await closeDatabase();
-
-        return petDataMap;
+        query = "$query ORDER BY $orderBy";
       }
 
-      // sorted
-      if (sortOption.isNotEmpty && filterOption.isEmpty) {
-        var sortOrder = "ASC";
-
-        if (!sortOrderAscending) {
-          sortOrder = "DESC";
-        }
-
-        if (sortOption != "age") {
-          var option = sortOption == "name" ? sortOption : "date_added";
-
-          pets = await _database.query(
-            _table,
-            orderBy: "$option $sortOrder",
-          );
-        } else {
-          pets = await _database.query(
-            _table,
-            orderBy: "age_unit $sortOrder, age_value $sortOrder",
-          );
-        }
-
-        if (pets.isEmpty) {
-          throw "No available data!";
-        }
-
-        var petDataMap = _computePetMapFromDatabaseData(pets);
-
-        await closeDatabase();
-
-        return petDataMap;
+      if (queryParameters.isEmpty) {
+        pets = await _database.rawQuery(query);
+      } else {
+        pets = await _database.rawQuery(query, queryParameters);
       }
-
-      // filtered
-      pets = await _database.query(
-        _table,
-        where: "$filterOption = ?",
-        whereArgs: [filterCriteria],
-      );
 
       if (pets.isEmpty) {
         throw "No available data!";

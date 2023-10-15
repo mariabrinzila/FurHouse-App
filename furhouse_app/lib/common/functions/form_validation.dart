@@ -3,6 +3,8 @@ import 'package:email_validator/email_validator.dart';
 
 import 'package:furhouse_app/common/widget_templates/cupertino_form_dialog.dart';
 
+import 'package:furhouse_app/services/pets.dart';
+
 void _toggleValidationAlert(
     BuildContext context, Widget title, Widget content) {
   showCupertinoDialog(
@@ -235,6 +237,31 @@ bool nonEmptyField(String fieldValue, String field, BuildContext context) {
       ),
       Text(
         'The $field must not be empty!',
+      ),
+    );
+
+    return true;
+  }
+
+  return false;
+}
+
+Future<bool> uniqueNameValidation(
+    String name, String nameType, BuildContext context) async {
+  if (nameValidation(name, nameType, context)) {
+    return true;
+  }
+
+  final petNameExists = await Pets().petNameAlreadyExists(name);
+
+  if (petNameExists && context.mounted) {
+    _toggleValidationAlert(
+      context,
+      const Text(
+        'Duplicate name',
+      ),
+      Text(
+        'The $nameType name already exists!',
       ),
     );
 

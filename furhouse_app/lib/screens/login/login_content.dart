@@ -49,7 +49,9 @@ class LoginContent extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const Home(),
+        builder: (context) => const Home(
+          selectedTabIndex: 0,
+        ),
       ),
     );
   }

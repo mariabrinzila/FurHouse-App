@@ -7,7 +7,7 @@ import 'package:furhouse_app/common/functions/modal_popup.dart';
 import 'package:furhouse_app/common/widget_templates/header_information_with_button.dart';
 import 'package:furhouse_app/common/widget_templates/pet_card_button.dart';
 
-import 'package:furhouse_app/models/petVM.dart';
+import 'package:furhouse_app/models/pet_VM.dart';
 
 import 'package:furhouse_app/services/pets.dart';
 
@@ -55,7 +55,7 @@ class _HomeContentState extends State<HomeTab> {
 
   Future<Map<String, PetVM>> _getAllPets(int index, int limit) async {
     try {
-      var pets = await Pets().selectPaginatedPets(index, limit);
+      var pets = await Pets().readPaginatedPets(index, limit);
 
       return pets;
     } catch (e) {
@@ -145,7 +145,7 @@ class _HomeContentState extends State<HomeTab> {
       String searchOption,
       String searchCriteria) async {
     try {
-      var pets = await Pets().selectSortFilterSearchPets(
+      var pets = await Pets().readSortFilterSearchPets(
           sortOption,
           sortOrderAscending,
           filterOption,

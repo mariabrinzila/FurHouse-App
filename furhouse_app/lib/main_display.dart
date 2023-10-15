@@ -6,6 +6,7 @@ import 'package:furhouse_app/screens/home/home.dart';
 
 import 'package:furhouse_app/services/authentication.dart';
 
+// ignore: must_be_immutable
 class MainDisplay extends StatelessWidget {
   Widget widgetToDisplay = const Landing();
 
@@ -18,7 +19,9 @@ class MainDisplay extends StatelessWidget {
     var currentUser = Authentication().getCurrentUser();
 
     if (currentUser != null) {
-      widgetToDisplay = const Home();
+      widgetToDisplay = const Home(
+        selectedTabIndex: 0,
+      );
     }
 
     return MainTheme(

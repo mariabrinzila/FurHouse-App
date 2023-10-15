@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:furhouse_app/screens/pet/pet-page-theme.dart';
+import 'package:furhouse_app/screens/pet/pet_page_theme.dart';
 import 'package:furhouse_app/screens/pet/pet_page.dart';
 
 import 'package:furhouse_app/common/constants/colors.dart';
 
-import 'package:furhouse_app/models/petVM.dart';
+import 'package:furhouse_app/models/pet_VM.dart';
 
 class PetCardButton extends StatelessWidget {
   final PetVM petObject;

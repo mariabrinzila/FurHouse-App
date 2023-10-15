@@ -4,7 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:collection';
 import 'dart:io';
 
-import 'package:furhouse_app/models/petVM.dart';
+import 'package:furhouse_app/models/pet_VM.dart';
 
 class Pets {
   late Database _database;
@@ -44,7 +44,49 @@ class Pets {
     );
   }
 
-  Future<Map<String, PetVM>> selectPaginatedPets(int index, int limit) async {
+  Future<String> insert(PetVM pet) async {
+    try {
+      await init();
+
+      var petId = 1;
+
+      // get the id of the pet added last
+      final List<Map<String, dynamic>> lastAddedPet = await _database.query(
+        _table,
+        orderBy: "pet_id DESC",
+        limit: 1,
+      );
+
+      if (lastAddedPet.isNotEmpty) {
+        petId = lastAddedPet[0]["pet_id"] + 1;
+      }
+
+      pet.id = petId;
+
+      // add pet in the database
+      await _database.insert(
+        _table,
+        pet.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.rollback,
+      );
+
+      // add pet photo in the storage
+      var photo = File(pet.photoPath);
+
+      await FirebaseStorage.instance
+          .ref(pet.userEmail)
+          .child(pet.name)
+          .putFile(photo);
+
+      await closeDatabase();
+
+      return "Success";
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  Future<Map<String, PetVM>> readPaginatedPets(int index, int limit) async {
     try {
       await init();
 
@@ -56,13 +98,13 @@ class Pets {
         limit: limit,
       );
 
+      await closeDatabase();
+
       if (pets.isEmpty) {
         throw "No available data!";
       }
 
       var petDataMap = _computePetMapFromDatabaseData(pets);
-
-      await closeDatabase();
 
       return petDataMap;
     } catch (e) {
@@ -93,6 +135,8 @@ class Pets {
         adopted: pet["adopted"] == 0 ? false : true,
       );
 
+      currentPet.id = pet["pet_id"];
+
       var photoURL =
           await getPetPhoneDownloadURL(currentPet.userEmail, currentPet.name);
 
@@ -102,7 +146,19 @@ class Pets {
     return petDataMap;
   }
 
-  Future<Map<String, PetVM>> selectSortFilterSearchPets(
+  Future<String> getPetPhoneDownloadURL(
+      String userEmail, String petName) async {
+    try {
+      return await FirebaseStorage.instance
+          .ref(userEmail)
+          .child(petName)
+          .getDownloadURL();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, PetVM>> readSortFilterSearchPets(
       String sortOption,
       bool sortOrderAscending,
       String filterOption,
@@ -154,13 +210,13 @@ class Pets {
         pets = await _database.rawQuery(query, queryParameters);
       }
 
+      await closeDatabase();
+
       if (pets.isEmpty) {
         throw "No available data!";
       }
 
       var petDataMap = _computePetMapFromDatabaseData(pets);
-
-      await closeDatabase();
 
       return petDataMap;
     } catch (e) {
@@ -168,46 +224,36 @@ class Pets {
     }
   }
 
-  Future<String> getPetPhoneDownloadURL(
-      String userEmail, String petName) async {
-    try {
-      return await FirebaseStorage.instance
-          .ref(userEmail)
-          .child(petName)
-          .getDownloadURL();
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Future<String> insert(PetVM pet) async {
+  Future<String> update(PetVM pet) async {
     try {
       await init();
 
-      var id = 1;
-
-      // get the id of the pet added last
-      final List<Map<String, dynamic>> lastAddedPet =
-          await _database.query(_table, orderBy: "pet_id DESC", limit: 1);
-
-      if (lastAddedPet.isNotEmpty) {
-        id = lastAddedPet[0]["pet_id"] + 1;
-      }
-
-      // add pet in the database
-      await _database.insert(
+      // update pet in the database
+      await _database.update(
         _table,
-        pet.toMap(id),
-        conflictAlgorithm: ConflictAlgorithm.rollback,
+        pet.toMap(),
+        where: "pet_id = ?",
+        whereArgs: [pet.petId],
       );
 
-      // add pet photo in the storage
-      var photo = File(pet.photoPath);
+      await closeDatabase();
 
-      await FirebaseStorage.instance
-          .ref(pet.userEmail)
-          .child(pet.name)
-          .putFile(photo);
+      return "Success";
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  Future<String> delete(int petId) async {
+    try {
+      await init();
+
+      // delete pet from the database
+      await _database.delete(
+        _table,
+        where: "pet_id = ?",
+        whereArgs: [petId],
+      );
 
       await closeDatabase();
 
@@ -219,6 +265,31 @@ class Pets {
 
   closeDatabase() async {
     await _database.close();
+  }
+
+  // optional functions from here on
+
+  Future<bool> petNameAlreadyExists(String name) async {
+    try {
+      await init();
+
+      // select pets with the given name
+      final List<Map<String, dynamic>> pets = await _database.query(
+        _table,
+        where: "name = ?",
+        whereArgs: [name],
+      );
+
+      await closeDatabase();
+
+      if (pets.isEmpty) {
+        return false;
+      }
+
+      return true;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future<String> addPet(PetVM pet) async {

@@ -1,4 +1,5 @@
 class PetVM {
+  int petId = 0;
   final String name;
   final String gender;
   final String category;
@@ -31,9 +32,13 @@ class PetVM {
     required this.adopted,
   });
 
-  Map<String, dynamic> toMap(int id) {
+  set id(int identifier) {
+    petId = identifier;
+  }
+
+  Map<String, dynamic> toMap() {
     return {
-      "pet_id": id,
+      "pet_id": petId,
       "name": name,
       "gender": gender,
       "category": category,

@@ -48,7 +48,7 @@ class _CupertinoTextFieldImagePickerState
 
                 Navigator.of(context).pop();
               },
-              child: const Text('Gallery'),
+              child: const Text("Gallery"),
             ),
             TextButton(
               style: TextButton.styleFrom(
@@ -63,7 +63,7 @@ class _CupertinoTextFieldImagePickerState
 
                 Navigator.of(context).pop();
               },
-              child: const Text('Camera'),
+              child: const Text("Camera"),
             ),
           ],
         );
@@ -92,7 +92,7 @@ class _CupertinoTextFieldImagePickerState
         builder: (context) {
           return CupertinoFormDialog(
             title: const Text(
-              'Image picker error',
+              "Image picker error",
             ),
             content: Text(
               e.toString(),

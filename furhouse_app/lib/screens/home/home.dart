@@ -9,11 +9,20 @@ import 'package:furhouse_app/common/constants/picker_values.dart';
 import 'package:furhouse_app/common/widget_templates/tab_style.dart';
 import 'package:furhouse_app/common/constants/colors.dart';
 
+import 'package:furhouse_app/models/pet_VM.dart';
+
 import 'package:furhouse_app/services/web_scraper.dart';
 
 class Home extends StatefulWidget {
+  final int selectedTabIndex;
+  final PetVM? currentPet;
+  final String? petPhotoURL;
+
   const Home({
     super.key,
+    required this.selectedTabIndex,
+    this.currentPet,
+    this.petPhotoURL,
   });
 
   @override
@@ -65,24 +74,53 @@ class _HomeState extends State<Home> {
     super.initState();
   }
 
+  void _onGoBack(BuildContext context) {
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
+    var appBarWidget = AppBar(
+      foregroundColor: Colors.white,
+      backgroundColor: darkBlueColor,
+      centerTitle: true,
+      title: Image.asset(
+        'assets/images/Logo.png',
+        color: Colors.white,
+        width: 250,
+        height: 180,
+      ),
+    );
+
+    if (widget.selectedTabIndex > 0) {
+      appBarWidget = AppBar(
+        foregroundColor: Colors.white,
+        backgroundColor: darkBlueColor,
+        centerTitle: true,
+        title: Image.asset(
+          'assets/images/Logo.png',
+          color: Colors.white,
+          width: 250,
+          height: 180,
+        ),
+        leading: IconButton(
+          onPressed: () {
+            _onGoBack(context);
+          },
+          icon: const Icon(
+            CupertinoIcons.arrow_left_square_fill,
+          ),
+        ),
+      );
+    }
+
     return MaterialApp(
       home: DefaultTabController(
+        initialIndex: widget.selectedTabIndex,
         length: 4,
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          appBar: AppBar(
-            foregroundColor: Colors.white,
-            backgroundColor: darkBlueColor,
-            centerTitle: true,
-            title: Image.asset(
-              'assets/images/Logo.png',
-              color: Colors.white,
-              width: 250,
-              height: 180,
-            ),
-          ),
+          appBar: appBarWidget,
           bottomNavigationBar: PreferredSize(
             preferredSize: _tabBarStyle.preferredSize,
             child: Material(
@@ -104,7 +142,12 @@ class _HomeState extends State<Home> {
             child: TabBarView(
               children: [
                 const HomeTab(),
-                AddPetTab(),
+                widget.currentPet == null
+                    ? AddPetTab()
+                    : AddPetTab(
+                        currentPet: widget.currentPet,
+                        petPhotoURL: widget.petPhotoURL,
+                      ),
                 const HomeTab(),
                 const SettingsTab(),
               ],

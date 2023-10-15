@@ -3,41 +3,98 @@ import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
 
-import 'package:furhouse_app/screens/pet/pet-page-theme.dart';
+import 'package:furhouse_app/screens/pet/pet_page_theme.dart';
 import 'package:furhouse_app/screens/pet/pet_page.dart';
+
+import 'package:furhouse_app/common/constants/picker_values.dart';
 
 import 'package:furhouse_app/common/widget_templates/cupertino_text_field_prefix_icon.dart';
 import 'package:furhouse_app/common/widget_templates/cupertino_text_field_suffix_icon.dart';
 import 'package:furhouse_app/common/widget_templates/cupertino_text_field_dropdown.dart';
-import 'package:furhouse_app/common/constants/picker_values.dart';
 import 'package:furhouse_app/common/widget_templates/cupertino_text_field_style.dart';
 import 'package:furhouse_app/common/widget_templates/cupertino_text_field_location.dart';
 import 'package:furhouse_app/common/widget_templates/cupertino_text_field_image_picker.dart';
 import 'package:furhouse_app/common/widget_templates/elevated_button_style.dart';
+
 import 'package:furhouse_app/common/functions/form_validation.dart';
 import 'package:furhouse_app/common/functions/exception_code_handler.dart';
+import 'package:furhouse_app/common/functions/confirm_action.dart';
 
-import 'package:furhouse_app/models/petVM.dart';
+import 'package:furhouse_app/models/pet_VM.dart';
 
 import 'package:furhouse_app/services/authentication.dart';
 import 'package:furhouse_app/services/pets.dart';
 
+// ignore: must_be_immutable
 class AddPetTab extends StatefulWidget {
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _genderController = TextEditingController();
-  final TextEditingController _categoryController = TextEditingController();
-  final TextEditingController _breedController = TextEditingController();
-  final TextEditingController _ageUnitController = TextEditingController();
-  final TextEditingController _ageValueController = TextEditingController();
-  final TextEditingController _locationController = TextEditingController();
-  final TextEditingController _detailsController = TextEditingController();
-  final TextEditingController _priorityController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _photoController = TextEditingController();
+  final PetVM? currentPet;
+  final String? petPhotoURL;
+
+  late TextEditingController _nameController;
+  late TextEditingController _genderController;
+  late TextEditingController _categoryController;
+  late TextEditingController _breedController;
+  late TextEditingController _ageUnitController;
+  late TextEditingController _ageValueController;
+  late TextEditingController _locationController;
+  late TextEditingController _detailsController;
+  late TextEditingController _priorityController;
+  late TextEditingController _descriptionController;
+  late TextEditingController _photoController;
 
   AddPetTab({
     super.key,
-  });
+    this.currentPet,
+    this.petPhotoURL,
+  }) {
+    if (currentPet != null) {
+      _nameController = TextEditingController(
+        text: currentPet!.name,
+      );
+      _genderController = TextEditingController(
+        text: currentPet!.gender,
+      );
+      _categoryController = TextEditingController(
+        text: currentPet!.category,
+      );
+      _breedController = TextEditingController(
+        text: currentPet!.breed,
+      );
+      _ageUnitController = TextEditingController(
+        text: currentPet!.ageUnit,
+      );
+      _ageValueController = TextEditingController(
+        text: currentPet!.ageValue.toString(),
+      );
+      _locationController = TextEditingController(
+        text: currentPet!.location,
+      );
+      _detailsController = TextEditingController(
+        text: currentPet!.details,
+      );
+      _priorityController = TextEditingController(
+        text: currentPet!.priority,
+      );
+      _descriptionController = TextEditingController(
+        text: currentPet!.description,
+      );
+      _photoController = TextEditingController(
+        text: petPhotoURL,
+      );
+    } else {
+      _nameController = TextEditingController();
+      _genderController = TextEditingController();
+      _categoryController = TextEditingController();
+      _breedController = TextEditingController();
+      _ageUnitController = TextEditingController();
+      _ageValueController = TextEditingController();
+      _locationController = TextEditingController();
+      _detailsController = TextEditingController();
+      _priorityController = TextEditingController();
+      _descriptionController = TextEditingController();
+      _photoController = TextEditingController();
+    }
+  }
 
   @override
   State<AddPetTab> createState() {
@@ -64,18 +121,6 @@ class _AddPetTabState extends State<AddPetTab> {
 
   @override
   void initState() {
-    widget._nameController.clear();
-    widget._genderController.clear();
-    widget._categoryController.clear();
-    widget._breedController.clear();
-    widget._ageUnitController.clear();
-    widget._ageValueController.clear();
-    widget._locationController.clear();
-    widget._detailsController.clear();
-    widget._priorityController.clear();
-    widget._descriptionController.clear();
-    widget._photoController.clear();
-
     // controller.addListener(() {}) <=> listen on any changes to the controller and do something whenever it does change
     widget._categoryController.addListener(() {
       setState(() {
@@ -170,15 +215,38 @@ class _AddPetTabState extends State<AddPetTab> {
       adopted: false,
     );
 
-    final message = await Pets().insert(pet);
+    if (widget.currentPet != null) {
+      final confirmed = await confirmActionDialog(context,
+          "Are you sure you want to save the changes for ${pet.name}?");
 
-    if (message == 'Success') {
-      if (context.mounted) {
-        _navigateToPetPage(context, pet);
+      if (confirmed == "no") {
+        return;
+      }
+
+      pet.id = widget.currentPet!.petId;
+
+      final message = await Pets().update(pet);
+
+      if (message == "Success") {
+        if (context.mounted) {
+          _navigateToPetPage(context, pet);
+        }
+      } else {
+        if (context.mounted) {
+          addPetExceptionHandler(context, message);
+        }
       }
     } else {
-      if (context.mounted) {
-        addPetExceptionHandler(context, message);
+      final message = await Pets().insert(pet);
+
+      if (message == 'Success') {
+        if (context.mounted) {
+          _navigateToPetPage(context, pet);
+        }
+      } else {
+        if (context.mounted) {
+          addPetExceptionHandler(context, message);
+        }
       }
     }
   }
@@ -208,6 +276,12 @@ class _AddPetTabState extends State<AddPetTab> {
 
   @override
   Widget build(BuildContext context) {
+    var submitButtonText = "Add pet";
+
+    if (widget.currentPet != null) {
+      submitButtonText = "Edit pet";
+    }
+
     return Center(
       child: SingleChildScrollView(
         padding: EdgeInsets.only(
@@ -423,7 +497,7 @@ class _AddPetTabState extends State<AddPetTab> {
               SizedBox(
                 width: 170,
                 child: ElevatedButtonStyle(
-                  buttonText: 'Add Pet',
+                  buttonText: submitButtonText,
                   onTap: () {
                     _onAddPet(context);
                   },
@@ -435,4 +509,21 @@ class _AddPetTabState extends State<AddPetTab> {
       ),
     );
   }
+
+  /*@override
+  void dispose() {
+    widget._nameController.dispose();
+    widget._genderController.dispose();
+    widget._categoryController.dispose();
+    widget._breedController.dispose();
+    widget._ageUnitController.dispose();
+    widget._ageValueController.dispose();
+    widget._locationController.dispose();
+    widget._detailsController.dispose();
+    widget._priorityController.dispose();
+    widget._descriptionController.dispose();
+    widget._photoController.dispose();
+
+    super.dispose();
+  }*/
 }

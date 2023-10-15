@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../constants/colors.dart';
-import '../constants/picker_values.dart';
+import 'package:furhouse_app/common/constants/colors.dart';
+import 'package:furhouse_app/common/constants/picker_values.dart';
 
 Future<String?> sortOptionModalPopup(BuildContext context) async {
   return await showCupertinoModalPopup<String>(

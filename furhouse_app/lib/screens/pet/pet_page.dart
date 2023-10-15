@@ -1,11 +1,21 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'package:furhouse_app/screens/home/home.dart';
+
 import 'package:furhouse_app/common/constants/colors.dart';
+
 import 'package:furhouse_app/common/widget_templates/pet_information_container.dart';
 
-import 'package:furhouse_app/models/petVM.dart';
+import 'package:furhouse_app/common/functions/exception_code_handler.dart';
+import 'package:furhouse_app/common/functions/confirm_action.dart';
+
+import 'package:furhouse_app/models/pet_VM.dart';
+
+import 'package:furhouse_app/services/authentication.dart';
+import 'package:furhouse_app/services/pets.dart';
 
 class PetPage extends StatefulWidget {
   final PetVM petObject;
@@ -25,7 +35,7 @@ class PetPage extends StatefulWidget {
 
 class _PetPageState extends State<PetPage> {
   late String ageUnit;
-  String petDescription = 'No description';
+  String petDescription = "No description";
 
   @override
   void initState() {
@@ -35,6 +45,71 @@ class _PetPageState extends State<PetPage> {
     }
 
     super.initState();
+  }
+
+  void _onDeletePet(BuildContext context) async {
+    final confirmed = await confirmActionDialog(
+        context, "Are you sure you want to delete ${widget.petObject.name}?");
+
+    if (confirmed == "no") {
+      return;
+    }
+
+    final message = await Pets().delete(widget.petObject.petId);
+
+    if (message == "Success") {
+      if (context.mounted) {
+        _navigateToHome(context);
+      }
+    } else {
+      if (context.mounted) {
+        addPetExceptionHandler(context, message);
+      }
+    }
+  }
+
+  void _navigateToHome(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const Home(
+          selectedTabIndex: 0,
+        ),
+      ),
+    );
+  }
+
+  void _onUpdatePet(BuildContext context) async {
+    /*final confirmed = await confirmActionDialog(context,
+        "Are you sure you want to save the changes for ${widget.petObject.name}?");
+
+    if (confirmed == "no") {
+      return;
+    }
+
+    final message = await Pets().update(widget.petObject);
+
+    if (message == "Success") {
+      if (context.mounted) {
+        _navigateToHome(context);
+      }
+    } else {
+      if (context.mounted) {
+        addPetExceptionHandler(context, message);
+      }
+    }*/
+
+    // navigate to add pet tab with the current pet details
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Home(
+          selectedTabIndex: 1,
+          currentPet: widget.petObject,
+          petPhotoURL: widget.petPhotoURL,
+        ),
+      ),
+    );
   }
 
   @override
@@ -50,6 +125,113 @@ class _PetPageState extends State<PetPage> {
 
     var date = DateTime.parse(widget.petObject.dateAdded);
     var addedDate = DateFormat.yMMMMd().format(date);
+
+    var currentUser = Authentication().getCurrentUser();
+
+    Widget submitButtons = SizedBox(
+      width: 180,
+      height: 35,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color.fromARGB(255, 2, 23, 41),
+          shadowColor: Colors.black,
+          elevation: 10,
+          textStyle: GoogleFonts.merriweather(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        onPressed: () {},
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Icon(
+              Icons.pets,
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Text(
+              'Adopt pet',
+            ),
+          ],
+        ),
+      ),
+    );
+
+    if (currentUser != null &&
+        currentUser.email != null &&
+        currentUser.email == widget.petObject.userEmail) {
+      submitButtons = Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          SizedBox(
+            width: 120,
+            height: 35,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 2, 23, 41),
+                shadowColor: Colors.black,
+                elevation: 10,
+                textStyle: GoogleFonts.merriweather(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              onPressed: () {
+                _onUpdatePet(context);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Icon(
+                    Icons.edit,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    'Edit',
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 120,
+            height: 35,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 2, 23, 41),
+                shadowColor: Colors.black,
+                elevation: 10,
+                textStyle: GoogleFonts.merriweather(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              onPressed: () {
+                _onDeletePet(context);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Icon(
+                    CupertinoIcons.delete_solid,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    'Delete',
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      );
+    }
 
     return RawScrollbar(
       thumbVisibility: true,
@@ -192,34 +374,7 @@ class _PetPageState extends State<PetPage> {
                 const SizedBox(
                   height: 20,
                 ),
-                SizedBox(
-                  width: 180,
-                  height: 35,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 2, 23, 41),
-                      shadowColor: Colors.black,
-                      elevation: 10,
-                      textStyle: GoogleFonts.merriweather(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    onPressed: () {},
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.pets),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'Adopt pet',
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                submitButtons,
               ],
             ),
           ),

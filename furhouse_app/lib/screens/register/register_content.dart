@@ -11,7 +11,7 @@ import 'package:furhouse_app/common/widget_templates/outlined_button_style.dart'
 import 'package:furhouse_app/common/widget_templates/elevated_button_style.dart';
 import 'package:furhouse_app/common/functions/exception_code_handler.dart';
 
-import 'package:furhouse_app/models/userVM.dart';
+import 'package:furhouse_app/models/user_VM.dart';
 
 import 'package:furhouse_app/services/authentication.dart';
 
@@ -89,7 +89,9 @@ class RegisterContent extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const Home(),
+        builder: (context) => const Home(
+          selectedTabIndex: 0,
+        ),
       ),
     );
   }

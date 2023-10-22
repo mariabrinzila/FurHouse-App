@@ -32,7 +32,7 @@ class Authentication {
         return e.toString();
       }
 
-      return 'Success';
+      return "Success";
     } on FirebaseAuthException catch (e) {
       return e.code;
     } catch (e) {
@@ -51,7 +51,7 @@ class Authentication {
         password: password,
       );
 
-      return 'Success';
+      return "Success";
     } on FirebaseAuthException catch (e) {
       return e.code;
     } catch (e) {

@@ -23,10 +23,10 @@ bool emailValidation(String email, BuildContext context) {
     _toggleValidationAlert(
       context,
       const Text(
-        'Empty email',
+        "Empty email",
       ),
       const Text(
-        'The email must not be empty!',
+        "The email must not be empty!",
       ),
     );
 
@@ -37,10 +37,10 @@ bool emailValidation(String email, BuildContext context) {
     _toggleValidationAlert(
       context,
       const Text(
-        'Incorrect email',
+        "Incorrect email",
       ),
       const Text(
-        'The email must have the correct format, for example johnDoe@gmail.com!',
+        "The email must have the correct format, for example johnDoe@gmail.com!",
       ),
     );
 
@@ -55,10 +55,10 @@ bool nameValidation(String name, String nameType, BuildContext context) {
     _toggleValidationAlert(
       context,
       const Text(
-        'Empty name',
+        "Empty name",
       ),
       Text(
-        'The $nameType name must not be empty!',
+        "The $nameType name must not be empty!",
       ),
     );
 
@@ -69,26 +69,26 @@ bool nameValidation(String name, String nameType, BuildContext context) {
     _toggleValidationAlert(
       context,
       const Text(
-        'Short name',
+        "Short name",
       ),
       Text(
-        'The $nameType name must be at least 2 characters in length!',
+        "The $nameType name must be at least 2 characters in length!",
       ),
     );
 
     return true;
   }
 
-  var hasUpperCase = name.contains(RegExp(r'[A-Z]'));
+  var hasUpperCase = name.contains(RegExp(r"[A-Z]"));
 
   if (!hasUpperCase) {
     _toggleValidationAlert(
       context,
       const Text(
-        'Incorrect name',
+        "Incorrect name",
       ),
       Text(
-        'The $nameType name must contain at least one upper case character!',
+        "The $nameType name must contain at least one upper case character!",
       ),
     );
 
@@ -103,10 +103,10 @@ bool passwordValidation(String password, BuildContext context) {
     _toggleValidationAlert(
       context,
       const Text(
-        'Empty password',
+        "Empty password",
       ),
       const Text(
-        'The password must not be empty!',
+        "The password must not be empty!",
       ),
     );
 
@@ -117,74 +117,74 @@ bool passwordValidation(String password, BuildContext context) {
     _toggleValidationAlert(
       context,
       const Text(
-        'Short password',
+        "Short password",
       ),
       const Text(
-        'The password must be at least 8 characters in length!',
+        "The password must be at least 8 characters in length!",
       ),
     );
 
     return true;
   }
 
-  var hasLowerCase = password.contains(RegExp(r'[a-z]'));
+  var hasLowerCase = password.contains(RegExp(r"[a-z]"));
 
   if (!hasLowerCase) {
     _toggleValidationAlert(
       context,
       const Text(
-        'Password not complex enough',
+        "Password not complex enough",
       ),
       const Text(
-        'The password must contain at least one lower case character!',
+        "The password must contain at least one lower case character!",
       ),
     );
 
     return true;
   }
 
-  var hasUpperCase = password.contains(RegExp(r'[A-Z]'));
+  var hasUpperCase = password.contains(RegExp(r"[A-Z]"));
 
   if (!hasUpperCase) {
     _toggleValidationAlert(
       context,
       const Text(
-        'Password not complex enough',
+        "Password not complex enough",
       ),
       const Text(
-        'The password must contain at least one upper case character!',
+        "The password must contain at least one upper case character!",
       ),
     );
 
     return true;
   }
 
-  var hasDigit = password.contains(RegExp(r'[0-9]'));
+  var hasDigit = password.contains(RegExp(r"[0-9]"));
 
   if (!hasDigit) {
     _toggleValidationAlert(
       context,
       const Text(
-        'Password not complex enough',
+        "Password not complex enough",
       ),
       const Text(
-        'The password must contain at least one digit!',
+        "The password must contain at least one digit!",
       ),
     );
 
     return true;
   }
 
-  var hasSpecialCharacter = password.contains(RegExp(r'[!*-+=~]'));
+  var hasSpecialCharacter = password.contains(RegExp(r"[!*-+=~]"));
 
   if (!hasSpecialCharacter) {
     _toggleValidationAlert(
       context,
       const Text(
-        'Password not complex enough',
+        "Password not complex enough",
       ),
       const Text(
-        'The password must contain at least one special character (!, *, -, +, =, ~)!',
+        "The password must contain at least one special character (!, *, -, +, =, ~)!",
       ),
     );
 
@@ -200,10 +200,10 @@ bool confirmPasswordValidation(
     _toggleValidationAlert(
       context,
       const Text(
-        'Empty password',
+        "Empty password",
       ),
       const Text(
-        'The confirmed password must not be empty!',
+        "The confirmed password must not be empty!",
       ),
     );
 
@@ -215,10 +215,10 @@ bool confirmPasswordValidation(
     _toggleValidationAlert(
       context,
       const Text(
-        'Different password',
+        "Different password",
       ),
       const Text(
-        'The password and the confirmed password must match!',
+        "The password and the confirmed password must match!",
       ),
     );
 
@@ -233,10 +233,10 @@ bool nonEmptyField(String fieldValue, String field, BuildContext context) {
     _toggleValidationAlert(
       context,
       Text(
-        'Empty $field',
+        "Empty $field",
       ),
       Text(
-        'The $field must not be empty!',
+        "The $field must not be empty!",
       ),
     );
 
@@ -258,10 +258,10 @@ Future<bool> uniqueNameValidation(
     _toggleValidationAlert(
       context,
       const Text(
-        'Duplicate name',
+        "Duplicate name",
       ),
       Text(
-        'The $nameType name already exists!',
+        "The $nameType name already exists!",
       ),
     );
 
@@ -278,26 +278,26 @@ bool onlyCharactersTextField(
       _toggleValidationAlert(
         context,
         Text(
-          'Short $field',
+          "Short $field",
         ),
         Text(
-          'The $field must be at least 2 characters in length!',
+          "The $field must be at least 2 characters in length!",
         ),
       );
 
       return true;
     }
 
-    var hasDigit = fieldValue.contains(RegExp(r'[0-9]'));
+    var hasDigit = fieldValue.contains(RegExp(r"[0-9]"));
 
     if (hasDigit) {
       _toggleValidationAlert(
         context,
         Text(
-          'Wrong $field',
+          "Wrong $field",
         ),
         Text(
-          'The $field must only contain upper and lower case characters!',
+          "The $field must only contain upper and lower case characters!",
         ),
       );
 
@@ -311,10 +311,10 @@ bool onlyCharactersTextField(
       _toggleValidationAlert(
         context,
         Text(
-          'Wrong $field',
+          "Wrong $field",
         ),
         Text(
-          'The $field must only contain upper and lower case characters!',
+          "The $field must only contain upper and lower case characters!",
         ),
       );
 

@@ -4,10 +4,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:furhouse_app/screens/register/register.dart';
 import 'package:furhouse_app/screens/home/home.dart';
 
+import 'package:furhouse_app/common/functions/exception_code_handler.dart';
+
 import 'package:furhouse_app/common/widget_templates/cupertino_text_field_style.dart';
 import 'package:furhouse_app/common/widget_templates/outlined_button_style.dart';
 import 'package:furhouse_app/common/widget_templates/elevated_button_style.dart';
-import 'package:furhouse_app/common/functions/exception_code_handler.dart';
 
 import 'package:furhouse_app/services/authentication.dart';
 
@@ -34,7 +35,7 @@ class LoginContent extends StatelessWidget {
       password: _passwordController.text,
     );
 
-    if (message == 'Success') {
+    if (message == "Success") {
       if (context.mounted) {
         _navigateToHome(context);
       }
@@ -69,7 +70,7 @@ class LoginContent extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Login',
+              "Login",
               style: GoogleFonts.lobster(
                 color: Colors.white,
                 fontSize: 40,
@@ -81,7 +82,7 @@ class LoginContent extends StatelessWidget {
             SizedBox(
               width: 270,
               child: CupertinoTextFieldStyle(
-                placeholderText: 'Email',
+                placeholderText: "Email",
                 icon: const Icon(
                   Icons.email,
                 ),
@@ -95,7 +96,7 @@ class LoginContent extends StatelessWidget {
             SizedBox(
               width: 270,
               child: CupertinoTextFieldStyle(
-                placeholderText: 'Password',
+                placeholderText: "Password",
                 icon: const Icon(
                   Icons.password,
                 ),
@@ -109,7 +110,7 @@ class LoginContent extends StatelessWidget {
             TextButton(
               onPressed: () {},
               child: Text(
-                'Forgot password?',
+                "Forgot password?",
                 style: GoogleFonts.merriweather(
                   color: Colors.white,
                   fontSize: 14,
@@ -134,7 +135,7 @@ class LoginContent extends StatelessWidget {
                   width: 15,
                 ),
                 OutlinedButtonStyle(
-                  buttonText: 'Register',
+                  buttonText: "Register",
                   onTap: () {
                     _navigateToRegister(context);
                   },
@@ -147,7 +148,7 @@ class LoginContent extends StatelessWidget {
             SizedBox(
               width: 170,
               child: ElevatedButtonStyle(
-                buttonText: 'Sign In',
+                buttonText: "Sign In",
                 onTap: () {
                   _onLogin(context);
                 },

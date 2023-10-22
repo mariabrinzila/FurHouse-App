@@ -39,7 +39,7 @@ class Landing extends StatelessWidget {
           SizedBox(
             width: 200,
             child: ElevatedButtonStyle(
-              buttonText: 'Sign into account',
+              buttonText: "Sign into account",
               onTap: () {
                 _navigateToLogin(context);
               },
@@ -51,7 +51,7 @@ class Landing extends StatelessWidget {
           SizedBox(
             width: 200,
             child: ElevatedButtonStyle(
-              buttonText: 'Create account',
+              buttonText: "Create account",
               onTap: () {
                 _navigateToRegister(context);
               },

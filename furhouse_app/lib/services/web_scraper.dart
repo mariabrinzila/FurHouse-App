@@ -1,14 +1,15 @@
 import 'package:chaleno/chaleno.dart';
+
 import 'package:furhouse_app/common/constants/picker_values.dart';
 
 class WebScraper {
   void scrapCatBreeds() async {
-    var url = 'https://vetschoice.guildinsurance.com.au/cats/cat-breeds';
+    var url = "https://vetschoice.guildinsurance.com.au/cats/cat-breeds";
 
     var response = await Chaleno().load(url);
 
     if (response != null) {
-      var breeds = response.getElementsByClassName('breeds-image');
+      var breeds = response.getElementsByClassName("breeds-image");
       int j, breedsSize = breeds.length;
 
       for (j = 0; j < breedsSize; j++) {
@@ -24,12 +25,12 @@ class WebScraper {
   }
 
   void scrapDogBreeds() async {
-    var url = 'https://vetschoice.guildinsurance.com.au/dogs/dog-breeds';
+    var url = "https://vetschoice.guildinsurance.com.au/dogs/dog-breeds";
 
     var response = await Chaleno().load(url);
 
     if (response != null) {
-      var breeds = response.getElementsByClassName('breeds-image');
+      var breeds = response.getElementsByClassName("breeds-image");
       int j, breedsSize = breeds.length;
 
       for (j = 0; j < breedsSize; j++) {
@@ -45,12 +46,12 @@ class WebScraper {
   }
 
   void scrapRabbitBreeds() async {
-    var url = 'https://rabbitpedia.com/rabbit-breeds/';
+    var url = "https://rabbitpedia.com/rabbit-breeds/";
 
     var response = await Chaleno().load(url);
 
     if (response != null) {
-      var breeds = response.getElementsByClassName('wp-caption-text');
+      var breeds = response.getElementsByClassName("wp-caption-text");
       int j, breedsSize = breeds.length;
 
       for (j = 0; j < breedsSize; j++) {
@@ -66,13 +67,13 @@ class WebScraper {
   }
 
   void scrapRodentBreeds() async {
-    var url = 'https://www.thesprucepets.com/small-rodents-as-pets-1237271';
+    var url = "https://www.thesprucepets.com/small-rodents-as-pets-1237271";
 
     var response = await Chaleno().load(url);
 
     if (response != null) {
       var breeds =
-          response.getElementsByClassName('mntl-sc-block-heading__link');
+          response.getElementsByClassName("mntl-sc-block-heading__link");
       int j, breedsSize = breeds.length;
 
       for (j = 0; j < breedsSize; j++) {
@@ -88,12 +89,12 @@ class WebScraper {
   }
 
   void scrapBirdBreeds() async {
-    var url = 'https://lafeber.com/pet-birds/types-of-birds/';
+    var url = "https://lafeber.com/pet-birds/types-of-birds/";
 
     var response = await Chaleno().load(url);
 
     if (response != null) {
-      var breeds = response.querySelectorAll('.title a');
+      var breeds = response.querySelectorAll(".title a");
       int j, breedsSize = breeds.length;
 
       for (j = 0; j < breedsSize; j++) {

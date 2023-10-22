@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:furhouse_app/common/widget_templates/cupertino_text_field_prefix_icon.dart';
 import 'package:furhouse_app/common/constants/colors.dart';
-import 'package:google_fonts/google_fonts.dart';
+
+import 'package:furhouse_app/common/widget_templates/cupertino_text_field_prefix_icon.dart';
 import 'package:furhouse_app/common/widget_templates/cupertino_form_dialog.dart';
 
 class CupertinoTextFieldImagePicker extends StatefulWidget {
@@ -32,7 +33,7 @@ class _CupertinoTextFieldImagePickerState
       builder: (context) {
         return CupertinoAlertDialog(
           title: const Text(
-            'Pick a photo of your pet',
+            "Pick a photo of your pet",
           ),
           actions: [
             TextButton(

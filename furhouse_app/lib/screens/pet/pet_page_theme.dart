@@ -33,7 +33,7 @@ class PetPageTheme extends StatelessWidget {
           ),
           centerTitle: true,
           title: Image.asset(
-            'assets/images/Logo.png',
+            "assets/images/Logo.png",
             color: Colors.white,
             width: 250,
             height: 180,

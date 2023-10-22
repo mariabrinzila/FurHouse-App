@@ -9,6 +9,7 @@ class CupertinoTextFieldDropdown extends StatefulWidget {
   final TextEditingController textFieldController;
   final CupertinoTextFieldPrefixIcon prefixIcon;
   final CupertinoTextFieldSuffixIcon suffixIcon;
+  final String defaultValue;
   final List<String> pickerValues;
 
   const CupertinoTextFieldDropdown({
@@ -18,6 +19,7 @@ class CupertinoTextFieldDropdown extends StatefulWidget {
     required this.textFieldController,
     required this.prefixIcon,
     required this.suffixIcon,
+    required this.defaultValue,
     required this.pickerValues,
   });
 
@@ -77,6 +79,12 @@ class _CupertinoTextFieldDropdownState
 
   @override
   Widget build(BuildContext context) {
+    if (widget.defaultValue.isNotEmpty) {
+      var index = widget.pickerValues.indexOf(widget.defaultValue);
+
+      currentItemIndex = index != -1 ? index : 0;
+    }
+
     return CupertinoTextField(
       readOnly: true,
       placeholder: widget.placeholderText,

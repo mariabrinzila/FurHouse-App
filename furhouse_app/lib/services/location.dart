@@ -10,24 +10,24 @@ class Location {
       serviceEnabled = await Geolocator.isLocationServiceEnabled();
 
       if (!serviceEnabled) {
-        return 'disabled';
+        return "disabled";
       }
 
       permission = await Geolocator.checkPermission();
 
       if (permission == LocationPermission.deniedForever) {
-        return 'denied-forever';
+        return "denied-forever";
       }
 
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
 
         if (permission == LocationPermission.denied) {
-          return 'denied';
+          return "denied";
         }
       }
 
-      return 'permitted';
+      return "permitted";
     } catch (e) {
       return e.toString();
     }
@@ -36,7 +36,7 @@ class Location {
   Future<String> getLocation() async {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-    String location = '';
+    String location = "";
 
     await placemarkFromCoordinates(position.latitude, position.longitude)
         .then((List<Placemark> placemarks) {
@@ -45,7 +45,7 @@ class Location {
       location =
           '${place.street}, ${place.locality}, ${place.country}, ${place.postalCode}';
     }).catchError((e) {
-      location = 'error:${e.toString()}';
+      location = "error:${e.toString()}";
     });
 
     return location;

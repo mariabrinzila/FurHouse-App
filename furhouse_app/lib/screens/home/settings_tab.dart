@@ -35,7 +35,7 @@ class SettingsTab extends StatelessWidget {
               _onLogout(context);
             },
             child: const Text(
-              'Logout',
+              "Logout",
             ),
           )
         ],

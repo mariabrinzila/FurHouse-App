@@ -4,12 +4,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:furhouse_app/screens/login/login.dart';
 import 'package:furhouse_app/screens/home/home.dart';
 
-import 'package:furhouse_app/common/widget_templates/cupertino_text_field_style.dart';
 import 'package:furhouse_app/common/functions/form_validation.dart';
+import 'package:furhouse_app/common/functions/exception_code_handler.dart';
+
+import 'package:furhouse_app/common/widget_templates/cupertino_text_field_style.dart';
 import 'package:furhouse_app/common/widget_templates/cupertino_text_field_date_picker.dart';
 import 'package:furhouse_app/common/widget_templates/outlined_button_style.dart';
 import 'package:furhouse_app/common/widget_templates/elevated_button_style.dart';
-import 'package:furhouse_app/common/functions/exception_code_handler.dart';
 
 import 'package:furhouse_app/models/user_VM.dart';
 
@@ -29,11 +30,11 @@ class RegisterContent extends StatelessWidget {
   });
 
   void _onRegister(BuildContext context) async {
-    if (nameValidation(_firstNameController.text, 'first', context)) {
+    if (nameValidation(_firstNameController.text, "first", context)) {
       return;
     }
 
-    if (nameValidation(_lastNameController.text, 'last', context)) {
+    if (nameValidation(_lastNameController.text, "last", context)) {
       return;
     }
 
@@ -41,7 +42,7 @@ class RegisterContent extends StatelessWidget {
       return;
     }
 
-    if (nonEmptyField(_birthdayController.text, 'birthday', context)) {
+    if (nonEmptyField(_birthdayController.text, "birthday", context)) {
       return;
     }
 
@@ -65,7 +66,7 @@ class RegisterContent extends StatelessWidget {
 
     final message = await Authentication().register(user);
 
-    if (message == 'Success') {
+    if (message == "Success") {
       if (context.mounted) {
         _navigateToHome(context);
       }
@@ -109,7 +110,7 @@ class RegisterContent extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Register',
+              "Register",
               style: GoogleFonts.lobster(
                 color: Colors.white,
                 fontSize: 40,
@@ -124,7 +125,7 @@ class RegisterContent extends StatelessWidget {
                 SizedBox(
                   width: 185,
                   child: CupertinoTextFieldStyle(
-                    placeholderText: 'First name',
+                    placeholderText: "First name",
                     icon: const Icon(
                       Icons.person,
                     ),
@@ -138,7 +139,7 @@ class RegisterContent extends StatelessWidget {
                 SizedBox(
                   width: 185,
                   child: CupertinoTextFieldStyle(
-                    placeholderText: 'Last Name',
+                    placeholderText: "Last Name",
                     icon: const Icon(
                       Icons.person_outline,
                     ),
@@ -157,7 +158,7 @@ class RegisterContent extends StatelessWidget {
                 SizedBox(
                   width: 185,
                   child: CupertinoTextFieldStyle(
-                    placeholderText: 'Email',
+                    placeholderText: "Email",
                     icon: const Icon(
                       Icons.email_outlined,
                     ),
@@ -185,7 +186,7 @@ class RegisterContent extends StatelessWidget {
                 SizedBox(
                   width: 185,
                   child: CupertinoTextFieldStyle(
-                    placeholderText: 'Password',
+                    placeholderText: "Password",
                     icon: const Icon(
                       Icons.password_rounded,
                     ),
@@ -199,7 +200,7 @@ class RegisterContent extends StatelessWidget {
                 SizedBox(
                   width: 185,
                   child: CupertinoTextFieldStyle(
-                    placeholderText: 'Confirm password',
+                    placeholderText: "Confirm password",
                     icon: const Icon(
                       Icons.password_rounded,
                     ),
@@ -216,7 +217,7 @@ class RegisterContent extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Already have an account?',
+                  "Already have an account?",
                   style: GoogleFonts.merriweather(
                     color: Colors.white,
                     fontSize: 14,
@@ -226,7 +227,7 @@ class RegisterContent extends StatelessWidget {
                   width: 15,
                 ),
                 OutlinedButtonStyle(
-                  buttonText: 'Login',
+                  buttonText: "Login",
                   onTap: () {
                     _navigateToLogin(context);
                   },
@@ -239,7 +240,7 @@ class RegisterContent extends StatelessWidget {
             SizedBox(
               width: 170,
               child: ElevatedButtonStyle(
-                buttonText: 'Sign Up',
+                buttonText: "Sign Up",
                 onTap: () {
                   _onRegister(context);
                 },

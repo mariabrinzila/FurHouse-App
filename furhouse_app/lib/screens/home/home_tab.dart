@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:furhouse_app/common/constants/colors.dart';
+
 import 'package:furhouse_app/common/functions/exception_code_handler.dart';
 import 'package:furhouse_app/common/functions/modal_popup.dart';
+
 import 'package:furhouse_app/common/widget_templates/header_information_with_button.dart';
 import 'package:furhouse_app/common/widget_templates/pet_card_button.dart';
 

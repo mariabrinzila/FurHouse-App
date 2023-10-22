@@ -26,10 +26,10 @@ class _CupertinoTextFieldLocationState
   void _onTapLocationField() async {
     var locationPermission = await Location().toggleLocationPermission();
 
-    if (locationPermission == 'permitted') {
+    if (locationPermission == "permitted") {
       var location = await Location().getLocation();
 
-      if (location.contains('error:')) {
+      if (location.contains("error:")) {
         if (context.mounted) {
           locationServicesExceptionHandler(context, location.substring(6));
         }

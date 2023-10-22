@@ -16,100 +16,100 @@ Widget _dialogBuilder(BuildContext context, String title, String content) {
 void loginExceptionHandler(BuildContext context, String exceptionCode) {
   var message = '';
 
-  if (exceptionCode == 'wrong-password') {
-    message = 'You entered the wrong password!';
+  if (exceptionCode == "wrong-password") {
+    message = "You entered the wrong password!";
   }
 
-  if (exceptionCode == 'invalid-email') {
-    message = 'The email you entered is invalid!';
+  if (exceptionCode == "invalid-email") {
+    message = "The email you entered is invalid!";
   }
 
-  if (exceptionCode == 'user-disabled') {
-    message = 'The user is currently disabled!';
+  if (exceptionCode == "user-disabled") {
+    message = "The user is currently disabled!";
   }
 
-  if (exceptionCode == 'user-not-fount') {
-    message = 'The user was not found!';
+  if (exceptionCode == "user-not-fount") {
+    message = "The user was not found!";
   }
 
-  if (message == '') {
-    message = 'Signing in is currently unavailable!';
+  if (message == "") {
+    message = "Signing in is currently unavailable!";
   }
 
   showCupertinoDialog(
     context: context,
     builder: (context) {
-      return _dialogBuilder(context, 'Authentication error', message);
+      return _dialogBuilder(context, "Authentication error", message);
     },
   );
 }
 
 void registerExceptionHandler(BuildContext context, String exceptionCode) {
-  var message = '';
+  var message = "";
 
-  if (exceptionCode == 'email-already-in-use') {
-    message = 'The email you entered is already in use!';
+  if (exceptionCode == "email-already-in-use") {
+    message = "The email you entered is already in use!";
   }
 
-  if (exceptionCode == 'invalid-email') {
-    message = 'The email you entered is invalid!';
+  if (exceptionCode == "invalid-email") {
+    message = "The email you entered is invalid!";
   }
 
-  if (exceptionCode == 'operation-not-allowed') {
-    message = 'Signing in with email and password is not currently allowed!';
+  if (exceptionCode == "operation-not-allowed") {
+    message = "Signing in with email and password is not currently allowed!";
   }
 
-  if (exceptionCode == 'weak-password') {
-    message = 'The password you entered is too weak!';
+  if (exceptionCode == "weak-password") {
+    message = "The password you entered is too weak!";
   }
 
-  if (message == '') {
-    message = 'Signing up is currently unavailable!';
+  if (message == "") {
+    message = "Signing up is currently unavailable!";
   }
 
   showCupertinoDialog(
     context: context,
     builder: (context) {
-      return _dialogBuilder(context, 'Authentication error', message);
+      return _dialogBuilder(context, "Authentication error", message);
     },
   );
 }
 
 void locationServicesExceptionHandler(
     BuildContext context, String exceptionCode) {
-  var message = '';
+  var message = "";
 
-  if (exceptionCode == 'disabled') {
-    message = 'The location services on this device are currently disabled!';
+  if (exceptionCode == "disabled") {
+    message = "The location services on this device are currently disabled!";
   }
 
-  if (exceptionCode == 'denied-forever') {
-    message = 'The location services on this device are forever denied!';
+  if (exceptionCode == "denied-forever") {
+    message = "The location services on this device are forever denied!";
   }
 
-  if (exceptionCode == 'denied') {
-    message = 'The location services on this device are currently denied!';
+  if (exceptionCode == "denied") {
+    message = "The location services on this device are currently denied!";
   }
 
-  if (message == '') {
-    message = 'Location services are currently unavailable!';
+  if (message == "") {
+    message = "Location services are currently unavailable!";
   }
 
   showCupertinoDialog(
     context: context,
     builder: (context) {
-      return _dialogBuilder(context, 'Location services error', message);
+      return _dialogBuilder(context, "Location services error", message);
     },
   );
 }
 
 void addPetExceptionHandler(BuildContext context, String exceptionCode) {
-  var message = 'Adding a pet is currently unavailable!';
+  var message = "Adding a pet is currently unavailable!";
 
   showCupertinoDialog(
     context: context,
     builder: (context) {
-      return _dialogBuilder(context, 'Pet service error', message);
+      return _dialogBuilder(context, "Pet service error", message);
     },
   );
 }
@@ -118,7 +118,7 @@ void otherExceptionsHandler(BuildContext context, String exceptionCode) {
   showCupertinoDialog(
     context: context,
     builder: (context) {
-      return _dialogBuilder(context, 'An error occurred', exceptionCode);
+      return _dialogBuilder(context, "An error occurred", exceptionCode);
     },
   );
 }

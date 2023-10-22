@@ -35,7 +35,7 @@ class _ImageAnimationState extends State<ImageAnimation> {
       opacity: _opacity,
       duration: const Duration(seconds: 5),
       child: Image.asset(
-        'assets/images/Logo2.png',
+        "assets/images/Logo2.png",
         width: 400,
         color: Colors.white,
       ),

@@ -138,7 +138,7 @@ class Pets {
       currentPet.id = pet["pet_id"];
 
       var photoURL =
-          await getPetPhoneDownloadURL(currentPet.userEmail, currentPet.name);
+          await getPetPhotoDownloadURL(currentPet.userEmail, currentPet.name);
 
       petDataMap.addEntries(<String, PetVM>{photoURL: currentPet}.entries);
     }
@@ -146,7 +146,7 @@ class Pets {
     return petDataMap;
   }
 
-  Future<String> getPetPhoneDownloadURL(
+  Future<String> getPetPhotoDownloadURL(
       String userEmail, String petName) async {
     try {
       return await FirebaseStorage.instance
@@ -224,7 +224,8 @@ class Pets {
     }
   }
 
-  Future<String> update(PetVM pet) async {
+  Future<String> update(
+      PetVM pet, String previousName, String? petPhotoURL) async {
     try {
       await init();
 
@@ -236,6 +237,45 @@ class Pets {
         whereArgs: [pet.petId],
       );
 
+      if (pet.name != previousName) {
+        // create a reference to the photo
+        final photoReference =
+            FirebaseStorage.instance.refFromURL(petPhotoURL!);
+
+        // get photo data from photo reference
+        const oneMegabyte = 1024 * 1024;
+        var photoData = await photoReference.getData(oneMegabyte);
+
+        // create a new pet photo with the new name
+        await FirebaseStorage.instance
+            .ref(pet.userEmail)
+            .child(pet.name)
+            .putData(photoData!);
+        //.putFile(photo);
+
+        // delete pet photo with the previous name
+        await FirebaseStorage.instance
+            .ref(pet.userEmail)
+            .child(previousName)
+            .delete();
+      }
+
+      if (pet.photoPath != petPhotoURL) {
+        // delete pet photo with the previous name
+        await FirebaseStorage.instance
+            .ref(pet.userEmail)
+            .child(previousName)
+            .delete();
+
+        // add new pet photo in the storage
+        var photo = File(pet.photoPath);
+
+        await FirebaseStorage.instance
+            .ref(pet.userEmail)
+            .child(pet.name)
+            .putFile(photo);
+      }
+
       await closeDatabase();
 
       return "Success";
@@ -244,7 +284,7 @@ class Pets {
     }
   }
 
-  Future<String> delete(int petId) async {
+  Future<String> delete(int petId, String userEmail, String petName) async {
     try {
       await init();
 
@@ -254,6 +294,9 @@ class Pets {
         where: "pet_id = ?",
         whereArgs: [petId],
       );
+
+      // delete pet photo from storage
+      await FirebaseStorage.instance.ref(userEmail).child(petName).delete();
 
       await closeDatabase();
 
@@ -337,7 +380,7 @@ class Pets {
           .child(pet.name)
           .putFile(photo);
 
-      return 'Success';
+      return "Success";
     } catch (e) {
       return e.toString();
     }
@@ -423,7 +466,7 @@ class Pets {
       );
 
       var photoURL =
-          await getPetPhoneDownloadURL(currentPet.userEmail, currentPet.name);
+          await getPetPhotoDownloadURL(currentPet.userEmail, currentPet.name);
 
       petDataMap.addEntries(<String, PetVM>{photoURL: currentPet}.entries);
     }

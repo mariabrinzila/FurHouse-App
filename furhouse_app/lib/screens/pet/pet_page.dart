@@ -7,10 +7,10 @@ import 'package:furhouse_app/screens/home/home.dart';
 
 import 'package:furhouse_app/common/constants/colors.dart';
 
-import 'package:furhouse_app/common/widget_templates/pet_information_container.dart';
-
 import 'package:furhouse_app/common/functions/exception_code_handler.dart';
 import 'package:furhouse_app/common/functions/confirm_action.dart';
+
+import 'package:furhouse_app/common/widget_templates/pet_information_container.dart';
 
 import 'package:furhouse_app/models/pet_VM.dart';
 
@@ -55,7 +55,8 @@ class _PetPageState extends State<PetPage> {
       return;
     }
 
-    final message = await Pets().delete(widget.petObject.petId);
+    final message = await Pets().delete(widget.petObject.petId,
+        widget.petObject.userEmail, widget.petObject.name);
 
     if (message == "Success") {
       if (context.mounted) {
@@ -80,26 +81,6 @@ class _PetPageState extends State<PetPage> {
   }
 
   void _onUpdatePet(BuildContext context) async {
-    /*final confirmed = await confirmActionDialog(context,
-        "Are you sure you want to save the changes for ${widget.petObject.name}?");
-
-    if (confirmed == "no") {
-      return;
-    }
-
-    final message = await Pets().update(widget.petObject);
-
-    if (message == "Success") {
-      if (context.mounted) {
-        _navigateToHome(context);
-      }
-    } else {
-      if (context.mounted) {
-        addPetExceptionHandler(context, message);
-      }
-    }*/
-
-    // navigate to add pet tab with the current pet details
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -152,7 +133,7 @@ class _PetPageState extends State<PetPage> {
               width: 10,
             ),
             Text(
-              'Adopt pet',
+              "Adopt pet",
             ),
           ],
         ),
@@ -191,7 +172,7 @@ class _PetPageState extends State<PetPage> {
                     width: 10,
                   ),
                   Text(
-                    'Edit',
+                    "Edit",
                   ),
                 ],
               ),
@@ -223,7 +204,7 @@ class _PetPageState extends State<PetPage> {
                     width: 10,
                   ),
                   Text(
-                    'Delete',
+                    "Delete",
                   ),
                 ],
               ),
@@ -284,7 +265,7 @@ class _PetPageState extends State<PetPage> {
                     PetInformationContainer(
                       containerHeight: 30,
                       containerWidth: 150,
-                      text: '${widget.petObject.ageValue} $ageUnit old',
+                      text: "${widget.petObject.ageValue} $ageUnit old",
                     ),
                   ],
                 ),
@@ -354,7 +335,7 @@ class _PetPageState extends State<PetPage> {
                     PetInformationContainer(
                       containerHeight: 30,
                       containerWidth: 150,
-                      text: '${widget.petObject.priority} priority',
+                      text: "${widget.petObject.priority} priority",
                     ),
                   ],
                 ),

@@ -5,9 +5,10 @@ import 'package:furhouse_app/screens/home/home_tab.dart';
 import 'package:furhouse_app/screens/home/add_pet_tab.dart';
 import 'package:furhouse_app/screens/home/settings_tab.dart';
 
-import 'package:furhouse_app/common/constants/picker_values.dart';
-import 'package:furhouse_app/common/widget_templates/tab_style.dart';
 import 'package:furhouse_app/common/constants/colors.dart';
+import 'package:furhouse_app/common/constants/picker_values.dart';
+
+import 'package:furhouse_app/common/widget_templates/tab_style.dart';
 
 import 'package:furhouse_app/models/pet_VM.dart';
 
@@ -85,7 +86,7 @@ class _HomeState extends State<Home> {
       backgroundColor: darkBlueColor,
       centerTitle: true,
       title: Image.asset(
-        'assets/images/Logo.png',
+        "assets/images/Logo.png",
         color: Colors.white,
         width: 250,
         height: 180,
@@ -98,7 +99,7 @@ class _HomeState extends State<Home> {
         backgroundColor: darkBlueColor,
         centerTitle: true,
         title: Image.asset(
-          'assets/images/Logo.png',
+          "assets/images/Logo.png",
           color: Colors.white,
           width: 250,
           height: 180,
@@ -143,7 +144,7 @@ class _HomeState extends State<Home> {
               children: [
                 const HomeTab(),
                 widget.currentPet == null
-                    ? AddPetTab()
+                    ? const AddPetTab()
                     : AddPetTab(
                         currentPet: widget.currentPet,
                         petPhotoURL: widget.petPhotoURL,

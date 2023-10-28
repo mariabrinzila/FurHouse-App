@@ -47,6 +47,19 @@ class _PetPageState extends State<PetPage> {
     super.initState();
   }
 
+  void _onUpdatePet(BuildContext context) async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Home(
+          selectedTabIndex: 1,
+          currentPet: widget.petObject,
+          petPhotoURL: widget.petPhotoURL,
+        ),
+      ),
+    );
+  }
+
   void _onDeletePet(BuildContext context) async {
     final confirmed = await confirmActionDialog(
         context, "Are you sure you want to delete ${widget.petObject.name}?");
@@ -80,17 +93,25 @@ class _PetPageState extends State<PetPage> {
     );
   }
 
-  void _onUpdatePet(BuildContext context) async {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => Home(
-          selectedTabIndex: 1,
-          currentPet: widget.petObject,
-          petPhotoURL: widget.petPhotoURL,
-        ),
-      ),
-    );
+  void _onAdoptPet(BuildContext context) async {
+    final confirmed = await confirmActionDialog(
+        context, "Are you ready to adopt ${widget.petObject.name}?");
+
+    if (confirmed == "no") {
+      return;
+    }
+
+    final message = await Pets().updateAdoptPet(widget.petObject.petId);
+
+    if (message == "Success") {
+      if (context.mounted) {
+        _navigateToHome(context);
+      }
+    } else {
+      if (context.mounted) {
+        addPetExceptionHandler(context, message);
+      }
+    }
   }
 
   @override
@@ -122,7 +143,9 @@ class _PetPageState extends State<PetPage> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        onPressed: () {},
+        onPressed: () {
+          _onAdoptPet(context);
+        },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: const [

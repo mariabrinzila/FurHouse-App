@@ -44,9 +44,9 @@ class _HomeState extends State<Home> {
         TabStyle(
           iconData: CupertinoIcons.add_circled_solid,
         ),
-        TabStyle(
+        /*TabStyle(
           iconData: CupertinoIcons.search_circle_fill,
-        ),
+        ),*/
         TabStyle(
           iconData: CupertinoIcons.settings,
         ),
@@ -118,7 +118,7 @@ class _HomeState extends State<Home> {
     return MaterialApp(
       home: DefaultTabController(
         initialIndex: widget.selectedTabIndex,
-        length: 4,
+        length: 3,
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: appBarWidget,
@@ -149,7 +149,7 @@ class _HomeState extends State<Home> {
                         currentPet: widget.currentPet,
                         petPhotoURL: widget.petPhotoURL,
                       ),
-                const HomeTab(),
+                //const HomeTab(),
                 const SettingsTab(),
               ],
             ),

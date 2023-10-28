@@ -1,18 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
+import 'package:furhouse_app/screens/home/home.dart';
+
 import 'package:furhouse_app/common/constants/colors.dart';
 
 class PetPageTheme extends StatelessWidget {
+  final bool fromHomeTab;
   final Widget childWidget;
 
   const PetPageTheme({
     super.key,
+    required this.fromHomeTab,
     required this.childWidget,
   });
 
   void _onGoBack(BuildContext context) {
-    Navigator.of(context).pop();
+    if (fromHomeTab) {
+      Navigator.of(context).pop();
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const Home(
+            selectedTabIndex: 0,
+          ),
+        ),
+      );
+    }
   }
 
   @override

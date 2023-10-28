@@ -86,15 +86,33 @@ class Pets {
     }
   }
 
+  Future<int?> readTotalNumberOfPets() async {
+    try {
+      await init();
+
+      var query = "SELECT COUNT(*) FROM $_table WHERE adopted = 0";
+
+      final total = Sqflite.firstIntValue(
+        await _database.rawQuery(query),
+      );
+
+      await closeDatabase();
+
+      return total;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<Map<String, PetVM>> readPaginatedPets(int index, int limit) async {
     try {
       await init();
 
-      // select pets with an id >= the page and limit results by the given limit
       final List<Map<String, dynamic>> pets = await _database.query(
         _table,
-        where: "pet_id >= ?",
-        whereArgs: [index],
+        where: "adopted = 0",
+        orderBy: "pet_id ASC",
+        offset: index - 1,
         limit: limit,
       );
 
@@ -171,16 +189,21 @@ class Pets {
       final List<Map<String, dynamic>> pets;
       String query = "SELECT * FROM $_table";
       List<String> queryParameters = [];
+      var adoptedAdded = false;
 
       if (filterOption.isNotEmpty) {
-        query = "$query WHERE $filterOption = ?";
+        adoptedAdded = true;
+        query = "$query WHERE adopted = 0 AND $filterOption = ?";
 
         queryParameters.add(filterCriteria);
       }
 
       if (searchOption.isNotEmpty) {
+        adoptedAdded = true;
+
         if (queryParameters.isEmpty) {
-          query = "$query WHERE $searchOption LIKE '%$searchCriteria%'";
+          query =
+              "$query WHERE adopted = 0 AND $searchOption LIKE '%$searchCriteria%'";
         } else {
           query = "$query AND $searchOption LIKE '%$searchCriteria%'";
         }
@@ -192,6 +215,10 @@ class Pets {
 
         if (!sortOrderAscending) {
           sortOrder = "DESC";
+        }
+
+        if (!adoptedAdded) {
+          query = "$query WHERE adopted = 0";
         }
 
         if (sortOption != "age") {
@@ -237,7 +264,11 @@ class Pets {
         whereArgs: [pet.petId],
       );
 
+      var petName = previousName;
+
       if (pet.name != previousName) {
+        petName = pet.name;
+
         // create a reference to the photo
         final photoReference =
             FirebaseStorage.instance.refFromURL(petPhotoURL!);
@@ -264,7 +295,7 @@ class Pets {
         // delete pet photo with the previous name
         await FirebaseStorage.instance
             .ref(pet.userEmail)
-            .child(previousName)
+            .child(petName)
             .delete();
 
         // add new pet photo in the storage
@@ -272,7 +303,7 @@ class Pets {
 
         await FirebaseStorage.instance
             .ref(pet.userEmail)
-            .child(pet.name)
+            .child(petName)
             .putFile(photo);
       }
 
@@ -297,6 +328,23 @@ class Pets {
 
       // delete pet photo from storage
       await FirebaseStorage.instance.ref(userEmail).child(petName).delete();
+
+      await closeDatabase();
+
+      return "Success";
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  Future<String> updateAdoptPet(int petId) async {
+    try {
+      await init();
+
+      // update the adopt field for the current pet accordingly
+      var query = "UPDATE $_table SET adopted = 1 WHERE pet_id = $petId";
+
+      await _database.rawQuery(query);
 
       await closeDatabase();
 

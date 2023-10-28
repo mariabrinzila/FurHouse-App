@@ -12,7 +12,7 @@ class PetVM {
   final String? description;
   final String userEmail;
   final String photoPath;
-  final String dateAdded;
+  String dateAdded;
   final bool adopted;
 
   PetVM({

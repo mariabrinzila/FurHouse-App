@@ -26,6 +26,9 @@ class SettingsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // list tile-uri cu fiecare setare pe care o poti face (stilul cum ai la setarile din telefon / de la Instagram)
+    // your account, languages, theme, admin settings, adopted pets
+
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,

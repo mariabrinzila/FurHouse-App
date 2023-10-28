@@ -73,13 +73,6 @@ class _AddPetTabState extends State<AddPetTab> {
 
   @override
   void initState() {
-    // controller.addListener(() {}) <=> listen on any changes to the controller and do something whenever it does change
-    categoryController.addListener(() {
-      setState(() {
-        _computeBreedPickerValues(categoryController.text);
-      });
-    });
-
     if (widget.currentPet != null) {
       nameController = TextEditingController(
         text: widget.currentPet!.name,
@@ -115,6 +108,13 @@ class _AddPetTabState extends State<AddPetTab> {
         text: widget.petPhotoURL,
       );
     }
+
+    // controller.addListener(() {}) <=> listen on any changes to the controller and do something whenever it does change
+    categoryController.addListener(() {
+      setState(() {
+        _computeBreedPickerValues(categoryController.text);
+      });
+    });
 
     super.initState();
   }
@@ -211,6 +211,7 @@ class _AddPetTabState extends State<AddPetTab> {
       }
 
       pet.id = widget.currentPet!.petId;
+      pet.dateAdded = widget.currentPet!.dateAdded;
 
       final message =
           await Pets().update(pet, widget.currentPet!.name, widget.petPhotoURL);
@@ -228,6 +229,18 @@ class _AddPetTabState extends State<AddPetTab> {
       final message = await Pets().insert(pet);
 
       if (message == "Success") {
+        nameController.clear();
+        genderController.clear();
+        categoryController.clear();
+        breedController.clear();
+        ageUnitController.clear();
+        ageValueController.clear();
+        locationController.clear();
+        detailsController.clear();
+        priorityController.clear();
+        descriptionController.clear();
+        photoController.clear();
+
         if (context.mounted) {
           _navigateToPetPage(context, pet);
         }
@@ -249,6 +262,7 @@ class _AddPetTabState extends State<AddPetTab> {
           context,
           MaterialPageRoute(
             builder: (context) => PetPageTheme(
+              fromHomeTab: false,
               childWidget: PetPage(
                 petObject: pet,
                 petPhotoURL: petPhotoURL,

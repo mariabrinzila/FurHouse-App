@@ -24,6 +24,7 @@ class PetCardButton extends StatelessWidget {
       context,
       MaterialPageRoute(
         builder: (context) => PetPageTheme(
+          fromHomeTab: true,
           childWidget: PetPage(
             petObject: petObject,
             petPhotoURL: petPhotoURL,

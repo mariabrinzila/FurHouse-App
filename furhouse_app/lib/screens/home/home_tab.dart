@@ -31,6 +31,7 @@ class _HomeContentState extends State<HomeTab> {
   int currentPage = 1;
   final int limit = 6;
   int startIndex = 1;
+  var totalNumberOfPets = 0;
 
   String sortBy = "";
   bool sortOrderAscending = true;
@@ -46,6 +47,12 @@ class _HomeContentState extends State<HomeTab> {
 
   @override
   void initState() {
+    _getTotalNumberOfPets().then((value) {
+      setState(() {
+        totalNumberOfPets = value ?? 0;
+      });
+    });
+
     _getAllPets(startIndex, limit).then((value) {
       setState(() {
         petMap = value;
@@ -53,6 +60,10 @@ class _HomeContentState extends State<HomeTab> {
     });
 
     super.initState();
+  }
+
+  Future<int?> _getTotalNumberOfPets() async {
+    return await Pets().readTotalNumberOfPets();
   }
 
   Future<Map<String, PetVM>> _getAllPets(int index, int limit) async {
@@ -556,7 +567,7 @@ class _HomeContentState extends State<HomeTab> {
                     ),
                   ),
                 ),
-                if (petMap.length == limit) ...[
+                if (currentPage < (totalNumberOfPets / limit)) ...[
                   IconButton(
                     color: darkerBlueColor,
                     onPressed: _nextPage,

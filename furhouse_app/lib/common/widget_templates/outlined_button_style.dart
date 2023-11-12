@@ -17,7 +17,7 @@ class OutlinedButtonStyle extends StatelessWidget {
   Widget build(BuildContext context) {
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
-        side: const BorderSide(
+        side: BorderSide(
           color: lightBlueColor,
         ),
       ),

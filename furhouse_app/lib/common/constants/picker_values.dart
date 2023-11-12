@@ -1,14 +1,14 @@
-const genderValues = [
-  "Male",
-  "Female",
+var genderValues = [
+  "male",
+  "female",
 ];
 
-const categoryValues = [
-  "Cat",
-  "Dog",
-  "Rabbit",
-  "Rodent",
-  "Bird",
+var categoryValues = [
+  "cat",
+  "dog",
+  "rabbit",
+  "rodent",
+  "bird",
 ];
 
 List<String> catBreedValues = [];
@@ -18,22 +18,22 @@ List<String> rodentBreedValues = [];
 List<String> birdBreedValues = [];
 List<String> allBreedValues = [];
 
-const ageUnitValues = [
-  "Days",
-  "Months",
-  "Years",
+var ageUnitValues = [
+  "days",
+  "months",
+  "years",
 ];
 
-const detailsValues = [
-  "Vaccinated",
-  "Sterilized",
-  "Past trauma",
-  "Injured",
-  "None",
+var detailsValues = [
+  "vaccinated",
+  "sterilized",
+  "pastTrauma",
+  "injured",
+  "none",
 ];
 
-const priorityValues = [
-  "Low",
-  "Medium",
-  "High",
+var priorityValues = [
+  "low",
+  "medium",
+  "high",
 ];

@@ -1,0 +1,44 @@
+{
+  "listPetForAdoption": "Listează un animal spre adopție",
+  "addPet": "Adaugă animalul",
+  "updatePetInformation": "Actualizează informațiile despre animal",
+  "editPet": "Actualizează animalul",
+
+  "petName": "Nume",
+
+  "gender": "Gen",
+  "male": "Masculin",
+  "female": "Feminin",
+
+  "category": "Categorie",
+  "cat": "Pisică",
+  "dog": "Cățel",
+  "rabbit": "Iepure",
+  "rodent": "Rozătoare",
+  "bird": "Pasăre",
+
+  "breed": "Rasă",
+
+  "ageUnit": "Unitate de vârstă",
+  "days": "Zile",
+  "months": "Luni",
+  "years": "Ani",
+
+  "ageValue": "Vârstă",
+  "petLocation": "Locație",
+
+  "details": "Detalii",
+  "vaccinated": "Vaccinat",
+  "sterilized": "Sterilizat",
+  "pastTrauma": "Traumatizat în trecut",
+  "injured": "Rănit",
+  "none": "Niciunul",
+
+  "priority": "Prioritate",
+  "low": "Scăzută",
+  "medium": "Medie",
+  "high": "Mare",
+
+  "petDescription": "Descriere (caracter, dacă este dresat, dacă este cu nevoi speciale, okay cu alte animale ș.a.m.d)",
+  "petPhoto": "Poză"
+}

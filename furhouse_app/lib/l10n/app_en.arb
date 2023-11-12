@@ -1,0 +1,44 @@
+{
+  "listPetForAdoption": "List pet for adoption",
+  "addPet": "Add pet",
+  "updatePetInformation": "Update pet information",
+  "editPet": "Edit pet",
+
+  "petName": "Pet name",
+
+  "gender": "Gender",
+  "male": "Male",
+  "female": "Female",
+
+  "category": "Category",
+  "cat": "Cat",
+  "dog": "Dog",
+  "rabbit": "Rabbit",
+  "rodent": "Rodent",
+  "bird": "Bird",
+
+  "breed": "Breed",
+
+  "ageUnit": "Age unit",
+  "days": "Days",
+  "months": "Months",
+  "years": "Years",
+
+  "ageValue": "Age value",
+  "petLocation": "Pet location",
+
+  "details": "Details",
+  "vaccinated": "Vaccinated",
+  "sterilized": "Sterilized",
+  "pastTrauma": "Past trauma",
+  "injured": "Injured",
+  "none": "None of the above",
+
+  "priority": "Priority",
+  "low": "Low",
+  "medium": "Medium",
+  "high": "High",
+
+  "petDescription": "Pet description (character, house trained, special needs, good with other pets etc.)",
+  "petPhoto": "Pet photo"
+}

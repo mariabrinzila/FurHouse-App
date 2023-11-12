@@ -21,7 +21,7 @@ Future<String?> sortOptionModalPopup(BuildContext context) async {
           onPressed: () {
             _sortOrderModalPopup(context, "name");
           },
-          child: const Text(
+          child: Text(
             style: TextStyle(
               color: darkBlueColor,
               fontWeight: FontWeight.w400,
@@ -33,7 +33,7 @@ Future<String?> sortOptionModalPopup(BuildContext context) async {
           onPressed: () {
             _sortOrderModalPopup(context, "age");
           },
-          child: const Text(
+          child: Text(
             style: TextStyle(
               color: darkBlueColor,
               fontWeight: FontWeight.w400,
@@ -45,7 +45,7 @@ Future<String?> sortOptionModalPopup(BuildContext context) async {
           onPressed: () {
             _sortOrderModalPopup(context, "date");
           },
-          child: const Text(
+          child: Text(
             style: TextStyle(
               color: darkBlueColor,
               fontWeight: FontWeight.w400,
@@ -88,7 +88,7 @@ void _sortOrderModalPopup(BuildContext context, String option) {
             Navigator.pop(context, "cancel");
             Navigator.pop(context, "$option, ascending");
           },
-          child: const Text(
+          child: Text(
             style: TextStyle(
               color: darkBlueColor,
               fontWeight: FontWeight.w400,
@@ -101,7 +101,7 @@ void _sortOrderModalPopup(BuildContext context, String option) {
             Navigator.pop(context, "cancel");
             Navigator.pop(context, "$option, descending");
           },
-          child: const Text(
+          child: Text(
             style: TextStyle(
               color: darkBlueColor,
               fontWeight: FontWeight.w400,
@@ -144,7 +144,7 @@ Future<String?> filterOptionModalPopup(BuildContext context) async {
           onPressed: () {
             _filterCriteriaModalPopup(context, "gender");
           },
-          child: const Text(
+          child: Text(
             style: TextStyle(
               color: darkBlueColor,
               fontWeight: FontWeight.w400,
@@ -156,7 +156,7 @@ Future<String?> filterOptionModalPopup(BuildContext context) async {
           onPressed: () {
             _filterCriteriaModalPopup(context, "category");
           },
-          child: const Text(
+          child: Text(
             style: TextStyle(
               color: darkBlueColor,
               fontWeight: FontWeight.w400,
@@ -168,7 +168,7 @@ Future<String?> filterOptionModalPopup(BuildContext context) async {
           onPressed: () {
             _filterCriteriaModalPopup(context, "breed");
           },
-          child: const Text(
+          child: Text(
             style: TextStyle(
               color: darkBlueColor,
               fontWeight: FontWeight.w400,
@@ -180,7 +180,7 @@ Future<String?> filterOptionModalPopup(BuildContext context) async {
           onPressed: () {
             _filterCriteriaModalPopup(context, "details");
           },
-          child: const Text(
+          child: Text(
             style: TextStyle(
               color: darkBlueColor,
               fontWeight: FontWeight.w400,
@@ -192,7 +192,7 @@ Future<String?> filterOptionModalPopup(BuildContext context) async {
           onPressed: () {
             _filterCriteriaModalPopup(context, "priority");
           },
-          child: const Text(
+          child: Text(
             style: TextStyle(
               color: darkBlueColor,
               fontWeight: FontWeight.w400,
@@ -399,7 +399,7 @@ Future<String?> searchOptionModalPopup(
             _searchCriteriaModalPopup(
                 context, "Location", textEditingController);
           },
-          child: const Text(
+          child: Text(
             style: TextStyle(
               color: darkBlueColor,
               fontWeight: FontWeight.w400,
@@ -412,7 +412,7 @@ Future<String?> searchOptionModalPopup(
             _searchCriteriaModalPopup(
                 context, "Description", textEditingController);
           },
-          child: const Text(
+          child: Text(
             style: TextStyle(
               color: darkBlueColor,
               fontWeight: FontWeight.w400,
@@ -503,7 +503,7 @@ Widget _searchPopupBuilder(BuildContext context, String option,
                         left: 10,
                         right: 5,
                       ),
-                      child: const Icon(
+                      child: Icon(
                         CupertinoIcons.search_circle_fill,
                         color: darkBlueColor,
                       ),
@@ -592,5 +592,137 @@ Widget _searchPopupBuilder(BuildContext context, String option,
         ),
       ),
     ],
+  );
+}
+
+Future<String?> languageOptionModalPopup(BuildContext context) async {
+  return await showCupertinoModalPopup<String>(
+    context: context,
+    builder: (BuildContext context) => CupertinoActionSheet(
+      title: const Text(
+        style: TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+        ),
+        "Choose language",
+      ),
+      actions: <Widget>[
+        CupertinoActionSheetAction(
+          onPressed: () {
+            Navigator.pop(context, "en");
+          },
+          child: Text(
+            style: TextStyle(
+              color: darkBlueColor,
+              fontWeight: FontWeight.w400,
+            ),
+            "English",
+          ),
+        ),
+        CupertinoActionSheetAction(
+          onPressed: () {
+            Navigator.pop(context, "ro");
+          },
+          child: Text(
+            style: TextStyle(
+              color: darkBlueColor,
+              fontWeight: FontWeight.w400,
+            ),
+            "Romanian",
+          ),
+        ),
+        CupertinoActionSheetAction(
+          onPressed: () {
+            Navigator.pop(context, "es");
+          },
+          child: Text(
+            style: TextStyle(
+              color: darkBlueColor,
+              fontWeight: FontWeight.w400,
+            ),
+            "Spanish",
+          ),
+        ),
+      ],
+      cancelButton: CupertinoActionSheetAction(
+        isDefaultAction: true,
+        onPressed: () {
+          Navigator.pop(context, "cancel");
+        },
+        child: const Text(
+          "Cancel",
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+Future<String?> themeOptionModalPopup(BuildContext context) async {
+  return await showCupertinoModalPopup<String>(
+    context: context,
+    builder: (BuildContext context) => CupertinoActionSheet(
+      title: const Text(
+        style: TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+        ),
+        "Choose theme",
+      ),
+      actions: <Widget>[
+        CupertinoActionSheetAction(
+          onPressed: () {
+            Navigator.pop(context, "dark");
+          },
+          child: Text(
+            style: TextStyle(
+              color: darkBlueColor,
+              fontWeight: FontWeight.w400,
+            ),
+            "Dark",
+          ),
+        ),
+        CupertinoActionSheetAction(
+          onPressed: () {
+            Navigator.pop(context, "purple");
+          },
+          child: Text(
+            style: TextStyle(
+              color: darkBlueColor,
+              fontWeight: FontWeight.w400,
+            ),
+            "Purple",
+          ),
+        ),
+        CupertinoActionSheetAction(
+          onPressed: () {
+            Navigator.pop(context, "blue");
+          },
+          child: Text(
+            style: TextStyle(
+              color: darkBlueColor,
+              fontWeight: FontWeight.w400,
+            ),
+            "Blue",
+          ),
+        ),
+      ],
+      cancelButton: CupertinoActionSheetAction(
+        isDefaultAction: true,
+        onPressed: () {
+          Navigator.pop(context, "cancel");
+        },
+        child: const Text(
+          "Cancel",
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    ),
   );
 }

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:furhouse_app/screens/home/home.dart';
 
+import 'package:furhouse_app/common/constants/others.dart';
 import 'package:furhouse_app/common/constants/colors.dart';
 
 class PetPageTheme extends StatelessWidget {
@@ -33,6 +36,18 @@ class PetPageTheme extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale("en"),
+        Locale("es"),
+        Locale("ro"),
+      ],
+      locale: currentLocale.locale,
       home: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
@@ -55,7 +70,7 @@ class PetPageTheme extends StatelessWidget {
           ),
         ),
         body: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
                 lightBlueColor,

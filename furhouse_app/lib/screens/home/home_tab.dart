@@ -493,7 +493,7 @@ class _HomeContentState extends State<HomeTab> {
             margin: const EdgeInsets.only(
               top: 100,
             ),
-            child: const CupertinoActivityIndicator(
+            child: CupertinoActivityIndicator(
               color: darkerBlueColor,
               radius: 30,
             ),
@@ -503,7 +503,7 @@ class _HomeContentState extends State<HomeTab> {
     }
 
     if (petMap.isEmpty) {
-      return const Center(
+      return Center(
         child: CupertinoActivityIndicator(
           color: darkerBlueColor,
           radius: 30,
@@ -561,7 +561,7 @@ class _HomeContentState extends State<HomeTab> {
                   onPressed: null,
                   child: Text(
                     currentPage.toString(),
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: darkerBlueColor,
                       fontWeight: FontWeight.bold,
                     ),

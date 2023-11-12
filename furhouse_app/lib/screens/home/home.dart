@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:furhouse_app/screens/home/home_tab.dart';
 import 'package:furhouse_app/screens/home/add_pet_tab.dart';
 import 'package:furhouse_app/screens/home/settings_tab.dart';
 
+import 'package:furhouse_app/common/constants/others.dart';
 import 'package:furhouse_app/common/constants/colors.dart';
 import 'package:furhouse_app/common/constants/picker_values.dart';
 
@@ -34,10 +37,10 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   TabBar get _tabBarStyle {
-    return const TabBar(
+    return TabBar(
       indicatorColor: Colors.white,
       unselectedLabelColor: unselectedLabelColor,
-      tabs: [
+      tabs: const [
         TabStyle(
           iconData: CupertinoIcons.home,
         ),
@@ -116,6 +119,18 @@ class _HomeState extends State<Home> {
     }
 
     return MaterialApp(
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'),
+        Locale('es'),
+        Locale('ro'),
+      ],
+      locale: currentLocale.locale,
       home: DefaultTabController(
         initialIndex: widget.selectedTabIndex,
         length: 3,
@@ -130,7 +145,7 @@ class _HomeState extends State<Home> {
             ),
           ),
           body: Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
                   lightBlueColor,

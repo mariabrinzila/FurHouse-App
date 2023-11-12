@@ -7,14 +7,14 @@ class SettingsListTile extends StatelessWidget {
   final void Function() onTap;
   final String tileTitle;
   final Icon leadingIcon;
-  final Icon trailingIcon;
+  final Icon? trailingIcon;
 
   const SettingsListTile({
     super.key,
     required this.onTap,
     required this.tileTitle,
     required this.leadingIcon,
-    required this.trailingIcon,
+    this.trailingIcon,
   });
 
   @override

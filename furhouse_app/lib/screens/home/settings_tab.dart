@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:furhouse_app/common/constants/others.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:furhouse_app/main_display.dart';
 
 import 'package:furhouse_app/common/constants/colors.dart';
+
+import 'package:furhouse_app/common/functions/modal_popup.dart';
 
 import 'package:furhouse_app/common/widget_templates/settings_list_tile.dart';
 
@@ -37,6 +40,78 @@ class _SettingsTabState extends State<SettingsTab> {
         color: Colors.white,
       );
     });
+  }
+
+  void _onLanguageChange(BuildContext context) async {
+    var languageCode = await languageOptionModalPopup(context);
+
+    if (languageCode == "cancel" || languageCode == null) {
+      return;
+    }
+
+    setState(() {
+      currentLocale.setLocale = languageCode;
+    });
+
+    if (context.mounted) {
+      _navigateToLanding(context);
+    }
+  }
+
+  void _onThemeChange(BuildContext context) async {
+    var theme = await themeOptionModalPopup(context);
+
+    if (theme == "cancel" || theme == null) {
+      return;
+    }
+
+    switch (theme) {
+      case "dark":
+        {
+          setState(() {
+            darkerBlueColor = const Color.fromARGB(255, 0, 0, 0);
+            darkBlueColor = const Color.fromARGB(255, 33, 34, 34);
+            lightBlueColor = const Color.fromARGB(255, 129, 133, 136);
+            lighterBlueColor = const Color.fromARGB(255, 255, 255, 255);
+
+            unselectedLabelColor = const Color.fromARGB(255, 176, 192, 207);
+            darkUnselectedLabelColor = const Color.fromARGB(255, 81, 92, 102);
+          });
+        }
+        break;
+
+      case "purple":
+        {
+          setState(() {
+            darkerBlueColor = const Color.fromARGB(255, 67, 6, 75);
+            darkBlueColor = const Color.fromARGB(255, 92, 18, 102);
+            lightBlueColor = const Color.fromARGB(255, 172, 78, 196);
+            lighterBlueColor = const Color.fromARGB(255, 241, 189, 252);
+
+            unselectedLabelColor = const Color.fromARGB(255, 172, 124, 184);
+            darkUnselectedLabelColor = const Color.fromARGB(255, 149, 106, 158);
+          });
+        }
+        break;
+
+      default:
+        {
+          setState(() {
+            darkerBlueColor = const Color.fromARGB(255, 6, 44, 75);
+            darkBlueColor = const Color.fromARGB(255, 18, 64, 102);
+            lightBlueColor = const Color.fromARGB(255, 78, 143, 196);
+            lighterBlueColor = const Color.fromARGB(255, 189, 223, 252);
+
+            unselectedLabelColor = const Color.fromARGB(255, 124, 155, 184);
+            darkUnselectedLabelColor = const Color.fromARGB(255, 106, 133, 158);
+          });
+        }
+        break;
+    }
+
+    if (context.mounted) {
+      _navigateToLanding(context);
+    }
   }
 
   void _onLogout(BuildContext context) {
@@ -73,7 +148,7 @@ class _SettingsTabState extends State<SettingsTab> {
           height: 5,
         ),
         Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
                 lighterBlueColor,
@@ -82,7 +157,7 @@ class _SettingsTabState extends State<SettingsTab> {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
-            borderRadius: BorderRadius.all(
+            borderRadius: const BorderRadius.all(
               Radius.circular(
                 15,
               ),
@@ -135,7 +210,9 @@ class _SettingsTabState extends State<SettingsTab> {
           ),
         ),
         SettingsListTile(
-          onTap: () {},
+          onTap: () {
+            _onLanguageChange(context);
+          },
           tileTitle: "Language",
           leadingIcon: const Icon(
             Icons.language_rounded,
@@ -144,7 +221,9 @@ class _SettingsTabState extends State<SettingsTab> {
           trailingIcon: trailingIcon,
         ),
         SettingsListTile(
-          onTap: () {},
+          onTap: () {
+            _onThemeChange(context);
+          },
           tileTitle: "Theme",
           leadingIcon: const Icon(
             Icons.color_lens_outlined,
@@ -153,10 +232,10 @@ class _SettingsTabState extends State<SettingsTab> {
           trailingIcon: trailingIcon,
         ),
         const SizedBox(
-          height: 30,
+          height: 10,
         ),
         Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
                 lighterBlueColor,
@@ -164,6 +243,11 @@ class _SettingsTabState extends State<SettingsTab> {
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
+            ),
+            borderRadius: const BorderRadius.all(
+              Radius.circular(
+                15,
+              ),
             ),
           ),
           padding: const EdgeInsets.only(
@@ -210,22 +294,17 @@ class _SettingsTabState extends State<SettingsTab> {
           ),
           trailingIcon: trailingIcon,
         ),
+        SettingsListTile(
+          onTap: () {
+            _onLogout(context);
+          },
+          tileTitle: "Logout",
+          leadingIcon: const Icon(
+            Icons.logout_outlined,
+            color: Colors.white,
+          ),
+        ),
       ],
     );
-    /*Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              _onLogout(context);
-            },
-            child: const Text(
-              "Logout",
-            ),
-          )
-        ],
-      ),
-    );*/
   }
 }

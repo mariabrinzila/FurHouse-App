@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
 
@@ -278,12 +279,12 @@ class _AddPetTabState extends State<AddPetTab> {
 
   @override
   Widget build(BuildContext context) {
-    var title = "List pet for adoption";
-    var submitButtonText = "Add pet";
+    var title = AppLocalizations.of(context)?.listPetForAdoption ?? "";
+    var submitButtonText = AppLocalizations.of(context)?.addPet ?? "";
 
     if (widget.currentPet != null) {
-      title = "Update pet information";
-      submitButtonText = "Edit pet";
+      title = AppLocalizations.of(context)?.updatePetInformation ?? "";
+      submitButtonText = AppLocalizations.of(context)?.editPet ?? "";
     }
 
     return Center(
@@ -317,7 +318,8 @@ class _AddPetTabState extends State<AddPetTab> {
                   SizedBox(
                     width: 175,
                     child: CupertinoTextFieldStyle(
-                      placeholderText: "Pet name",
+                      placeholderText:
+                          AppLocalizations.of(context)?.petName ?? "",
                       icon: const Icon(
                         Icons.text_fields,
                       ),
@@ -332,7 +334,8 @@ class _AddPetTabState extends State<AddPetTab> {
                     width: 175,
                     child: CupertinoTextFieldDropdown(
                       dropdownHeight: 100,
-                      placeholderText: "Gender",
+                      placeholderText:
+                          AppLocalizations.of(context)?.gender ?? "",
                       textFieldController: genderController,
                       prefixIcon: const CupertinoTextFieldPrefixIcon(
                         icon: Icon(
@@ -356,7 +359,8 @@ class _AddPetTabState extends State<AddPetTab> {
                     width: 175,
                     child: CupertinoTextFieldDropdown(
                       dropdownHeight: 150,
-                      placeholderText: "Category",
+                      placeholderText:
+                          AppLocalizations.of(context)?.category ?? "",
                       textFieldController: categoryController,
                       prefixIcon: prefixIcon,
                       suffixIcon: suffixIcon,
@@ -371,7 +375,8 @@ class _AddPetTabState extends State<AddPetTab> {
                     width: 175,
                     child: CupertinoTextFieldDropdown(
                       dropdownHeight: 150,
-                      placeholderText: "Breed",
+                      placeholderText:
+                          AppLocalizations.of(context)?.breed ?? "",
                       textFieldController: breedController,
                       prefixIcon: prefixIcon,
                       suffixIcon: suffixIcon,
@@ -391,7 +396,8 @@ class _AddPetTabState extends State<AddPetTab> {
                     width: 175,
                     child: CupertinoTextFieldDropdown(
                       dropdownHeight: 100,
-                      placeholderText: "Age unit",
+                      placeholderText:
+                          AppLocalizations.of(context)?.ageUnit ?? "",
                       textFieldController: ageUnitController,
                       prefixIcon: const CupertinoTextFieldPrefixIcon(
                         icon: Icon(
@@ -409,7 +415,8 @@ class _AddPetTabState extends State<AddPetTab> {
                   SizedBox(
                     width: 175,
                     child: CupertinoTextFieldStyle(
-                      placeholderText: "Age value",
+                      placeholderText:
+                          AppLocalizations.of(context)?.ageValue ?? "",
                       icon: const Icon(
                         CupertinoIcons.number,
                       ),
@@ -428,7 +435,8 @@ class _AddPetTabState extends State<AddPetTab> {
               SizedBox(
                 width: 360,
                 child: CupertinoTextFieldLocation(
-                  placeholderText: "Pet location",
+                  placeholderText:
+                      AppLocalizations.of(context)?.petLocation ?? "",
                   textFieldController: locationController,
                 ),
               ),
@@ -442,7 +450,8 @@ class _AddPetTabState extends State<AddPetTab> {
                     width: 175,
                     child: CupertinoTextFieldDropdown(
                       dropdownHeight: 150,
-                      placeholderText: "Details",
+                      placeholderText:
+                          AppLocalizations.of(context)?.details ?? "",
                       textFieldController: detailsController,
                       prefixIcon: const CupertinoTextFieldPrefixIcon(
                         icon: Icon(
@@ -461,7 +470,8 @@ class _AddPetTabState extends State<AddPetTab> {
                     width: 175,
                     child: CupertinoTextFieldDropdown(
                       dropdownHeight: 100,
-                      placeholderText: "Priority",
+                      placeholderText:
+                          AppLocalizations.of(context)?.priority ?? "",
                       textFieldController: priorityController,
                       prefixIcon: const CupertinoTextFieldPrefixIcon(
                         icon: Icon(
@@ -483,7 +493,7 @@ class _AddPetTabState extends State<AddPetTab> {
                 height: 50,
                 child: CupertinoTextFieldStyle(
                   placeholderText:
-                      "Pet description (character, house trained, special needs, good with other pets etc.)",
+                      AppLocalizations.of(context)?.petDescription ?? "",
                   icon: const Icon(
                     CupertinoIcons.text_justify,
                   ),
@@ -497,7 +507,7 @@ class _AddPetTabState extends State<AddPetTab> {
               SizedBox(
                 width: 250,
                 child: CupertinoTextFieldImagePicker(
-                  placeholderText: "Pet photo",
+                  placeholderText: AppLocalizations.of(context)?.petPhoto ?? "",
                   photoController: photoController,
                 ),
               ),

@@ -1,0 +1,44 @@
+{
+  "listPetForAdoption": "Listar mascota para adopción",
+  "addPet": "Añadir mascota",
+  "updatePetInformation": "Actualizar información de mascotas",
+  "editPet": "Editar mascota",
+
+  "petName": "Nombre",
+
+  "gender": "Género",
+  "male": "Masculino",
+  "female": "Femenina",
+
+  "category": "Categoría",
+  "cat": "Gato",
+  "dog": "Perro",
+  "rabbit": "Conejo",
+  "rodent": "Roedor",
+  "bird": "Pájaro",
+
+  "breed": "Criar",
+
+  "ageUnit": "Unidad de edad",
+  "days": "Días",
+  "months": "Meses",
+  "years": "Años",
+
+  "ageValue": "Edad",
+  "petLocation": "Ubicación",
+
+  "details": "Detalles",
+  "vaccinated": "Vacunado",
+  "sterilized": "Esterilizado",
+  "pastTrauma": "Trauma pasado",
+  "injured": "Herido",
+  "none": "Ninguna de las anteriores",
+
+  "priority": "Prioridad",
+  "low": "Baja",
+  "medium": "Media",
+  "high": "Alta",
+
+  "petDescription": "Descripción de la mascota (carácter, adiestramiento en casa, necesidades especiales, buena trato con otras mascotas, etc.)",
+  "petPhoto": "Foto"
+}

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:furhouse_app/common/constants/colors.dart';
+
+import 'package:furhouse_app/common/constants/picker_values.dart';
 
 import 'package:furhouse_app/common/functions/exception_code_handler.dart';
 import 'package:furhouse_app/common/functions/modal_popup.dart';
@@ -330,6 +333,146 @@ class _HomeContentState extends State<HomeTab> {
     }
   }
 
+  String _computePickerTranslation(String value, BuildContext context) {
+    var translation = "";
+
+    switch (value) {
+      case "male":
+        {
+          translation = AppLocalizations.of(context)?.male ?? "";
+        }
+        break;
+
+      case "female":
+        {
+          translation = AppLocalizations.of(context)?.female ?? "";
+        }
+        break;
+
+      case "cat":
+        {
+          translation = AppLocalizations.of(context)?.cat ?? "";
+        }
+        break;
+
+      case "dog":
+        {
+          translation = AppLocalizations.of(context)?.dog ?? "";
+        }
+        break;
+
+      case "rabbit":
+        {
+          translation = AppLocalizations.of(context)?.rabbit ?? "";
+        }
+        break;
+
+      case "rodent":
+        {
+          translation = AppLocalizations.of(context)?.rodent ?? "";
+        }
+        break;
+
+      case "bird":
+        {
+          translation = AppLocalizations.of(context)?.bird ?? "";
+        }
+        break;
+
+      case "vaccinated":
+        {
+          translation = AppLocalizations.of(context)?.vaccinated ?? "";
+        }
+        break;
+
+      case "sterilized":
+        {
+          translation = AppLocalizations.of(context)?.sterilized ?? "";
+        }
+        break;
+
+      case "pastTrauma":
+        {
+          translation = AppLocalizations.of(context)?.pastTrauma ?? "";
+        }
+        break;
+
+      case "injured":
+        {
+          translation = AppLocalizations.of(context)?.injured ?? "";
+        }
+        break;
+
+      case "none":
+        {
+          translation = AppLocalizations.of(context)?.none ?? "";
+        }
+        break;
+
+      case "low":
+        {
+          translation = AppLocalizations.of(context)?.low ?? "";
+        }
+        break;
+
+      case "medium":
+        {
+          translation = AppLocalizations.of(context)?.medium ?? "";
+        }
+        break;
+
+      case "high":
+        {
+          translation = AppLocalizations.of(context)?.high ?? "";
+        }
+        break;
+
+      case "name":
+        {
+          translation = AppLocalizations.of(context)?.petName ?? "";
+        }
+        break;
+
+      case "age":
+        {
+          translation = AppLocalizations.of(context)?.ageValue ?? "";
+        }
+        break;
+
+      case "date":
+        {
+          translation = AppLocalizations.of(context)?.date ?? "";
+        }
+        break;
+
+      case "ascending":
+        {
+          translation = AppLocalizations.of(context)?.ascending ?? "";
+        }
+        break;
+
+      case "descending":
+        {
+          translation = AppLocalizations.of(context)?.descending ?? "";
+        }
+        break;
+
+      case "location":
+        {
+          translation = AppLocalizations.of(context)?.petLocation ?? "";
+        }
+        break;
+
+      case "description":
+        {
+          translation = AppLocalizations.of(context)?.description ?? "";
+        }
+        break;
+    }
+
+    return translation;
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget sortWidget = ElevatedButton(
@@ -389,10 +532,14 @@ class _HomeContentState extends State<HomeTab> {
     if (sortBy.isNotEmpty) {
       var sortedOrder = sortOrderAscending ? "ascending" : "descending";
 
+      var sortedBy = AppLocalizations.of(context)?.sortedBy ?? "";
+      var translatedSortOption = _computePickerTranslation(sortBy, context);
+      var translatedSortOrder = _computePickerTranslation(sortedOrder, context);
+
       sortWidget = HeaderInformationWithButton(
         containerHeight: 25,
-        containerWidth: 250,
-        text: "Sorted by $sortBy, $sortedOrder",
+        containerWidth: 300,
+        text: "$sortedBy $translatedSortOption, $translatedSortOrder",
         onPressed: _clearSortOptions,
       );
 
@@ -415,18 +562,21 @@ class _HomeContentState extends State<HomeTab> {
 
     if (filterBy.isNotEmpty) {
       var criteria = filterByCriteria;
-      double containerWidth = 340;
+      double containerWidth = 360;
 
       if (filterByCriteria.length > 20) {
         criteria = "${filterByCriteria.substring(0, 19)}...";
 
-        containerWidth = 380;
+        containerWidth = 400;
       }
+
+      var filteredBy = AppLocalizations.of(context)?.filteredBy ?? "";
+      var translatedFilterOption = _computePickerTranslation(filterBy, context);
 
       filterWidget = HeaderInformationWithButton(
         containerHeight: 25,
         containerWidth: containerWidth,
-        text: "Filtered by $filterBy, $criteria",
+        text: "$filteredBy $translatedFilterOption, $criteria",
         onPressed: _clearFilterOptions,
       );
 
@@ -449,18 +599,22 @@ class _HomeContentState extends State<HomeTab> {
 
     if (searchFor.isNotEmpty) {
       var criteria = searchForCriteria;
-      double containerWidth = 340;
+      double containerWidth = 360;
 
       if (searchForCriteria.length > 20) {
         criteria = "${searchForCriteria.substring(0, 19)}...";
 
-        containerWidth = 380;
+        containerWidth = 400;
       }
+
+      var searchBy = AppLocalizations.of(context)?.searchFor ?? "";
+      var translatedSearchOption =
+          _computePickerTranslation(searchFor, context);
 
       searchWidget = HeaderInformationWithButton(
         containerHeight: 25,
         containerWidth: containerWidth,
-        text: "Search for $searchFor, $criteria",
+        text: "$searchBy $translatedSearchOption, $criteria",
         onPressed: _clearSearchOptions,
       );
 

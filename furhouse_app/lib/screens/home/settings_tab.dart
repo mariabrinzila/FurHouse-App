@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:furhouse_app/common/constants/others.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:furhouse_app/main_display.dart';
 
@@ -124,6 +125,7 @@ class _SettingsTabState extends State<SettingsTab> {
     Navigator.push(
       context,
       MaterialPageRoute(
+        maintainState: false,
         builder: (context) => MainDisplay(),
       ),
     );
@@ -169,7 +171,7 @@ class _SettingsTabState extends State<SettingsTab> {
             left: 10,
           ),
           child: Text(
-            "Display",
+            AppLocalizations.of(context)?.display ?? "",
             style: GoogleFonts.montserrat(
               color: Colors.black,
               fontSize: 20,
@@ -201,7 +203,7 @@ class _SettingsTabState extends State<SettingsTab> {
             onChanged: _onSwitchTileChangeValue,
             secondary: switchTileIcon,
             title: Text(
-              "Notifications",
+              AppLocalizations.of(context)?.notifications ?? "",
               style: GoogleFonts.roboto(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -213,7 +215,7 @@ class _SettingsTabState extends State<SettingsTab> {
           onTap: () {
             _onLanguageChange(context);
           },
-          tileTitle: "Language",
+          tileTitle: AppLocalizations.of(context)?.language ?? "",
           leadingIcon: const Icon(
             Icons.language_rounded,
             color: Colors.white,
@@ -224,7 +226,7 @@ class _SettingsTabState extends State<SettingsTab> {
           onTap: () {
             _onThemeChange(context);
           },
-          tileTitle: "Theme",
+          tileTitle: AppLocalizations.of(context)?.theme ?? "",
           leadingIcon: const Icon(
             Icons.color_lens_outlined,
             color: Colors.white,
@@ -256,7 +258,7 @@ class _SettingsTabState extends State<SettingsTab> {
             left: 10,
           ),
           child: Text(
-            "General",
+            AppLocalizations.of(context)?.general ?? "",
             style: GoogleFonts.montserrat(
               color: Colors.black,
               fontSize: 20,
@@ -269,7 +271,7 @@ class _SettingsTabState extends State<SettingsTab> {
         ),
         SettingsListTile(
           onTap: () {},
-          tileTitle: "Account",
+          tileTitle: AppLocalizations.of(context)?.account ?? "",
           leadingIcon: const Icon(
             Icons.settings,
             color: Colors.white,
@@ -278,7 +280,7 @@ class _SettingsTabState extends State<SettingsTab> {
         ),
         SettingsListTile(
           onTap: () {},
-          tileTitle: "Adopted pets",
+          tileTitle: AppLocalizations.of(context)?.adoptedPets ?? "",
           leadingIcon: const Icon(
             Icons.pets_outlined,
             color: Colors.white,
@@ -287,7 +289,7 @@ class _SettingsTabState extends State<SettingsTab> {
         ),
         SettingsListTile(
           onTap: () {},
-          tileTitle: "Admin",
+          tileTitle: AppLocalizations.of(context)?.admin ?? "",
           leadingIcon: const Icon(
             Icons.admin_panel_settings_outlined,
             color: Colors.white,
@@ -298,7 +300,7 @@ class _SettingsTabState extends State<SettingsTab> {
           onTap: () {
             _onLogout(context);
           },
-          tileTitle: "Logout",
+          tileTitle: AppLocalizations.of(context)?.logout ?? "",
           leadingIcon: const Icon(
             Icons.logout_outlined,
             color: Colors.white,

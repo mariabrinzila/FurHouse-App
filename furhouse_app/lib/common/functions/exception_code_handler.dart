@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:furhouse_app/common/widget_templates/cupertino_form_dialog.dart';
 
@@ -80,19 +81,19 @@ void locationServicesExceptionHandler(
   var message = "";
 
   if (exceptionCode == "disabled") {
-    message = "The location services on this device are currently disabled!";
+    message = AppLocalizations.of(context)?.disabledLocation ?? "";
   }
 
   if (exceptionCode == "denied-forever") {
-    message = "The location services on this device are forever denied!";
+    message = AppLocalizations.of(context)?.deniedForeverLocation ?? "";
   }
 
   if (exceptionCode == "denied") {
-    message = "The location services on this device are currently denied!";
+    message = AppLocalizations.of(context)?.deniedLocation ?? "";
   }
 
   if (message == "") {
-    message = "Location services are currently unavailable!";
+    message = AppLocalizations.of(context)?.unavailableLocation ?? "";
   }
 
   showCupertinoDialog(
@@ -104,7 +105,7 @@ void locationServicesExceptionHandler(
 }
 
 void addPetExceptionHandler(BuildContext context, String exceptionCode) {
-  var message = "Adding a pet is currently unavailable!";
+  var message = AppLocalizations.of(context)?.unavailableAddPet ?? "";
 
   showCupertinoDialog(
     context: context,

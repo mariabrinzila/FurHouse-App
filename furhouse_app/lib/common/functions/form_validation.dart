@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:furhouse_app/common/widget_templates/cupertino_form_dialog.dart';
 
@@ -54,11 +55,11 @@ bool nameValidation(String name, String nameType, BuildContext context) {
   if (name.isEmpty) {
     _toggleValidationAlert(
       context,
-      const Text(
-        "Empty name",
+      Text(
+        AppLocalizations.of(context)?.emptyNameTitle ?? "",
       ),
       Text(
-        "The $nameType name must not be empty!",
+        "$nameType ${AppLocalizations.of(context)?.emptyName ?? ""}",
       ),
     );
 
@@ -68,11 +69,11 @@ bool nameValidation(String name, String nameType, BuildContext context) {
   if (name.length < 2) {
     _toggleValidationAlert(
       context,
-      const Text(
-        "Short name",
+      Text(
+        AppLocalizations.of(context)?.shortNameTitle ?? "",
       ),
       Text(
-        "The $nameType name must be at least 2 characters in length!",
+        "$nameType ${AppLocalizations.of(context)?.shortName ?? ""}",
       ),
     );
 
@@ -84,11 +85,11 @@ bool nameValidation(String name, String nameType, BuildContext context) {
   if (!hasUpperCase) {
     _toggleValidationAlert(
       context,
-      const Text(
-        "Incorrect name",
+      Text(
+        AppLocalizations.of(context)?.incorrectNameTitle ?? "",
       ),
       Text(
-        "The $nameType name must contain at least one upper case character!",
+        "$nameType ${AppLocalizations.of(context)?.incorrectName ?? ""}",
       ),
     );
 
@@ -233,10 +234,10 @@ bool nonEmptyField(String fieldValue, String field, BuildContext context) {
     _toggleValidationAlert(
       context,
       Text(
-        "Empty $field",
+        AppLocalizations.of(context)?.emptyFieldTitle ?? "",
       ),
       Text(
-        "The $field must not be empty!",
+        "$field ${AppLocalizations.of(context)?.emptyField ?? ""}",
       ),
     );
 

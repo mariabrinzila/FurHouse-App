@@ -1,8 +1,6 @@
 {
   "listPetForAdoption": "Listar mascota para adopción",
   "addPet": "Añadir mascota",
-  "updatePetInformation": "Actualizar información de mascotas",
-  "editPet": "Editar mascota",
 
   "petName": "Nombre",
 
@@ -40,5 +38,100 @@
   "high": "Alta",
 
   "petDescription": "Descripción de la mascota (carácter, adiestramiento en casa, necesidades especiales, buena trato con otras mascotas, etc.)",
-  "petPhoto": "Foto"
+  "petPhoto": "Foto",
+
+  "sortOption": "Elija la opción de clasificación",
+  "date": "Fecha",
+  "cancel": "Cancelar",
+  
+  "sortOrder": "Elige el orden de clasificación",
+  "ascending": "Ascendente",
+  "descending": "Descendente",
+
+  "searchOption": "Elige la opción de búsqueda",
+  "description": "Descripción",
+  "searchCriteria": "Criterio de búsqueda",
+  "search": "Buscar",
+
+  "filterOption": "Elige la opción de filtro",
+  "filter": "Filtrar",
+  
+  "sortedBy": "Ordenado por",
+  "searchFor": "Buscar por",
+  "filteredBy": "Filtrado por",
+
+  "day": "día",
+  "month": "mes",
+  "year": "año",
+  "addedOn": "Añadido en",
+  "noDetails": "Sin detalles",
+  "noDescription": "Sin descripción",
+
+  "adoptPet": "Adoptar mascota",
+  "readyToAdopt": "¿Estas lista / listo para adoptarlo",
+  "yes": "Sí",
+  "nevermind": "Cambié de opinión",
+
+  "edit": "Editar",
+  "updatePetInformation": "Actualizar información de mascotas",
+  "editPet": "Editar mascota",
+  "readyToSaveChanges": "¿Está segura / seguro de que desea guardar los cambios para",
+
+  "delete": "Borrar",
+  "readyToDelete": "¿Estás segura / seguro de que quieres eliminarlo",
+
+  "display": "Mostrar",
+  "notifications": "Notificaciones",
+
+  "language": "Idioma",
+  "chooseLanguage": "Elige lengua",
+  "en": "Inglés",
+  "ro": "Rumano",
+  "es": "Español",
+
+  "theme": "Tema",
+  "chooseTheme": "Escoge un tema",
+  "dark": "Oscura",
+  "purple": "Morada",
+  "blue": "Azul",
+
+  "general": "General",
+  "account": "Cuenta",
+  "adoptedPets": "Mascotas adoptadas",
+  "admin": "Administradora",
+  "logout": "Cerrar sesión",
+
+  "disabledLocation": "¡Los servicios de ubicación en este dispositivo están actualmente deshabilitados!",
+  "deniedForeverLocation": "¡Los servicios de ubicación en este dispositivo están denegados para siempre!",
+  "deniedLocation": "¡Los servicios de ubicación en este dispositivo están actualmente denegados.!",
+  "unavailableLocation": "¡Los servicios de ubicación no están disponibles actualmente!",
+
+  "unavailableAddPet": "¡Agregar una mascota no está disponible actualmente!",
+
+  "emptyNameTitle": "Nombre vacío",
+  "emptyName": "nombre no debe estar vacío!",
+  "shortNameTitle": "Nombre corto",
+  "shortName": "nombre debe tener al menos 2 caracteres!",
+  "incorrectNameTitle": "Nombre incorrecto",
+  "incorrectName": "nombre debe contener al menos un carácter en mayúscula.!",
+
+  "emptyPasswordTitle": "Contraseña vacía",
+  "emptyPassword": "¡La contraseña no debe estar vacía!",
+  "shortPasswordTitle": "Contraseña corta",
+  "shortPassword": "¡La contraseña debe tener al menos 8 caracteres!",
+  "notComplexPasswordTitle": "La contraseña no es lo suficientemente compleja",
+  "lowerCaseCharacterPassword": "¡La contraseña debe contener al menos un carácter en minúscula!",
+  "upperCaseCharacterPassword": "¡La contraseña debe contener al menos un carácter en mayúscula!",
+  "digitCharacterPassword": "¡La contraseña debe contener al menos un dígito!",
+  "specialCharacterPassword": "¡La contraseña debe contener al menos un carácter especial (!, *, -, +, =, ~)!",
+
+  "emptyFieldTitle": "Campo vacío",
+  "emptyField": "no debe estar vacía!",
+
+  "ok": "OK",
+
+  "imagePickerTitle": "Elige una foto de tu mascota",
+  "gallery": "Galería",
+  "camera": "Cámara",
+  "imagePickerError": "Error en el selector de imágenes"
 }

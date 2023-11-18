@@ -1,8 +1,6 @@
 {
   "listPetForAdoption": "Listează un animal spre adopție",
   "addPet": "Adaugă animalul",
-  "updatePetInformation": "Actualizează informațiile despre animal",
-  "editPet": "Actualizează animalul",
 
   "petName": "Nume",
 
@@ -40,5 +38,100 @@
   "high": "Mare",
 
   "petDescription": "Descriere (caracter, dacă este dresat, dacă este cu nevoi speciale, okay cu alte animale ș.a.m.d)",
-  "petPhoto": "Poză"
+  "petPhoto": "Poză",
+
+  "sortOption": "Alege criteriul sortării",
+  "date": "Dată",
+  "cancel": "Renunță",
+ 
+  "sortOrder": "Alege ordinea sortării",
+  "ascending": "Crescător",
+  "descending": "Descrescător",
+
+  "searchOption": "Alege criteriul căutării",
+  "description": "Descriere",
+  "searchCriteria": "Căutare după",
+  "search": "Căută",
+
+  "filterOption": "Alege criteriul filtrării",
+  "filter": "Filtrează", 
+  
+  "sortedBy": "Sortare după",
+  "searchFor": "Căutare după",
+  "filteredBy": "Filtrare după",
+
+  "day": "zi",
+  "month": "lună",
+  "year": "an",
+  "addedOn": "Adăugat pe",
+  "noDetails": "Niciun detaliu",
+  "noDescription": "Nicio descriere",
+  
+  "adoptPet": "Adoptă animalul",
+  "readyToAdopt": "Ești pregătit/ă să îl / o adopți pe",
+  "yes": "Da",
+  "nevermind": "M-am răzgândit",
+
+  "edit": "Editează",
+  "updatePetInformation": "Actualizează informațiile despre animal",
+  "editPet": "Actualizează animalul",
+  "readyToSaveChanges": "Ești sigur/ă că vrei să salvezi modificările pentru",
+
+  "delete": "Șterge",
+  "readyToDelete": "Ești sigur/ă că vrei să îl / o ștergi pe",
+
+  "display": "Afișaj",
+  "notifications": "Notificări",
+
+  "language": "Limbă",
+  "chooseLanguage": "Alege limba",
+  "en": "Engleză",
+  "ro": "Română",
+  "es": "Spaniolă",
+
+  "theme": "Temă",
+  "chooseTheme": "Alege tema",
+  "dark": "Închisă",
+  "purple": "Mov",
+  "blue": "Albastru",
+
+  "general": "General",
+  "account": "Cont",
+  "adoptedPets": "Animale adoptate",
+  "admin": "Admin",
+  "logout": "Ieși din cont",
+
+  "disabledLocation": "Serviciile de localizare de pe acest dispozitiv sunt momentan dezactivate!",
+  "deniedForeverLocation": "Serviciile de localizare de pe acest dispozitiv sunt refuzate pentru totdeauna!",
+  "deniedLocation": "Serviciile de localizare de pe acest dispozitiv sunt refuzate în prezent!",
+  "unavailableLocation": "Serviciile de localizare sunt indisponibile momentan!",
+
+  "unavailableAddPet": "Adăugarea unui animal de companie nu este disponibilă momentan!",
+
+  "emptyNameTitle": "Nume gol",
+  "emptyName": "nume nu trebuie să fie gol!",
+  "shortNameTitle": "Nume scurt",
+  "shortName": "nume trebuie să aibă macar 2 litere!",
+  "incorrectNameTitle": "Nume incorect",
+  "incorrectName": "nume trebuie să conțină măcar o majusculă!",
+
+  "emptyPasswordTitle": "Parolă goală",
+  "emptyPassword": "Parola nu trebuie să fie goală!",
+  "shortPasswordTitle": "Parolă scurtă",
+  "shortPassword": "Parola trebuie să conțină măcar 8 caractere!",
+  "notComplexPasswordTitle": "Parola nu este suficient de complexă",
+  "lowerCaseCharacterPassword": "Parola trebuie să conțină măcar o minusculă!",
+  "upperCaseCharacterPassword": "Parola trebuie să conțină măcar o majusculă!",
+  "digitCharacterPassword": "Parola trebuie să conțină măcar o cifră!",
+  "specialCharacterPassword": "Parola trebuie să conțină măcar un caracter special (!, *, -, +, =, ~)!",
+
+  "emptyFieldTitle": "Field gold",
+  "emptyField": "nu trebuie să fie gol!",
+
+  "ok": "OK",
+
+  "imagePickerTitle": "Alege o poză cu animalul tău de companie",
+  "gallery": "Galerie",
+  "camera": "Cameră",
+  "imagePickerError": "Eroare la selectare imaginii"
 }

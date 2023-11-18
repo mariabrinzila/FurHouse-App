@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:furhouse_app/screens/home/home.dart';
 
@@ -35,7 +36,7 @@ class PetPage extends StatefulWidget {
 
 class _PetPageState extends State<PetPage> {
   late String ageUnit;
-  String petDescription = "No description";
+  String petDescription = "noDescription";
 
   @override
   void initState() {
@@ -61,8 +62,10 @@ class _PetPageState extends State<PetPage> {
   }
 
   void _onDeletePet(BuildContext context) async {
+    var readyToDelete = AppLocalizations.of(context)?.readyToDelete ?? "";
+
     final confirmed = await confirmActionDialog(
-        context, "Are you sure you want to delete ${widget.petObject.name}?");
+        context, "$readyToDelete ${widget.petObject.name}?");
 
     if (confirmed == "no") {
       return;
@@ -94,8 +97,10 @@ class _PetPageState extends State<PetPage> {
   }
 
   void _onAdoptPet(BuildContext context) async {
+    var readyToAdopt = AppLocalizations.of(context)?.readyToAdopt ?? "";
+
     final confirmed = await confirmActionDialog(
-        context, "Are you ready to adopt ${widget.petObject.name}?");
+        context, "$readyToAdopt ${widget.petObject.name}?");
 
     if (confirmed == "no") {
       return;
@@ -131,7 +136,7 @@ class _PetPageState extends State<PetPage> {
     var currentUser = Authentication().getCurrentUser();
 
     Widget submitButtons = SizedBox(
-      width: 180,
+      width: 200,
       height: 35,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
@@ -148,15 +153,15 @@ class _PetPageState extends State<PetPage> {
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Icon(
+          children: [
+            const Icon(
               Icons.pets,
             ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             Text(
-              "Adopt pet",
+              AppLocalizations.of(context)?.adoptPet ?? "",
             ),
           ],
         ),
@@ -170,7 +175,7 @@ class _PetPageState extends State<PetPage> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           SizedBox(
-            width: 120,
+            width: 140,
             height: 35,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -187,22 +192,22 @@ class _PetPageState extends State<PetPage> {
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(
+                children: [
+                  const Icon(
                     Icons.edit,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Text(
-                    "Edit",
+                    AppLocalizations.of(context)?.edit ?? "",
                   ),
                 ],
               ),
             ),
           ),
           SizedBox(
-            width: 120,
+            width: 140,
             height: 35,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -219,15 +224,15 @@ class _PetPageState extends State<PetPage> {
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(
+                children: [
+                  const Icon(
                     CupertinoIcons.delete_solid,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Text(
-                    "Delete",
+                    AppLocalizations.of(context)?.delete ?? "",
                   ),
                 ],
               ),
@@ -235,6 +240,17 @@ class _PetPageState extends State<PetPage> {
           ),
         ],
       );
+    }
+
+    var addedOn = AppLocalizations.of(context)?.addedOn ?? "";
+    var none = AppLocalizations.of(context)?.none ?? "";
+    var noDetails = AppLocalizations.of(context)?.noDetails ?? "";
+
+    var priority = AppLocalizations.of(context)?.priority ?? "";
+    priority = priority.toLowerCase();
+
+    if (petDescription == "noDescription") {
+      petDescription = AppLocalizations.of(context)?.noDescription ?? "";
     }
 
     return RawScrollbar(
@@ -280,7 +296,7 @@ class _PetPageState extends State<PetPage> {
                       containerHeight: 30,
                       containerWidth: 200,
                       text:
-                          "${widget.petObject.name}, ${widget.petObject.category}",
+                          "${widget.petObject.name}, ${widget.petObject.category.toLowerCase()}",
                     ),
                     const SizedBox(
                       width: 10,
@@ -288,7 +304,7 @@ class _PetPageState extends State<PetPage> {
                     PetInformationContainer(
                       containerHeight: 30,
                       containerWidth: 150,
-                      text: "${widget.petObject.ageValue} $ageUnit old",
+                      text: "${widget.petObject.ageValue} $ageUnit",
                     ),
                   ],
                 ),
@@ -309,7 +325,7 @@ class _PetPageState extends State<PetPage> {
                     PetInformationContainer(
                       containerHeight: 30,
                       containerWidth: 220,
-                      text: "Added on $addedDate",
+                      text: "$addedOn $addedDate",
                     ),
                   ],
                 ),
@@ -348,8 +364,8 @@ class _PetPageState extends State<PetPage> {
                     PetInformationContainer(
                       containerHeight: 30,
                       containerWidth: 200,
-                      text: widget.petObject.details == "None"
-                          ? "No details"
+                      text: widget.petObject.details == none
+                          ? noDetails
                           : widget.petObject.details,
                     ),
                     const SizedBox(
@@ -358,7 +374,7 @@ class _PetPageState extends State<PetPage> {
                     PetInformationContainer(
                       containerHeight: 30,
                       containerWidth: 150,
-                      text: "${widget.petObject.priority} priority",
+                      text: "${widget.petObject.priority} $priority",
                     ),
                   ],
                 ),

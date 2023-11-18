@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:furhouse_app/common/constants/colors.dart';
 
@@ -32,7 +33,9 @@ class CupertinoFormDialog extends StatelessWidget {
             // close the dialog once the button is pressed
             Navigator.of(context).pop();
           },
-          child: const Text("OK"),
+          child: Text(
+            AppLocalizations.of(context)?.ok ?? "",
+          ),
         ),
       ],
     );

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:furhouse_app/common/constants/colors.dart';
 
@@ -32,8 +33,8 @@ class _CupertinoTextFieldImagePickerState
       barrierDismissible: true,
       builder: (context) {
         return CupertinoAlertDialog(
-          title: const Text(
-            "Pick a photo of your pet",
+          title: Text(
+            AppLocalizations.of(context)?.imagePickerTitle ?? "",
           ),
           actions: [
             TextButton(
@@ -49,7 +50,9 @@ class _CupertinoTextFieldImagePickerState
 
                 Navigator.of(context).pop();
               },
-              child: const Text("Gallery"),
+              child: Text(
+                AppLocalizations.of(context)?.gallery ?? "",
+              ),
             ),
             TextButton(
               style: TextButton.styleFrom(
@@ -64,7 +67,9 @@ class _CupertinoTextFieldImagePickerState
 
                 Navigator.of(context).pop();
               },
-              child: const Text("Camera"),
+              child: Text(
+                AppLocalizations.of(context)?.camera ?? "",
+              ),
             ),
           ],
         );
@@ -92,8 +97,8 @@ class _CupertinoTextFieldImagePickerState
         context: context,
         builder: (context) {
           return CupertinoFormDialog(
-            title: const Text(
-              "Image picker error",
+            title: Text(
+              AppLocalizations.of(context)?.imagePickerError ?? "",
             ),
             content: Text(
               e.toString(),

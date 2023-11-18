@@ -5,7 +5,7 @@ class LocaleVM {
 
   Locale get locale => _locale;
 
-  void set setLocale(String languageCode) {
+  set setLocale(String languageCode) {
     _locale = Locale(languageCode);
   }
 }

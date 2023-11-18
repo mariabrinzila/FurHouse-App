@@ -1,8 +1,6 @@
 {
   "listPetForAdoption": "List pet for adoption",
   "addPet": "Add pet",
-  "updatePetInformation": "Update pet information",
-  "editPet": "Edit pet",
 
   "petName": "Pet name",
 
@@ -24,8 +22,8 @@
   "months": "Months",
   "years": "Years",
 
-  "ageValue": "Age value",
-  "petLocation": "Pet location",
+  "ageValue": "Age",
+  "petLocation": "Location",
 
   "details": "Details",
   "vaccinated": "Vaccinated",
@@ -40,5 +38,100 @@
   "high": "High",
 
   "petDescription": "Pet description (character, house trained, special needs, good with other pets etc.)",
-  "petPhoto": "Pet photo"
+  "petPhoto": "Pet photo",
+
+  "sortOption": "Choose sort option",
+  "date": "Date",
+  "cancel": "Cancel",
+
+  "sortOrder": "Choose sort order",
+  "ascending": "Ascending",
+  "descending": "Descending",
+
+  "searchOption": "Choose search option",
+  "description": "Description",
+  "searchCriteria": "Search criteria",
+  "search": "Search",
+
+  "filterOption": "Choose filter option",
+  "filter": "Filter",
+  
+  "sortedBy": "Sorted by",
+  "searchFor": "Search for",
+  "filteredBy": "Filtered by",
+
+  "day": "day",
+  "month": "month",
+  "year": "year",
+  "addedOn": "Added on",
+  "noDetails": "No details",
+  "noDescription": "No description",
+
+  "adoptPet": "Adopt pet",
+  "readyToAdopt": "Are you ready to adopt",
+  "yes": "Yes",
+  "nevermind": "Nevermind",
+
+  "edit": "Edit",
+  "updatePetInformation": "Update pet information",
+  "editPet": "Edit pet",
+  "readyToSaveChanges": "Are you sure you want to save the changes for",
+
+  "delete": "Delete",
+  "readyToDelete": "Are you sure you want to delete",
+
+  "display": "Display",
+  "notifications": "Notifications",
+
+  "language": "Language",
+  "chooseLanguage": "Choose language",
+  "en": "English",
+  "ro": "Romanian",
+  "es": "Spanish",
+
+  "theme": "Theme",
+  "chooseTheme": "Choose theme",
+  "dark": "Dark",
+  "purple": "Purple",
+  "blue": "Blue",
+
+  "general": "General",
+  "account": "Account",
+  "adoptedPets": "Adopted pets",
+  "admin": "Admin",
+  "logout": "Logout",
+
+  "disabledLocation": "The location services on this device are currently disabled!",
+  "deniedForeverLocation": "The location services on this device are forever denied!",
+  "deniedLocation": "The location services on this device are currently denied!",
+  "unavailableLocation": "Location services are currently unavailable!",
+
+  "unavailableAddPet": "Adding a pet is currently unavailable!",
+
+  "emptyNameTitle": "Empty name",
+  "emptyName": "name must not be empty!",
+  "shortNameTitle": "Short name",
+  "shortName": "name must be at least 2 characters in length!",
+  "incorrectNameTitle": "Incorrect name",
+  "incorrectName": "name must contain at least one upper case character!",
+
+  "emptyPasswordTitle": "Empty password",
+  "emptyPassword": "The password must not be empty!",
+  "shortPasswordTitle": "Short password",
+  "shortPassword": "The password must be at least 8 characters in length!",
+  "notComplexPasswordTitle": "Password not complex enough",
+  "lowerCaseCharacterPassword": "The password must contain at least one lower case character!",
+  "upperCaseCharacterPassword": "The password must contain at least one upper case character!",
+  "digitCharacterPassword": "The password must contain at least one digit!",
+  "specialCharacterPassword": "The password must contain at least one special character (!, *, -, +, =, ~)!",
+
+  "emptyFieldTitle": "Empty field",
+  "emptyField": "must not be empty!",
+
+  "ok": "OK",
+
+  "imagePickerTitle": "Pick a photo of your pet",
+  "gallery": "Gallery",
+  "camera": "Camera",
+  "imagePickerError": "Image picker error"
 }

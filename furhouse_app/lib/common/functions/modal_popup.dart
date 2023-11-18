@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:furhouse_app/common/constants/colors.dart';
 import 'package:furhouse_app/common/constants/picker_values.dart';
@@ -9,12 +10,12 @@ Future<String?> sortOptionModalPopup(BuildContext context) async {
   return await showCupertinoModalPopup<String>(
     context: context,
     builder: (BuildContext context) => CupertinoActionSheet(
-      title: const Text(
-        style: TextStyle(
+      title: Text(
+        style: const TextStyle(
           color: Colors.black,
           fontWeight: FontWeight.bold,
         ),
-        "Choose sort option",
+        AppLocalizations.of(context)?.sortOption ?? "",
       ),
       actions: <Widget>[
         CupertinoActionSheetAction(
@@ -26,7 +27,7 @@ Future<String?> sortOptionModalPopup(BuildContext context) async {
               color: darkBlueColor,
               fontWeight: FontWeight.w400,
             ),
-            "Name",
+            AppLocalizations.of(context)?.petName ?? "",
           ),
         ),
         CupertinoActionSheetAction(
@@ -38,7 +39,7 @@ Future<String?> sortOptionModalPopup(BuildContext context) async {
               color: darkBlueColor,
               fontWeight: FontWeight.w400,
             ),
-            "Age",
+            AppLocalizations.of(context)?.ageValue ?? "",
           ),
         ),
         CupertinoActionSheetAction(
@@ -50,7 +51,7 @@ Future<String?> sortOptionModalPopup(BuildContext context) async {
               color: darkBlueColor,
               fontWeight: FontWeight.w400,
             ),
-            "Date",
+            AppLocalizations.of(context)?.date ?? "",
           ),
         ),
       ],
@@ -59,12 +60,12 @@ Future<String?> sortOptionModalPopup(BuildContext context) async {
         onPressed: () {
           Navigator.pop(context, "cancel");
         },
-        child: const Text(
-          "Cancel",
-          style: TextStyle(
+        child: Text(
+          style: const TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
           ),
+          AppLocalizations.of(context)?.cancel ?? "",
         ),
       ),
     ),
@@ -75,12 +76,12 @@ void _sortOrderModalPopup(BuildContext context, String option) {
   showCupertinoModalPopup(
     context: context,
     builder: (BuildContext context) => CupertinoActionSheet(
-      title: const Text(
-        style: TextStyle(
+      title: Text(
+        style: const TextStyle(
           color: Colors.black,
           fontWeight: FontWeight.bold,
         ),
-        "Choose sort order",
+        AppLocalizations.of(context)?.sortOrder ?? "",
       ),
       actions: <Widget>[
         CupertinoActionSheetAction(
@@ -93,7 +94,7 @@ void _sortOrderModalPopup(BuildContext context, String option) {
               color: darkBlueColor,
               fontWeight: FontWeight.w400,
             ),
-            "Ascending",
+            AppLocalizations.of(context)?.ascending ?? "",
           ),
         ),
         CupertinoActionSheetAction(
@@ -106,7 +107,7 @@ void _sortOrderModalPopup(BuildContext context, String option) {
               color: darkBlueColor,
               fontWeight: FontWeight.w400,
             ),
-            "Descending",
+            AppLocalizations.of(context)?.descending ?? "",
           ),
         ),
       ],
@@ -116,12 +117,12 @@ void _sortOrderModalPopup(BuildContext context, String option) {
           Navigator.pop(context, "cancel");
           Navigator.pop(context, "cancel");
         },
-        child: const Text(
-          "Cancel",
-          style: TextStyle(
+        child: Text(
+          style: const TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
           ),
+          AppLocalizations.of(context)?.cancel ?? "",
         ),
       ),
     ),
@@ -129,15 +130,17 @@ void _sortOrderModalPopup(BuildContext context, String option) {
 }
 
 Future<String?> filterOptionModalPopup(BuildContext context) async {
+  print(AppLocalizations.of(context)?.gender);
+
   return await showCupertinoModalPopup<String>(
     context: context,
     builder: (BuildContext context) => CupertinoActionSheet(
-      title: const Text(
-        style: TextStyle(
+      title: Text(
+        style: const TextStyle(
           color: Colors.black,
           fontWeight: FontWeight.bold,
         ),
-        "Choose filter option",
+        AppLocalizations.of(context)?.filterOption ?? "",
       ),
       actions: <Widget>[
         CupertinoActionSheetAction(
@@ -149,7 +152,7 @@ Future<String?> filterOptionModalPopup(BuildContext context) async {
               color: darkBlueColor,
               fontWeight: FontWeight.w400,
             ),
-            "Gender",
+            AppLocalizations.of(context)?.gender ?? "",
           ),
         ),
         CupertinoActionSheetAction(
@@ -161,7 +164,7 @@ Future<String?> filterOptionModalPopup(BuildContext context) async {
               color: darkBlueColor,
               fontWeight: FontWeight.w400,
             ),
-            "Category",
+            AppLocalizations.of(context)?.category ?? "",
           ),
         ),
         CupertinoActionSheetAction(
@@ -173,7 +176,7 @@ Future<String?> filterOptionModalPopup(BuildContext context) async {
               color: darkBlueColor,
               fontWeight: FontWeight.w400,
             ),
-            "Breed",
+            AppLocalizations.of(context)?.breed ?? "",
           ),
         ),
         CupertinoActionSheetAction(
@@ -185,7 +188,7 @@ Future<String?> filterOptionModalPopup(BuildContext context) async {
               color: darkBlueColor,
               fontWeight: FontWeight.w400,
             ),
-            "Details",
+            AppLocalizations.of(context)?.details ?? "",
           ),
         ),
         CupertinoActionSheetAction(
@@ -197,7 +200,7 @@ Future<String?> filterOptionModalPopup(BuildContext context) async {
               color: darkBlueColor,
               fontWeight: FontWeight.w400,
             ),
-            "Priority",
+            AppLocalizations.of(context)?.priority ?? "",
           ),
         ),
       ],
@@ -206,12 +209,12 @@ Future<String?> filterOptionModalPopup(BuildContext context) async {
         onPressed: () {
           Navigator.pop(context, "cancel");
         },
-        child: const Text(
-          "Cancel",
-          style: TextStyle(
+        child: Text(
+          style: const TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
           ),
+          AppLocalizations.of(context)?.cancel ?? "",
         ),
       ),
     ),
@@ -233,6 +236,41 @@ Widget _computePopupBuilderValues(BuildContext context, String option) {
   List<String> pickerValues = priorityValues;
   double? dropdownHeight = 100;
   currentItemIndex = 0;
+
+  genderValues = [
+    "male",
+    "female",
+  ];
+
+  categoryValues = [
+    "cat",
+    "dog",
+    "rabbit",
+    "rodent",
+    "bird",
+  ];
+
+  ageUnitValues = [
+    "days",
+    "months",
+    "years",
+  ];
+
+  detailsValues = [
+    "vaccinated",
+    "sterilized",
+    "pastTrauma",
+    "injured",
+    "none",
+  ];
+
+  priorityValues = [
+    "low",
+    "medium",
+    "high",
+  ];
+
+  _computeTranslationsForPickerValues(context);
 
   switch (option) {
     case "gender":
@@ -256,6 +294,204 @@ Widget _computePopupBuilderValues(BuildContext context, String option) {
   }
 
   return _filterPopupBuilder(context, dropdownHeight, pickerValues, option);
+}
+
+String _computePickerTranslation(String value, BuildContext context) {
+  var translation = "";
+
+  switch (value) {
+    case "male":
+      {
+        translation = AppLocalizations.of(context)?.male ?? "";
+      }
+      break;
+
+    case "female":
+      {
+        translation = AppLocalizations.of(context)?.female ?? "";
+      }
+      break;
+
+    case "cat":
+      {
+        translation = AppLocalizations.of(context)?.cat ?? "";
+      }
+      break;
+
+    case "dog":
+      {
+        translation = AppLocalizations.of(context)?.dog ?? "";
+      }
+      break;
+
+    case "rabbit":
+      {
+        translation = AppLocalizations.of(context)?.rabbit ?? "";
+      }
+      break;
+
+    case "rodent":
+      {
+        translation = AppLocalizations.of(context)?.rodent ?? "";
+      }
+      break;
+
+    case "bird":
+      {
+        translation = AppLocalizations.of(context)?.bird ?? "";
+      }
+      break;
+
+    case "vaccinated":
+      {
+        translation = AppLocalizations.of(context)?.vaccinated ?? "";
+      }
+      break;
+
+    case "sterilized":
+      {
+        translation = AppLocalizations.of(context)?.sterilized ?? "";
+      }
+      break;
+
+    case "pastTrauma":
+      {
+        translation = AppLocalizations.of(context)?.pastTrauma ?? "";
+      }
+      break;
+
+    case "injured":
+      {
+        translation = AppLocalizations.of(context)?.injured ?? "";
+      }
+      break;
+
+    case "none":
+      {
+        translation = AppLocalizations.of(context)?.none ?? "";
+      }
+      break;
+
+    case "low":
+      {
+        translation = AppLocalizations.of(context)?.low ?? "";
+      }
+      break;
+
+    case "medium":
+      {
+        translation = AppLocalizations.of(context)?.medium ?? "";
+      }
+      break;
+
+    case "high":
+      {
+        translation = AppLocalizations.of(context)?.high ?? "";
+      }
+      break;
+
+    case "name":
+      {
+        translation = AppLocalizations.of(context)?.petName ?? "";
+      }
+      break;
+
+    case "age":
+      {
+        translation = AppLocalizations.of(context)?.ageValue ?? "";
+      }
+      break;
+
+    case "date":
+      {
+        translation = AppLocalizations.of(context)?.date ?? "";
+      }
+      break;
+
+    case "ascending":
+      {
+        translation = AppLocalizations.of(context)?.ascending ?? "";
+      }
+      break;
+
+    case "descending":
+      {
+        translation = AppLocalizations.of(context)?.descending ?? "";
+      }
+      break;
+
+    case "location":
+      {
+        translation = AppLocalizations.of(context)?.petLocation ?? "";
+      }
+      break;
+
+    case "description":
+      {
+        translation = AppLocalizations.of(context)?.description ?? "";
+      }
+      break;
+  }
+
+  return translation;
+}
+
+void _computeTranslationsForPickerValues(BuildContext context) {
+  List<String> translationsList = <String>[];
+  String translation;
+
+  // gender
+  for (var gender in genderValues) {
+    translation = _computePickerTranslation(gender, context);
+    translationsList.add(translation);
+  }
+
+  genderValues.clear();
+  genderValues.addAll(translationsList);
+
+  // category
+  translationsList.clear();
+
+  for (var category in categoryValues) {
+    translation = _computePickerTranslation(category, context);
+    translationsList.add(translation);
+  }
+
+  categoryValues.clear();
+  categoryValues.addAll(translationsList);
+
+  // age unit
+  translationsList.clear();
+
+  for (var ageUnit in ageUnitValues) {
+    translation = _computePickerTranslation(ageUnit, context);
+    translationsList.add(translation);
+  }
+
+  ageUnitValues.clear();
+  ageUnitValues.addAll(translationsList);
+
+  // details
+  translationsList.clear();
+
+  for (var detail in detailsValues) {
+    translation = _computePickerTranslation(detail, context);
+    translationsList.add(translation);
+  }
+
+  detailsValues.clear();
+  detailsValues.addAll(translationsList);
+
+  // priority
+  translationsList.clear();
+
+  for (var priority in priorityValues) {
+    translation = _computePickerTranslation(priority, context);
+    translationsList.add(translation);
+  }
+
+  priorityValues.clear();
+  priorityValues.addAll(translationsList);
 }
 
 Widget _filterPopupBuilder(BuildContext context, double dropdownHeight,
@@ -332,11 +568,11 @@ Widget _filterPopupBuilder(BuildContext context, double dropdownHeight,
             Navigator.pop(context, "cancel");
             Navigator.pop(context, "$option, $selectedItem");
           },
-          child: const Text(
-            "Filter",
-            style: TextStyle(
+          child: Text(
+            style: const TextStyle(
               color: Colors.black,
             ),
+            AppLocalizations.of(context)?.filter ?? "",
           ),
         ),
       ),
@@ -369,11 +605,11 @@ Widget _filterPopupBuilder(BuildContext context, double dropdownHeight,
           onPressed: () {
             Navigator.pop(context, "cancel");
           },
-          child: const Text(
-            "Cancel",
-            style: TextStyle(
+          child: Text(
+            style: const TextStyle(
               color: Colors.black,
             ),
+            AppLocalizations.of(context)?.cancel ?? "",
           ),
         ),
       ),
@@ -386,12 +622,12 @@ Future<String?> searchOptionModalPopup(
   return await showCupertinoModalPopup<String>(
     context: context,
     builder: (BuildContext context) => CupertinoActionSheet(
-      title: const Text(
-        style: TextStyle(
+      title: Text(
+        style: const TextStyle(
           color: Colors.black,
           fontWeight: FontWeight.bold,
         ),
-        "Choose search option",
+        AppLocalizations.of(context)?.searchOption ?? "",
       ),
       actions: <Widget>[
         CupertinoActionSheetAction(
@@ -404,7 +640,7 @@ Future<String?> searchOptionModalPopup(
               color: darkBlueColor,
               fontWeight: FontWeight.w400,
             ),
-            "Location",
+            AppLocalizations.of(context)?.petLocation ?? "",
           ),
         ),
         CupertinoActionSheetAction(
@@ -417,7 +653,7 @@ Future<String?> searchOptionModalPopup(
               color: darkBlueColor,
               fontWeight: FontWeight.w400,
             ),
-            "Description",
+            AppLocalizations.of(context)?.description ?? "",
           ),
         ),
       ],
@@ -426,12 +662,12 @@ Future<String?> searchOptionModalPopup(
         onPressed: () {
           Navigator.pop(context, "cancel");
         },
-        child: const Text(
-          "Cancel",
-          style: TextStyle(
+        child: Text(
+          style: const TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
           ),
+          AppLocalizations.of(context)?.cancel ?? "",
         ),
       ),
     ),
@@ -480,8 +716,8 @@ Widget _searchPopupBuilder(BuildContext context, String option,
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
                 ),
-                child: const Text(
-                  "Search Criteria",
+                child: Text(
+                  AppLocalizations.of(context)?.searchCriteria ?? "",
                 ),
               ),
               const SizedBox(
@@ -546,11 +782,11 @@ Widget _searchPopupBuilder(BuildContext context, String option,
             Navigator.pop(context,
                 "${option.toLowerCase()}, ${textEditingController.text}");
           },
-          child: const Text(
-            "Search",
-            style: TextStyle(
+          child: Text(
+            style: const TextStyle(
               color: Colors.black,
             ),
+            AppLocalizations.of(context)?.search ?? "",
           ),
         ),
       ),
@@ -583,11 +819,11 @@ Widget _searchPopupBuilder(BuildContext context, String option,
           onPressed: () {
             Navigator.pop(context, "cancel");
           },
-          child: const Text(
-            "Cancel",
-            style: TextStyle(
+          child: Text(
+            style: const TextStyle(
               color: Colors.black,
             ),
+            AppLocalizations.of(context)?.cancel ?? "",
           ),
         ),
       ),
@@ -599,12 +835,12 @@ Future<String?> languageOptionModalPopup(BuildContext context) async {
   return await showCupertinoModalPopup<String>(
     context: context,
     builder: (BuildContext context) => CupertinoActionSheet(
-      title: const Text(
-        style: TextStyle(
+      title: Text(
+        style: const TextStyle(
           color: Colors.black,
           fontWeight: FontWeight.bold,
         ),
-        "Choose language",
+        AppLocalizations.of(context)?.chooseLanguage ?? "",
       ),
       actions: <Widget>[
         CupertinoActionSheetAction(
@@ -616,7 +852,7 @@ Future<String?> languageOptionModalPopup(BuildContext context) async {
               color: darkBlueColor,
               fontWeight: FontWeight.w400,
             ),
-            "English",
+            AppLocalizations.of(context)?.en ?? "",
           ),
         ),
         CupertinoActionSheetAction(
@@ -628,7 +864,7 @@ Future<String?> languageOptionModalPopup(BuildContext context) async {
               color: darkBlueColor,
               fontWeight: FontWeight.w400,
             ),
-            "Romanian",
+            AppLocalizations.of(context)?.ro ?? "",
           ),
         ),
         CupertinoActionSheetAction(
@@ -640,7 +876,7 @@ Future<String?> languageOptionModalPopup(BuildContext context) async {
               color: darkBlueColor,
               fontWeight: FontWeight.w400,
             ),
-            "Spanish",
+            AppLocalizations.of(context)?.es ?? "",
           ),
         ),
       ],
@@ -649,12 +885,12 @@ Future<String?> languageOptionModalPopup(BuildContext context) async {
         onPressed: () {
           Navigator.pop(context, "cancel");
         },
-        child: const Text(
-          "Cancel",
-          style: TextStyle(
+        child: Text(
+          style: const TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
           ),
+          AppLocalizations.of(context)?.cancel ?? "",
         ),
       ),
     ),
@@ -665,12 +901,12 @@ Future<String?> themeOptionModalPopup(BuildContext context) async {
   return await showCupertinoModalPopup<String>(
     context: context,
     builder: (BuildContext context) => CupertinoActionSheet(
-      title: const Text(
-        style: TextStyle(
+      title: Text(
+        style: const TextStyle(
           color: Colors.black,
           fontWeight: FontWeight.bold,
         ),
-        "Choose theme",
+        AppLocalizations.of(context)?.theme ?? "",
       ),
       actions: <Widget>[
         CupertinoActionSheetAction(
@@ -682,7 +918,7 @@ Future<String?> themeOptionModalPopup(BuildContext context) async {
               color: darkBlueColor,
               fontWeight: FontWeight.w400,
             ),
-            "Dark",
+            AppLocalizations.of(context)?.dark ?? "",
           ),
         ),
         CupertinoActionSheetAction(
@@ -694,7 +930,7 @@ Future<String?> themeOptionModalPopup(BuildContext context) async {
               color: darkBlueColor,
               fontWeight: FontWeight.w400,
             ),
-            "Purple",
+            AppLocalizations.of(context)?.purple ?? "",
           ),
         ),
         CupertinoActionSheetAction(
@@ -706,7 +942,7 @@ Future<String?> themeOptionModalPopup(BuildContext context) async {
               color: darkBlueColor,
               fontWeight: FontWeight.w400,
             ),
-            "Blue",
+            AppLocalizations.of(context)?.blue ?? "",
           ),
         ),
       ],
@@ -715,12 +951,12 @@ Future<String?> themeOptionModalPopup(BuildContext context) async {
         onPressed: () {
           Navigator.pop(context, "cancel");
         },
-        child: const Text(
-          "Cancel",
-          style: TextStyle(
+        child: Text(
+          style: const TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
           ),
+          AppLocalizations.of(context)?.cancel ?? "",
         ),
       ),
     ),

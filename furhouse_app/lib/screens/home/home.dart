@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:furhouse_app/screens/home/home_tab.dart';
 import 'package:furhouse_app/screens/home/add_pet_tab.dart';
@@ -75,7 +74,214 @@ class _HomeState extends State<Home> {
 
     allBreedValues.sort();
 
+    genderValues = [
+      "male",
+      "female",
+    ];
+
+    categoryValues = [
+      "cat",
+      "dog",
+      "rabbit",
+      "rodent",
+      "bird",
+    ];
+
+    ageUnitValues = [
+      "days",
+      "months",
+      "years",
+    ];
+
+    detailsValues = [
+      "vaccinated",
+      "sterilized",
+      "pastTrauma",
+      "injured",
+      "none",
+    ];
+
+    priorityValues = [
+      "low",
+      "medium",
+      "high",
+    ];
+
     super.initState();
+  }
+
+  void _computeTranslationsForPickerValues(BuildContext context) {
+    List<String> translationsList = <String>[];
+    String translation;
+
+    // gender
+    for (var gender in genderValues) {
+      translation = _computePickerTranslation(gender, context);
+      translationsList.add(translation);
+    }
+
+    genderValues.clear();
+    genderValues.addAll(translationsList);
+
+    // category
+    translationsList.clear();
+
+    for (var category in categoryValues) {
+      translation = _computePickerTranslation(category, context);
+      translationsList.add(translation);
+    }
+
+    categoryValues.clear();
+    categoryValues.addAll(translationsList);
+
+    // age unit
+    translationsList.clear();
+
+    for (var ageUnit in ageUnitValues) {
+      translation = _computePickerTranslation(ageUnit, context);
+      translationsList.add(translation);
+    }
+
+    ageUnitValues.clear();
+    ageUnitValues.addAll(translationsList);
+
+    // details
+    translationsList.clear();
+
+    for (var detail in detailsValues) {
+      translation = _computePickerTranslation(detail, context);
+      translationsList.add(translation);
+    }
+
+    detailsValues.clear();
+    detailsValues.addAll(translationsList);
+
+    // priority
+    translationsList.clear();
+
+    for (var priority in priorityValues) {
+      translation = _computePickerTranslation(priority, context);
+      translationsList.add(translation);
+    }
+
+    priorityValues.clear();
+    priorityValues.addAll(translationsList);
+  }
+
+  String _computePickerTranslation(String value, BuildContext context) {
+    var translation = "";
+
+    switch (value) {
+      case "male":
+        {
+          translation = AppLocalizations.of(context)?.male ?? "";
+        }
+        break;
+
+      case "female":
+        {
+          translation = AppLocalizations.of(context)?.female ?? "";
+        }
+        break;
+
+      case "cat":
+        {
+          translation = AppLocalizations.of(context)?.cat ?? "";
+        }
+        break;
+
+      case "dog":
+        {
+          translation = AppLocalizations.of(context)?.dog ?? "";
+        }
+        break;
+
+      case "rabbit":
+        {
+          translation = AppLocalizations.of(context)?.rabbit ?? "";
+        }
+        break;
+
+      case "rodent":
+        {
+          translation = AppLocalizations.of(context)?.rodent ?? "";
+        }
+        break;
+
+      case "bird":
+        {
+          translation = AppLocalizations.of(context)?.bird ?? "";
+        }
+        break;
+
+      case "days":
+        {
+          translation = AppLocalizations.of(context)?.days ?? "";
+        }
+        break;
+
+      case "months":
+        {
+          translation = AppLocalizations.of(context)?.months ?? "";
+        }
+        break;
+
+      case "years":
+        {
+          translation = AppLocalizations.of(context)?.years ?? "";
+        }
+        break;
+
+      case "vaccinated":
+        {
+          translation = AppLocalizations.of(context)?.vaccinated ?? "";
+        }
+        break;
+
+      case "sterilized":
+        {
+          translation = AppLocalizations.of(context)?.sterilized ?? "";
+        }
+        break;
+
+      case "pastTrauma":
+        {
+          translation = AppLocalizations.of(context)?.pastTrauma ?? "";
+        }
+        break;
+
+      case "injured":
+        {
+          translation = AppLocalizations.of(context)?.injured ?? "";
+        }
+        break;
+
+      case "none":
+        {
+          translation = AppLocalizations.of(context)?.none ?? "";
+        }
+        break;
+
+      case "low":
+        {
+          translation = AppLocalizations.of(context)?.low ?? "";
+        }
+        break;
+
+      case "medium":
+        {
+          translation = AppLocalizations.of(context)?.medium ?? "";
+        }
+        break;
+
+      case "high":
+        {
+          translation = AppLocalizations.of(context)?.high ?? "";
+        }
+        break;
+    }
+
+    return translation;
   }
 
   void _onGoBack(BuildContext context) {
@@ -84,6 +290,8 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    _computeTranslationsForPickerValues(context);
+
     var appBarWidget = AppBar(
       foregroundColor: Colors.white,
       backgroundColor: darkBlueColor,
@@ -119,17 +327,8 @@ class _HomeState extends State<Home> {
     }
 
     return MaterialApp(
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [
-        Locale('en'),
-        Locale('es'),
-        Locale('ro'),
-      ],
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       locale: currentLocale.locale,
       home: DefaultTabController(
         initialIndex: widget.selectedTabIndex,

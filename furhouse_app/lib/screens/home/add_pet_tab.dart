@@ -113,33 +113,77 @@ class _AddPetTabState extends State<AddPetTab> {
     // controller.addListener(() {}) <=> listen on any changes to the controller and do something whenever it does change
     categoryController.addListener(() {
       setState(() {
-        _computeBreedPickerValues(categoryController.text);
+        _computeBreedPickerValues(categoryController.text, context);
       });
     });
 
     super.initState();
   }
 
-  void _computeBreedPickerValues(String category) {
-    if (breedPickerValues != catBreedValues && category == "Cat") {
+  void _computeBreedPickerValues(String category, BuildContext context) {
+    var translatedCat = _computePickerTranslation("cat", context);
+    var translatedDog = _computePickerTranslation("dog", context);
+    var translatedRabbit = _computePickerTranslation("rabbit", context);
+    var translatedRodent = _computePickerTranslation("rodent", context);
+    var translatedBird = _computePickerTranslation("bird", context);
+
+    if (breedPickerValues != catBreedValues && category == translatedCat) {
       breedPickerValues = catBreedValues;
     }
 
-    if (category == "Dog") {
+    if (category == translatedDog) {
       breedPickerValues = dogBreedValues;
     }
 
-    if (category == "Rabbit") {
+    if (category == translatedRabbit) {
       breedPickerValues = rabbitBreedValues;
     }
 
-    if (category == "Rodent") {
+    if (category == translatedRodent) {
       breedPickerValues = rodentBreedValues;
     }
 
-    if (category == "Bird") {
+    if (category == translatedBird) {
       breedPickerValues = birdBreedValues;
     }
+  }
+
+  String _computePickerTranslation(String value, BuildContext context) {
+    var translation = "";
+
+    switch (value) {
+      case "cat":
+        {
+          translation = AppLocalizations.of(context)?.cat ?? "";
+        }
+        break;
+
+      case "dog":
+        {
+          translation = AppLocalizations.of(context)?.dog ?? "";
+        }
+        break;
+
+      case "rabbit":
+        {
+          translation = AppLocalizations.of(context)?.rabbit ?? "";
+        }
+        break;
+
+      case "rodent":
+        {
+          translation = AppLocalizations.of(context)?.rodent ?? "";
+        }
+        break;
+
+      case "bird":
+        {
+          translation = AppLocalizations.of(context)?.bird ?? "";
+        }
+        break;
+    }
+
+    return translation;
   }
 
   void _onSubmitPet(BuildContext context) async {

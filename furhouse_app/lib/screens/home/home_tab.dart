@@ -4,8 +4,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:furhouse_app/common/constants/colors.dart';
 
-import 'package:furhouse_app/common/constants/picker_values.dart';
-
 import 'package:furhouse_app/common/functions/exception_code_handler.dart';
 import 'package:furhouse_app/common/functions/modal_popup.dart';
 
@@ -111,7 +109,7 @@ class _HomeContentState extends State<HomeTab> {
     });
   }
 
-  void _nextPage() {
+  void _nextPage() async {
     setState(() {
       currentPage++;
       startIndex += limit;

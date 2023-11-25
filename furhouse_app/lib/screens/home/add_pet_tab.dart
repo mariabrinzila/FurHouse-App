@@ -8,6 +8,7 @@ import 'package:furhouse_app/screens/pet/pet_page_theme.dart';
 import 'package:furhouse_app/screens/pet/pet_page.dart';
 
 import 'package:furhouse_app/common/constants/picker_values.dart';
+import 'package:furhouse_app/common/constants/others.dart';
 
 import 'package:furhouse_app/common/functions/form_validation.dart';
 import 'package:furhouse_app/common/functions/exception_code_handler.dart';
@@ -245,6 +246,7 @@ class _AddPetTabState extends State<AddPetTab> {
       photoPath: photoController.text,
       dateAdded: DateTime.now().toString(),
       adopted: false,
+      adoptedBy: null,
     );
 
     if (widget.currentPet != null) {
@@ -262,6 +264,17 @@ class _AddPetTabState extends State<AddPetTab> {
           await Pets().update(pet, widget.currentPet!.name, widget.petPhotoURL);
 
       if (message == "Success") {
+        if (notificationService != null) {
+          await notificationService?.showLocalNotification(
+            id: currentNotificationID,
+            title: "Updated pet",
+            body: "You have just updated ${pet.name}!",
+            payload: "A pet has been updated",
+          );
+
+          currentNotificationID++;
+        }
+
         if (context.mounted) {
           _navigateToPetPage(context, pet);
         }
@@ -274,6 +287,17 @@ class _AddPetTabState extends State<AddPetTab> {
       final message = await Pets().insert(pet);
 
       if (message == "Success") {
+        if (notificationService != null) {
+          await notificationService?.showLocalNotification(
+            id: currentNotificationID,
+            title: "Added pet",
+            body: "You have just added ${pet.name}!",
+            payload: "A new pet has been added",
+          );
+
+          currentNotificationID++;
+        }
+
         nameController.clear();
         genderController.clear();
         categoryController.clear();

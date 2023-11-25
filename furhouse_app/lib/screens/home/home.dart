@@ -107,6 +107,10 @@ class _HomeState extends State<Home> {
       "high",
     ];
 
+    if (notificationService != null) {
+      notificationService?.initializePlatformNotifications();
+    }
+
     super.initState();
   }
 

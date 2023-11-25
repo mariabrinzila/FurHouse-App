@@ -38,7 +38,8 @@ class Pets {
             description TEXT,
             user_email TEXT NOT NULL,
             date_added TEXT NOT NULL,
-            adopted INTEGER NOT NULL
+            adopted INTEGER NOT NULL,
+            adopted_by TEXT
           )
       ''',
     );
@@ -151,6 +152,7 @@ class Pets {
         photoPath: "",
         dateAdded: pet["date_added"],
         adopted: pet["adopted"] == 0 ? false : true,
+        adoptedBy: pet["adopted_by"],
       );
 
       currentPet.id = pet["pet_id"];
@@ -337,12 +339,13 @@ class Pets {
     }
   }
 
-  Future<String> updateAdoptPet(int petId) async {
+  Future<String> updateAdoptPet(int petId, String userEmail) async {
     try {
       await init();
 
       // update the adopt field for the current pet accordingly
-      var query = "UPDATE $_table SET adopted = 1 WHERE pet_id = $petId";
+      var query =
+          "UPDATE $_table SET adopted = 1, adopted_by = '$userEmail' WHERE pet_id = $petId";
 
       await _database.rawQuery(query);
 
@@ -511,6 +514,7 @@ class Pets {
         photoPath: '',
         dateAdded: petObject["date_added"],
         adopted: petObject["adopted"],
+        adoptedBy: petObject["adopted_by"],
       );
 
       var photoURL =

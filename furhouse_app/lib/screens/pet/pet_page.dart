@@ -7,6 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:furhouse_app/screens/home/home.dart';
 
 import 'package:furhouse_app/common/constants/colors.dart';
+import 'package:furhouse_app/common/constants/others.dart';
 
 import 'package:furhouse_app/common/functions/exception_code_handler.dart';
 import 'package:furhouse_app/common/functions/confirm_action.dart';
@@ -75,6 +76,17 @@ class _PetPageState extends State<PetPage> {
         widget.petObject.userEmail, widget.petObject.name);
 
     if (message == "Success") {
+      if (notificationService != null) {
+        await notificationService?.showLocalNotification(
+          id: currentNotificationID,
+          title: "Deleted pet",
+          body: "You have just deleted ${widget.petObject.name}!",
+          payload: "A pet has been deleted",
+        );
+
+        currentNotificationID++;
+      }
+
       if (context.mounted) {
         _navigateToHome(context);
       }
@@ -106,9 +118,26 @@ class _PetPageState extends State<PetPage> {
       return;
     }
 
-    final message = await Pets().updateAdoptPet(widget.petObject.petId);
+    var currentUser = Authentication().getCurrentUser();
+    var userEmail = currentUser != null ? (currentUser.email ?? "") : "";
+
+    final message = await Pets().updateAdoptPet(
+      widget.petObject.petId,
+      userEmail,
+    );
 
     if (message == "Success") {
+      if (notificationService != null) {
+        await notificationService?.showLocalNotification(
+          id: currentNotificationID,
+          title: "Adopted pet",
+          body: "You have just adopted ${widget.petObject.name}!",
+          payload: "A pet has been adopted",
+        );
+
+        currentNotificationID++;
+      }
+
       if (context.mounted) {
         _navigateToHome(context);
       }

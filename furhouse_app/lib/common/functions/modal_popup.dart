@@ -130,8 +130,6 @@ void _sortOrderModalPopup(BuildContext context, String option) {
 }
 
 Future<String?> filterOptionModalPopup(BuildContext context) async {
-  print(AppLocalizations.of(context)?.gender);
-
   return await showCupertinoModalPopup<String>(
     context: context,
     builder: (BuildContext context) => CupertinoActionSheet(

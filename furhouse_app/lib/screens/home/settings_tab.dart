@@ -1,17 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:furhouse_app/common/constants/others.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:furhouse_app/main_display.dart';
+import 'package:furhouse_app/screens/your_pets/your_pets_theme.dart';
+import 'package:furhouse_app/screens/your_pets/your_pets.dart';
 
 import 'package:furhouse_app/common/constants/colors.dart';
+import 'package:furhouse_app/common/constants/others.dart';
 
 import 'package:furhouse_app/common/functions/modal_popup.dart';
 
 import 'package:furhouse_app/common/widget_templates/settings_list_tile.dart';
 
+import 'package:furhouse_app/services/notifications.dart';
 import 'package:furhouse_app/services/authentication.dart';
 
 class SettingsTab extends StatefulWidget {
@@ -32,15 +35,37 @@ class _SettingsTabState extends State<SettingsTab> {
     color: Colors.white,
   );
 
+  @override
+  void initState() {
+    if (notificationService == null) {
+      switchTileValue = false;
+    }
+
+    super.initState();
+  }
+
   void _onSwitchTileChangeValue(bool newValue) {
     setState(() {
       switchTileValue = newValue;
+
+      if (newValue) {
+        notificationService = Notifications();
+        currentNotificationID = 0;
+      } else {
+        notificationService?.cancelAllNotifications();
+
+        notificationService = null;
+      }
 
       switchTileIcon = Icon(
         newValue ? CupertinoIcons.bell_fill : CupertinoIcons.bell_slash_fill,
         color: Colors.white,
       );
     });
+
+    if (context.mounted) {
+      _navigateToLanding(context);
+    }
   }
 
   void _onLanguageChange(BuildContext context) async {
@@ -53,6 +78,17 @@ class _SettingsTabState extends State<SettingsTab> {
     setState(() {
       currentLocale.setLocale = languageCode;
     });
+
+    if (notificationService != null) {
+      await notificationService?.showLocalNotification(
+        id: currentNotificationID,
+        title: "Changed language",
+        body: "You have just changed the language to $languageCode!",
+        payload: "The language has been changed",
+      );
+
+      currentNotificationID++;
+    }
 
     if (context.mounted) {
       _navigateToLanding(context);
@@ -110,6 +146,17 @@ class _SettingsTabState extends State<SettingsTab> {
         break;
     }
 
+    if (notificationService != null) {
+      await notificationService?.showLocalNotification(
+        id: currentNotificationID,
+        title: "Changed theme",
+        body: "You have just changed the theme to $theme!",
+        payload: "The theme has been changed",
+      );
+
+      currentNotificationID++;
+    }
+
     if (context.mounted) {
       _navigateToLanding(context);
     }
@@ -127,6 +174,17 @@ class _SettingsTabState extends State<SettingsTab> {
       MaterialPageRoute(
         maintainState: false,
         builder: (context) => MainDisplay(),
+      ),
+    );
+  }
+
+  void _navigateToYourPets(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const YourPetsTheme(
+          childWidget: YourPets(),
+        ),
       ),
     );
   }
@@ -279,8 +337,10 @@ class _SettingsTabState extends State<SettingsTab> {
           trailingIcon: trailingIcon,
         ),
         SettingsListTile(
-          onTap: () {},
-          tileTitle: AppLocalizations.of(context)?.adoptedPets ?? "",
+          onTap: () {
+            _navigateToYourPets(context);
+          },
+          tileTitle: AppLocalizations.of(context)?.yourPets ?? "",
           leadingIcon: const Icon(
             Icons.pets_outlined,
             color: Colors.white,

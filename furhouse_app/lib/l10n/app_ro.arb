@@ -133,5 +133,8 @@
   "imagePickerTitle": "Alege o poză cu animalul tău de companie",
   "gallery": "Galerie",
   "camera": "Cameră",
-  "imagePickerError": "Eroare la selectare imaginii"
+  "imagePickerError": "Eroare la selectare imaginii",
+
+  "addedPets": "Animale adăugate",
+  "adoptedPets": "Animale adoptate"
 }

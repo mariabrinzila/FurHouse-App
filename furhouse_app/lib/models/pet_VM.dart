@@ -16,22 +16,23 @@ class PetVM {
   final bool adopted;
   final String? adoptedBy;
 
-  PetVM(
-      {required this.name,
-      required this.gender,
-      required this.category,
-      required this.breed,
-      required this.ageUnit,
-      required this.ageValue,
-      required this.location,
-      required this.details,
-      required this.priority,
-      required this.description,
-      required this.userEmail,
-      required this.photoPath,
-      required this.dateAdded,
-      required this.adopted,
-      required this.adoptedBy});
+  PetVM({
+    required this.name,
+    required this.gender,
+    required this.category,
+    required this.breed,
+    required this.ageUnit,
+    required this.ageValue,
+    required this.location,
+    required this.details,
+    required this.priority,
+    required this.description,
+    required this.userEmail,
+    required this.photoPath,
+    required this.dateAdded,
+    required this.adopted,
+    required this.adoptedBy,
+  });
 
   set id(int identifier) {
     petId = identifier;

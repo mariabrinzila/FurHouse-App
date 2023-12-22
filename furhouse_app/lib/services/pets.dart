@@ -253,6 +253,56 @@ class Pets {
     }
   }
 
+  Future<Map<String, PetVM>> readAddedPets(String userEmail) async {
+    try {
+      await init();
+
+      final List<Map<String, dynamic>> pets = await _database.query(
+        _table,
+        where: "adopted = 0 AND user_email = ?",
+        whereArgs: [userEmail],
+        orderBy: "date_added DESC",
+      );
+
+      await closeDatabase();
+
+      if (pets.isEmpty) {
+        throw "No available data!";
+      }
+
+      var petDataMap = _computePetMapFromDatabaseData(pets);
+
+      return petDataMap;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, PetVM>> readAdoptedPets(String userEmail) async {
+    try {
+      await init();
+
+      final List<Map<String, dynamic>> pets = await _database.query(
+        _table,
+        where: "adopted = 1 AND adopted_by = ?",
+        whereArgs: [userEmail],
+        orderBy: "date_added DESC",
+      );
+
+      await closeDatabase();
+
+      if (pets.isEmpty) {
+        throw "No available data!";
+      }
+
+      var petDataMap = _computePetMapFromDatabaseData(pets);
+
+      return petDataMap;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<String> update(
       PetVM pet, String previousName, String? petPhotoURL) async {
     try {

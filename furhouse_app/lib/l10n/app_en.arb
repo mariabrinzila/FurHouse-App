@@ -133,5 +133,8 @@
   "imagePickerTitle": "Pick a photo of your pet",
   "gallery": "Gallery",
   "camera": "Camera",
-  "imagePickerError": "Image picker error"
+  "imagePickerError": "Image picker error",
+
+  "addedPets": "Added pets",
+  "adoptedPets": "Adopted pets"
 }

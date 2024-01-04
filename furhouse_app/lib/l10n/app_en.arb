@@ -136,5 +136,28 @@
   "imagePickerError": "Image picker error",
 
   "addedPets": "Added pets",
-  "adoptedPets": "Adopted pets"
+  "adoptedPets": "Adopted pets",
+
+  "changeAccount": "Change account",
+  "email": "Email",
+  "password": "Password",
+  "birthday": "Birthday",
+  "firstName": "First name",
+  "lastName": "Last name",
+  
+  "otherActions": "Other actions",
+  "verifyEmail": "Verify email",
+  "deleteAccount": "Delete account",
+
+  "changeYourEmail": "Change your email",
+  "submitChange": "Submit change",
+
+  "changeYourPassword": "Change your password",
+  "newPassword": "New password",
+
+  "changeYourFirstName": "Change your first name",
+  "newFirstName": "New first name",
+
+  "changeYourLastName": "Change your last name",
+  "newLastName": "New last name"
 }

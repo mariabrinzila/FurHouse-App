@@ -26,14 +26,14 @@ class YourPets extends StatefulWidget {
 }
 
 class _YourPetsState extends State<YourPets> {
+  Color addedPetsButtonColor = lightBlueColor;
+  Color adoptedPetsButtonColor = darkBlueColor;
+
   Map<String, PetVM> petMap = <String, PetVM>{};
+
   final ScrollController _homeScrollbar = ScrollController();
 
-  Widget content = const Center(
-    child: Text(
-      "Your added pets here",
-    ),
-  );
+  late Widget content;
 
   @override
   void initState() {
@@ -64,7 +64,7 @@ class _YourPetsState extends State<YourPets> {
   Widget _generateListItemContainer(int index) {
     return Container(
       margin: const EdgeInsets.only(
-        top: 5,
+        top: 10,
         bottom: 15,
         left: 15,
         right: 15,
@@ -97,6 +97,11 @@ class _YourPetsState extends State<YourPets> {
         petMap = value;
       });
     });
+
+    setState(() {
+      addedPetsButtonColor = darkBlueColor;
+      adoptedPetsButtonColor = lightBlueColor;
+    });
   }
 
   void _addedPets() {
@@ -104,6 +109,11 @@ class _YourPetsState extends State<YourPets> {
       setState(() {
         petMap = value;
       });
+    });
+
+    setState(() {
+      addedPetsButtonColor = lightBlueColor;
+      adoptedPetsButtonColor = darkBlueColor;
     });
   }
 
@@ -152,6 +162,7 @@ class _YourPetsState extends State<YourPets> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               TabElevatedButtonStyle(
+                buttonColor: addedPetsButtonColor,
                 prefixIcon: const Icon(
                   Icons.add_circle_outlined,
                   size: 20,
@@ -162,6 +173,7 @@ class _YourPetsState extends State<YourPets> {
                 },
               ),
               TabElevatedButtonStyle(
+                buttonColor: adoptedPetsButtonColor,
                 prefixIcon: const Icon(
                   Icons.home_filled,
                   size: 20,

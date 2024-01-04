@@ -136,5 +136,28 @@
   "imagePickerError": "Error en el selector de imágenes",
 
   "addedPets": "Mascotas agregadas",
-  "adoptedPets": "Mascotas adoptadas"
+  "adoptedPets": "Mascotas adoptadas",
+
+  "changeAccount": "Cambiar cuenta",
+  "email": "Correo electrónico",
+  "password": "Contraseña",
+  "birthday": "Cumpleaños",
+  "firstName": "Nombre de pila",
+  "lastName": "Apellido",
+
+  "otherActions": "Otras acciones",
+  "verifyEmail": "Verificar correo electrónico",
+  "deleteAccount": "Borrar cuenta",
+
+  "changeYourEmail": "Cambia tu correo electrónico",
+  "submitChange": "Enviar cambio",
+
+  "changeYourPassword": "Cambia tu contraseña",
+  "newPassword": "Nueva contraseña",
+
+  "changeYourFirstName": "Cambia tu nombre",
+  "newFirstName": "Nuevo primer nombre",
+
+  "changeYourLastName": "Cambia tu apellido",
+  "newLastName": "Nuevo apellido"
 }

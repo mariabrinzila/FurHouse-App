@@ -59,6 +59,16 @@ class Authentication {
     }
   }
 
+  Future<String> updateUserEmail(String newEmail) async {
+    try {
+      return "Success";
+    } on FirebaseAuthException catch (e) {
+      return e.code;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
   void logout() {
     FirebaseAuth.instance.signOut();
   }

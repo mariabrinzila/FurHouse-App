@@ -4,12 +4,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:furhouse_app/common/constants/colors.dart';
 
 class TabElevatedButtonStyle extends StatelessWidget {
+  final Color buttonColor;
   final Icon prefixIcon;
   final String buttonText;
   final void Function() onTap;
 
   const TabElevatedButtonStyle({
     super.key,
+    required this.buttonColor,
     required this.prefixIcon,
     required this.buttonText,
     required this.onTap,
@@ -22,7 +24,7 @@ class TabElevatedButtonStyle extends StatelessWidget {
       height: 40,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: darkerBlueColor,
+          backgroundColor: buttonColor,
           shadowColor: darkerBlueColor,
           textStyle: GoogleFonts.merriweather(
             fontSize: 15,

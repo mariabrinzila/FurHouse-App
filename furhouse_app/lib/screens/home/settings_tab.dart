@@ -4,8 +4,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:furhouse_app/main_display.dart';
-import 'package:furhouse_app/screens/your_pets/your_pets_theme.dart';
-import 'package:furhouse_app/screens/your_pets/your_pets.dart';
+import 'package:furhouse_app/screens/settings/account/account_theme.dart';
+import 'package:furhouse_app/screens/settings/account/account.dart';
+import 'package:furhouse_app/screens/settings/your_pets/your_pets_theme.dart';
+import 'package:furhouse_app/screens/settings/your_pets/your_pets.dart';
 
 import 'package:furhouse_app/common/constants/colors.dart';
 import 'package:furhouse_app/common/constants/others.dart';
@@ -162,18 +164,23 @@ class _SettingsTabState extends State<SettingsTab> {
     }
   }
 
-  void _onLogout(BuildContext context) {
-    Authentication().logout();
-
-    _navigateToLanding(context);
-  }
-
   void _navigateToLanding(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(
         maintainState: false,
         builder: (context) => MainDisplay(),
+      ),
+    );
+  }
+
+  void _navigateToAccount(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const AccountTheme(
+          childWidget: Account(),
+        ),
       ),
     );
   }
@@ -187,6 +194,12 @@ class _SettingsTabState extends State<SettingsTab> {
         ),
       ),
     );
+  }
+
+  void _onLogout(BuildContext context) {
+    Authentication().logout();
+
+    _navigateToLanding(context);
   }
 
   @override
@@ -328,7 +341,9 @@ class _SettingsTabState extends State<SettingsTab> {
           height: 5,
         ),
         SettingsListTile(
-          onTap: () {},
+          onTap: () {
+            _navigateToAccount(context);
+          },
           tileTitle: AppLocalizations.of(context)?.account ?? "",
           leadingIcon: const Icon(
             Icons.settings,

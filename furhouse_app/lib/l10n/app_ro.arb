@@ -136,5 +136,28 @@
   "imagePickerError": "Eroare la selectare imaginii",
 
   "addedPets": "Animale adăugate",
-  "adoptedPets": "Animale adoptate"
+  "adoptedPets": "Animale adoptate",
+
+  "changeAccount": "Schimbă setările contului",
+  "email": "Email",
+  "password": "Parolă",
+  "birthday": "Ziua de naștere",
+  "firstName": "Prenume",
+  "lastName": "Nume",
+
+  "otherActions": "Alte acțiuni",
+  "verifyEmail": "Verifică emailul",
+  "deleteAccount": "Șterge contul",
+
+  "changeYourEmail": "Schimbați-vă emailul",
+  "submitChange": "Confirmă modificarea",
+
+  "changeYourPassword": "Schimbați-vă parola",
+  "newPassword": "Parola nouă",
+
+  "changeYourFirstName": "Schimbați-vă prenumele",
+  "newFirstName": "Prenume nou",
+
+  "changeYourLastName": "Schimbați-vă numele",
+  "newLastName": "Nume nou"
 }

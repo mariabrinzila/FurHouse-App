@@ -1118,18 +1118,19 @@ Widget _changeEmailPopupBuilder(BuildContext context, String currentEmail,
   );
 }
 
-Future<String?> changePasswordModalPopup(
-    BuildContext context, TextEditingController textEditingController) async {
+Future<String?> changePasswordModalPopup(BuildContext context,
+    TextEditingController textEditingController, bool newPassword) async {
   return await showCupertinoModalPopup<String>(
     context: context,
     builder: (context) {
-      return _changePasswordPopupBuilder(context, textEditingController);
+      return _changePasswordPopupBuilder(
+          context, textEditingController, newPassword);
     },
   );
 }
 
-Widget _changePasswordPopupBuilder(
-    BuildContext context, TextEditingController textEditingController) {
+Widget _changePasswordPopupBuilder(BuildContext context,
+    TextEditingController textEditingController, bool newPassword) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
@@ -1161,7 +1162,11 @@ Widget _changePasswordPopupBuilder(
                   fontWeight: FontWeight.bold,
                 ),
                 child: Text(
-                  AppLocalizations.of(context)?.changeYourPassword ?? "",
+                  newPassword
+                      ? AppLocalizations.of(context)?.changeYourPassword ?? ""
+                      : AppLocalizations.of(context)
+                              ?.reauthenticateWithPassword ??
+                          "",
                 ),
               ),
               const SizedBox(
@@ -1177,8 +1182,9 @@ Widget _changePasswordPopupBuilder(
                   height: 45,
                   child: CupertinoTextField(
                     obscureText: true,
-                    placeholder:
-                        AppLocalizations.of(context)?.newPassword ?? "",
+                    placeholder: newPassword
+                        ? AppLocalizations.of(context)?.newPassword ?? ""
+                        : AppLocalizations.of(context)?.oldPassword ?? "",
                     controller: textEditingController,
                     prefix: Container(
                       margin: const EdgeInsets.only(

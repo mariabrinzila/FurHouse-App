@@ -1,12 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:furhouse_app/main_display.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter/services.dart';
 
 import 'package:furhouse_app/common/constants/colors.dart';
+import 'package:furhouse_app/common/constants/others.dart';
 
 import 'package:furhouse_app/common/functions/modal_popup.dart';
 import 'package:furhouse_app/common/functions/exception_code_handler.dart';
+import 'package:furhouse_app/common/functions/form_validation.dart';
 
 import 'package:furhouse_app/common/widget_templates/settings_list_tile.dart';
 
@@ -25,6 +29,7 @@ class Account extends StatefulWidget {
 
 class _AccountState extends State<Account> {
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _oldPasswordController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _birthdayController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
@@ -39,16 +44,107 @@ class _AccountState extends State<Account> {
 
     _emailController.clear();
 
-    print(emailModalResult);
+    String? oldPasswordModalResult;
+
+    if (context.mounted &&
+        emailModalResult != null &&
+        emailModalResult != "cancel") {
+      oldPasswordModalResult = await changePasswordModalPopup(
+          context, _oldPasswordController, false);
+
+      _oldPasswordController.clear();
+    }
+
+    if (emailModalResult != null &&
+        emailModalResult != "cancel" &&
+        oldPasswordModalResult != null &&
+        oldPasswordModalResult != "cancel") {
+      if (context.mounted) {
+        if (emailValidation(emailModalResult, context)) return;
+      }
+
+      // update first name in the database
+      var updateFieldMessage = await Authentication()
+          .updateUserEmail(emailModalResult, oldPasswordModalResult);
+
+      if (updateFieldMessage != "Success") {
+        if (context.mounted) {
+          registerExceptionHandler(context, updateFieldMessage);
+        }
+      } else {
+        if (notificationService != null) {
+          await notificationService?.showLocalNotification(
+            id: currentNotificationID,
+            title: "Updated email",
+            body: "You have just updated your email!",
+            payload: "Your email has been changed",
+          );
+
+          currentNotificationID++;
+        }
+
+        if (context.mounted) _navigateToLanding(context);
+      }
+    }
+  }
+
+  void _navigateToLanding(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MainDisplay(),
+      ),
+    );
   }
 
   void _changePassword(BuildContext context) async {
     var passwordModalResult =
-        await changePasswordModalPopup(context, _passwordController);
+        await changePasswordModalPopup(context, _passwordController, true);
 
     _passwordController.clear();
 
-    print(passwordModalResult);
+    String? oldPasswordModalResult;
+
+    if (context.mounted &&
+        passwordModalResult != null &&
+        passwordModalResult != "cancel") {
+      oldPasswordModalResult = await changePasswordModalPopup(
+          context, _oldPasswordController, false);
+
+      _oldPasswordController.clear();
+    }
+
+    if (passwordModalResult != null &&
+        passwordModalResult != "cancel" &&
+        oldPasswordModalResult != null &&
+        oldPasswordModalResult != "cancel") {
+      if (context.mounted) {
+        if (passwordValidation(passwordModalResult, context)) return;
+      }
+
+      // update first name in the database
+      var updateFieldMessage = await Authentication()
+          .updatePassword(passwordModalResult, oldPasswordModalResult);
+
+      if (updateFieldMessage != "Success") {
+        if (context.mounted) {
+          registerExceptionHandler(context, updateFieldMessage);
+        }
+      } else {
+        if (notificationService != null) {
+          await notificationService?.showLocalNotification(
+            id: currentNotificationID,
+            title: "Updated password",
+            body: "You have just updated your password!",
+            payload: "Your password has been changed",
+          );
+
+          currentNotificationID++;
+        }
+
+        if (context.mounted) _navigateToLanding(context);
+      }
+    }
   }
 
   void _changeBirthday(BuildContext context) async {
@@ -68,9 +164,35 @@ class _AccountState extends State<Account> {
       if (context.mounted) {
         var birthdayModalResult = await changeBirthdayModalPopup(
             context, _birthdayController, previousBirthday);
+
         _birthdayController.clear();
 
-        print(birthdayModalResult);
+        if (birthdayModalResult != null && birthdayModalResult != "cancel") {
+          if (context.mounted) {
+            if (nonEmptyField(birthdayModalResult, "birthday", context)) return;
+          }
+
+          // update first name in the database
+          var updateFieldMessage =
+              await Authentication().updateBirthday(birthdayModalResult);
+
+          if (updateFieldMessage != "Success") {
+            if (context.mounted) {
+              registerExceptionHandler(context, updateFieldMessage);
+            }
+          } else {
+            if (notificationService != null) {
+              await notificationService?.showLocalNotification(
+                id: currentNotificationID,
+                title: "Updated birthday",
+                body: "You have just updated your birthday!",
+                payload: "Your birthday has been changed",
+              );
+
+              currentNotificationID++;
+            }
+          }
+        }
       }
     } else {
       if (context.mounted) {
@@ -85,6 +207,7 @@ class _AccountState extends State<Account> {
     var currentUser = Authentication().getCurrentUser();
     String currentUserEmail = currentUser?.email ?? "";
 
+    // get the user's current first name from the database
     var getFirstNameMessage = await Authentication()
         .getInformationForUser(currentUserEmail, "first_name");
 
@@ -101,7 +224,32 @@ class _AccountState extends State<Account> {
 
         _firstNameController.clear();
 
-        print(firstNameModalResult);
+        if (firstNameModalResult != null && firstNameModalResult != "cancel") {
+          if (context.mounted) {
+            if (nameValidation(firstNameModalResult, "first", context)) return;
+          }
+
+          // update first name in the database
+          var updateFieldMessage =
+              await Authentication().updateFirstName(firstNameModalResult);
+
+          if (updateFieldMessage != "Success") {
+            if (context.mounted) {
+              registerExceptionHandler(context, updateFieldMessage);
+            }
+          } else {
+            if (notificationService != null) {
+              await notificationService?.showLocalNotification(
+                id: currentNotificationID,
+                title: "Updated first name",
+                body: "You have just updated your first name!",
+                payload: "Your first name has been changed",
+              );
+
+              currentNotificationID++;
+            }
+          }
+        }
       }
     } else {
       if (context.mounted) {
@@ -132,7 +280,32 @@ class _AccountState extends State<Account> {
 
         _lastNameController.clear();
 
-        print(lastNameModalResult);
+        if (lastNameModalResult != null && lastNameModalResult != "cancel") {
+          if (context.mounted) {
+            if (nameValidation(lastNameModalResult, "last", context)) return;
+          }
+
+          // update first name in the database
+          var updateFieldMessage =
+              await Authentication().updateLastName(lastNameModalResult);
+
+          if (updateFieldMessage != "Success") {
+            if (context.mounted) {
+              registerExceptionHandler(context, updateFieldMessage);
+            }
+          } else {
+            if (notificationService != null) {
+              await notificationService?.showLocalNotification(
+                id: currentNotificationID,
+                title: "Updated last name",
+                body: "You have just updated your last name!",
+                payload: "Your last name has been changed",
+              );
+
+              currentNotificationID++;
+            }
+          }
+        }
       }
     } else {
       if (context.mounted) {

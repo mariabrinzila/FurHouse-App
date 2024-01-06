@@ -151,9 +151,11 @@
 
   "changeYourEmail": "Schimbați-vă emailul",
   "submitChange": "Confirmă modificarea",
+  "reauthenticateWithPassword": "Trebuie să scrieți parola pentru a putea face schimbările",
 
   "changeYourPassword": "Schimbați-vă parola",
   "newPassword": "Parola nouă",
+  "oldPassword": "Parola veche",
 
   "changeYourFirstName": "Schimbați-vă prenumele",
   "changeYourLastName": "Schimbați-vă numele"

@@ -151,9 +151,11 @@
 
   "changeYourEmail": "Cambia tu correo electrónico",
   "submitChange": "Enviar cambio",
+  "reauthenticateWithPassword": "Debes proporcionar tu contraseña para realizar los cambios",
 
   "changeYourPassword": "Cambia tu contraseña",
   "newPassword": "Nueva contraseña",
+  "oldPassword": "Contraseña anterior",
 
   "changeYourFirstName": "Cambia tu nombre",
   "changeYourLastName": "Cambia tu apellido"

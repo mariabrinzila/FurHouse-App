@@ -91,6 +91,10 @@ class Pets {
     try {
       await init();
 
+      //await _database.rawQuery("ALTER TABLE $_table ADD adopted_by TEXT");
+      //await _database.rawQuery("DELETE FROM $_table WHERE adopted = 1");
+      //await _database.rawQuery("DELETE FROM $_table WHERE name = 'Alba'");
+
       var query = "SELECT COUNT(*) FROM $_table WHERE adopted = 0";
 
       final total = Sqflite.firstIntValue(

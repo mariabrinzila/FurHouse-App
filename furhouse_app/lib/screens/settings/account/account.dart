@@ -26,6 +26,7 @@ class Account extends StatefulWidget {
 class _AccountState extends State<Account> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _birthdayController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
 
@@ -50,22 +51,96 @@ class _AccountState extends State<Account> {
     print(passwordModalResult);
   }
 
+  void _changeBirthday(BuildContext context) async {
+    var currentUser = Authentication().getCurrentUser();
+    String currentUserEmail = currentUser?.email ?? "";
+
+    var getBirthdayMessage = await Authentication()
+        .getInformationForUser(currentUserEmail, "birthday");
+
+    if (getBirthdayMessage.contains("Success")) {
+      var getBirthdayArray = getBirthdayMessage.split(":");
+
+      if (getBirthdayArray.length < 2) return;
+
+      var previousBirthday = getBirthdayArray[1];
+
+      if (context.mounted) {
+        var birthdayModalResult = await changeBirthdayModalPopup(
+            context, _birthdayController, previousBirthday);
+        _birthdayController.clear();
+
+        print(birthdayModalResult);
+      }
+    } else {
+      if (context.mounted) {
+        otherExceptionsHandler(context, getBirthdayMessage);
+
+        return;
+      }
+    }
+  }
+
   void _changeFirstName(BuildContext context) async {
-    var firstNameModalResult =
-        await changeFirstNameModalPopup(context, _firstNameController);
+    var currentUser = Authentication().getCurrentUser();
+    String currentUserEmail = currentUser?.email ?? "";
 
-    _firstNameController.clear();
+    var getFirstNameMessage = await Authentication()
+        .getInformationForUser(currentUserEmail, "first_name");
 
-    print(firstNameModalResult);
+    if (getFirstNameMessage.contains("Success")) {
+      var getFirstNameArray = getFirstNameMessage.split(":");
+
+      if (getFirstNameArray.length < 2) return;
+
+      var previousFirstName = getFirstNameArray[1];
+
+      if (context.mounted) {
+        var firstNameModalResult = await changeFirstNameModalPopup(
+            context, _firstNameController, previousFirstName);
+
+        _firstNameController.clear();
+
+        print(firstNameModalResult);
+      }
+    } else {
+      if (context.mounted) {
+        otherExceptionsHandler(context, getFirstNameMessage);
+
+        return;
+      }
+    }
   }
 
   void _changeLastName(BuildContext context) async {
-    var lastNameModalResult =
-        await changeLastNameModalPopup(context, _lastNameController);
+    var currentUser = Authentication().getCurrentUser();
+    String currentUserEmail = currentUser?.email ?? "";
 
-    _lastNameController.clear();
+    var getLastNameMessage = await Authentication()
+        .getInformationForUser(currentUserEmail, "last_name");
 
-    print(lastNameModalResult);
+    if (getLastNameMessage.contains("Success")) {
+      var getLastNameArray = getLastNameMessage.split(":");
+
+      if (getLastNameArray.length < 2) return;
+
+      var previousLastName = getLastNameArray[1];
+
+      if (context.mounted) {
+        var lastNameModalResult = await changeLastNameModalPopup(
+            context, _lastNameController, previousLastName);
+
+        _lastNameController.clear();
+
+        print(lastNameModalResult);
+      }
+    } else {
+      if (context.mounted) {
+        otherExceptionsHandler(context, getLastNameMessage);
+
+        return;
+      }
+    }
   }
 
   @override
@@ -142,7 +217,9 @@ class _AccountState extends State<Account> {
           trailingIcon: trailingIcon,
         ),
         SettingsListTile(
-          onTap: () {},
+          onTap: () {
+            _changeBirthday(context);
+          },
           tileTitle: AppLocalizations.of(context)?.birthday ?? "",
           leadingIcon: const Icon(
             Icons.calendar_month,

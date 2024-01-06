@@ -156,8 +156,5 @@
   "newPassword": "Parola nouă",
 
   "changeYourFirstName": "Schimbați-vă prenumele",
-  "newFirstName": "Prenume nou",
-
-  "changeYourLastName": "Schimbați-vă numele",
-  "newLastName": "Nume nou"
+  "changeYourLastName": "Schimbați-vă numele"
 }

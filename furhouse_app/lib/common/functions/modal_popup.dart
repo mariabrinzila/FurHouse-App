@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 
 import 'package:furhouse_app/common/constants/colors.dart';
 import 'package:furhouse_app/common/constants/picker_values.dart';
@@ -1274,18 +1275,160 @@ Widget _changePasswordPopupBuilder(
   );
 }
 
-Future<String?> changeFirstNameModalPopup(
-    BuildContext context, TextEditingController textEditingController) async {
+DateTime currentDate = DateTime(DateTime.now().year - 17);
+
+Future<String?> changeBirthdayModalPopup(BuildContext context,
+    TextEditingController textEditingController, String currentBirthday) async {
+  var currentBirthdayDateTime = DateFormat.yMMMd().parse(currentBirthday);
+
+  currentDate = currentBirthdayDateTime;
+
   return await showCupertinoModalPopup<String>(
     context: context,
     builder: (context) {
-      return _changeFirstNamePopupBuilder(context, textEditingController);
+      return _changeBirthdayModalPopupBuilder(context, textEditingController);
     },
   );
 }
 
-Widget _changeFirstNamePopupBuilder(
+Widget _changeBirthdayModalPopupBuilder(
     BuildContext context, TextEditingController textEditingController) {
+  // only accept users that are at least 18 years old
+  var maximumDateTime = DateTime(DateTime.now().year - 17);
+
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.end,
+    children: [
+      Container(
+        height: 170,
+        margin: const EdgeInsets.only(
+          left: 5,
+          right: 5,
+        ),
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 234, 238, 241).withOpacity(
+            0.9,
+          ),
+          borderRadius: const BorderRadius.all(
+            Radius.circular(
+              15,
+            ),
+          ),
+        ),
+        child: SafeArea(
+          top: false,
+          child: CupertinoDatePicker(
+            backgroundColor: Colors.white,
+            initialDateTime: currentDate,
+            maximumDate: maximumDateTime,
+            mode: CupertinoDatePickerMode.date,
+            onDateTimeChanged: (DateTime pickedDate) {
+              _onDatePick(pickedDate, currentDate, textEditingController);
+            },
+          ),
+        ),
+      ),
+      const SizedBox(
+        height: 7,
+      ),
+      Container(
+        margin: const EdgeInsets.only(
+          left: 5,
+          right: 5,
+        ),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+            minimumSize: const Size.fromHeight(
+              60,
+            ),
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(
+                  15,
+                ),
+              ),
+            ),
+            textStyle: GoogleFonts.roboto(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          onPressed: () {
+            Navigator.pop(context, textEditingController.text);
+          },
+          child: Text(
+            style: const TextStyle(
+              color: Colors.black,
+            ),
+            AppLocalizations.of(context)?.submitChange ?? "",
+          ),
+        ),
+      ),
+      const SizedBox(
+        height: 7,
+      ),
+      Container(
+        margin: const EdgeInsets.only(
+          left: 5,
+          right: 5,
+        ),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+            minimumSize: const Size.fromHeight(
+              60,
+            ),
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(
+                  15,
+                ),
+              ),
+            ),
+            textStyle: GoogleFonts.roboto(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          onPressed: () {
+            Navigator.pop(context, "cancel");
+          },
+          child: Text(
+            style: const TextStyle(
+              color: Colors.black,
+            ),
+            AppLocalizations.of(context)?.cancel ?? "",
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
+void _onDatePick(DateTime pickedDate, DateTime currentDate,
+    TextEditingController textEditingController) {
+  var formattedDate = DateFormat.yMMMd().format(pickedDate);
+
+  currentDate = pickedDate;
+  textEditingController.text = formattedDate.toString();
+}
+
+Future<String?> changeFirstNameModalPopup(
+    BuildContext context,
+    TextEditingController textEditingController,
+    String currentFirstName) async {
+  return await showCupertinoModalPopup<String>(
+    context: context,
+    builder: (context) {
+      return _changeFirstNamePopupBuilder(
+          context, textEditingController, currentFirstName);
+    },
+  );
+}
+
+Widget _changeFirstNamePopupBuilder(BuildContext context,
+    TextEditingController textEditingController, String currentFirstName) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
@@ -1332,8 +1475,7 @@ Widget _changeFirstNamePopupBuilder(
                 child: SizedBox(
                   height: 45,
                   child: CupertinoTextField(
-                    placeholder:
-                        AppLocalizations.of(context)?.newFirstName ?? "",
+                    placeholder: currentFirstName,
                     controller: textEditingController,
                     prefix: Container(
                       margin: const EdgeInsets.only(
@@ -1430,18 +1572,19 @@ Widget _changeFirstNamePopupBuilder(
   );
 }
 
-Future<String?> changeLastNameModalPopup(
-    BuildContext context, TextEditingController textEditingController) async {
+Future<String?> changeLastNameModalPopup(BuildContext context,
+    TextEditingController textEditingController, String currentLastName) async {
   return await showCupertinoModalPopup<String>(
     context: context,
     builder: (context) {
-      return _changeLastNamePopupBuilder(context, textEditingController);
+      return _changeLastNamePopupBuilder(
+          context, textEditingController, currentLastName);
     },
   );
 }
 
-Widget _changeLastNamePopupBuilder(
-    BuildContext context, TextEditingController textEditingController) {
+Widget _changeLastNamePopupBuilder(BuildContext context,
+    TextEditingController textEditingController, String currentLastName) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
@@ -1488,8 +1631,7 @@ Widget _changeLastNamePopupBuilder(
                 child: SizedBox(
                   height: 45,
                   child: CupertinoTextField(
-                    placeholder:
-                        AppLocalizations.of(context)?.newLastName ?? "",
+                    placeholder: currentLastName,
                     controller: textEditingController,
                     prefix: Container(
                       margin: const EdgeInsets.only(

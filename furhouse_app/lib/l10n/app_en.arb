@@ -156,8 +156,5 @@
   "newPassword": "New password",
 
   "changeYourFirstName": "Change your first name",
-  "newFirstName": "New first name",
-
-  "changeYourLastName": "Change your last name",
-  "newLastName": "New last name"
+  "changeYourLastName": "Change your last name"
 }

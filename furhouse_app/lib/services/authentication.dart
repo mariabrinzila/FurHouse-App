@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -59,9 +61,43 @@ class Authentication {
     }
   }
 
+  Future<String> getInformationForUser(
+      String userEmail, String information) async {
+    try {
+      DatabaseReference databaseRef =
+          FirebaseDatabase.instance.ref().child("users");
+
+      var snapshot = await databaseRef
+          .orderByChild("email")
+          .equalTo(userEmail)
+          .limitToFirst(1)
+          .get();
+
+      var petData = Map<String, dynamic>.from(snapshot.value as LinkedHashMap);
+      var userInformation = "";
+
+      for (var key in petData.keys) {
+        var petObject = petData[key];
+
+        userInformation = petObject[information];
+      }
+
+      return "Success:$userInformation";
+    } on FirebaseAuthException catch (e) {
+      return e.code;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
   Future<String> updateUserEmail(String newEmail) async {
     try {
-      return "Success";
+      var message = "";
+      var currentUser = FirebaseAuth.instance.currentUser;
+
+      currentUser?.updateEmail(newEmail);
+
+      return message;
     } on FirebaseAuthException catch (e) {
       return e.code;
     } catch (e) {

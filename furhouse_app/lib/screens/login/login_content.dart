@@ -4,7 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:furhouse_app/screens/register/register.dart';
 import 'package:furhouse_app/screens/home/home.dart';
 
+import 'package:furhouse_app/common/functions/modal_popup.dart';
 import 'package:furhouse_app/common/functions/exception_code_handler.dart';
+import 'package:furhouse_app/common/functions/confirm_action.dart';
 
 import 'package:furhouse_app/common/widget_templates/cupertino_text_field_style.dart';
 import 'package:furhouse_app/common/widget_templates/outlined_button_style.dart';
@@ -19,6 +21,27 @@ class LoginContent extends StatelessWidget {
   LoginContent({
     super.key,
   });
+
+  void _onForgottenPassword(BuildContext context) async {
+    var userEmail = await submitEmailModalPopup(context, _emailController);
+
+    _emailController.clear();
+
+    if (userEmail == null || userEmail == "cancel") return;
+
+    var resetPasswordMessage = await Authentication().resetPassword(userEmail);
+
+    if (resetPasswordMessage != "Success") {
+      if (context.mounted) {
+        otherExceptionsHandler(context, resetPasswordMessage);
+      }
+    } else {
+      if (context.mounted) {
+        actionDoneDialog(
+            context, "An email for resetting your password has been sent!");
+      }
+    }
+  }
 
   void _navigateToRegister(BuildContext context) {
     Navigator.push(
@@ -108,7 +131,9 @@ class LoginContent extends StatelessWidget {
               height: 15,
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                _onForgottenPassword(context);
+              },
               child: Text(
                 "Forgot password?",
                 style: GoogleFonts.merriweather(

@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 import 'package:furhouse_app/models/user_VM.dart';
-import 'package:intl/intl.dart';
 
 class Authentication {
   User? getCurrentUser() {
@@ -57,6 +56,19 @@ class Authentication {
         email: email,
         password: password,
       );
+
+      return "Success";
+    } on FirebaseAuthException catch (e) {
+      return e.code;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  Future<String> resetPassword(String userEmail) async {
+    try {
+      // send password reset email to user
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: userEmail);
 
       return "Success";
     } on FirebaseAuthException catch (e) {
@@ -363,6 +375,86 @@ class Authentication {
         "birthday": birthday,
         "admin": admin,
       });
+
+      return "Success";
+    } on FirebaseAuthException catch (e) {
+      return e.code;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  Future<String> verifyEmail() async {
+    try {
+      var currentUser = getCurrentUser();
+
+      // send verification email
+      await currentUser?.sendEmailVerification();
+
+      return "Success";
+    } on FirebaseAuthException catch (e) {
+      return e.code;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  Future<void> checkIfEmailIsVerified() async {
+    var currentUser = getCurrentUser();
+
+    // reload user to catch any changes
+    await currentUser?.reload();
+  }
+
+  Future<String> deleteAccount(String password) async {
+    try {
+      var currentUser = getCurrentUser();
+      var userEmail = "";
+
+      if (currentUser != null) {
+        userEmail = currentUser.email ?? "";
+      }
+
+      DatabaseReference databaseRef =
+          FirebaseDatabase.instance.ref().child("users");
+
+      var snapshot = await databaseRef
+          .orderByChild("email")
+          .equalTo(userEmail)
+          .limitToFirst(1)
+          .get();
+
+      var user = Map<String, dynamic>.from(snapshot.value as LinkedHashMap);
+      var userKey = "";
+
+      for (var key in user.keys) {
+        var userObject = user[key];
+
+        userKey = userObject["key"];
+      }
+
+      databaseRef = FirebaseDatabase.instance.ref().child("users/$userKey");
+
+      await databaseRef.remove();
+
+      try {
+        final userCredential = EmailAuthProvider.credential(
+          email: userEmail,
+          password: password,
+        );
+
+        await currentUser
+            ?.reauthenticateWithCredential(userCredential)
+            .then((value) async {
+          await currentUser.delete().catchError((error) {
+            throw (error);
+          });
+        }).catchError((error) {
+          throw (error);
+        });
+      } catch (e) {
+        return e.toString();
+      }
 
       return "Success";
     } on FirebaseAuthException catch (e) {

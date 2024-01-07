@@ -1,9 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:furhouse_app/main_display.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter/services.dart';
 
 import 'package:furhouse_app/common/constants/colors.dart';
 import 'package:furhouse_app/common/constants/others.dart';
@@ -11,6 +12,7 @@ import 'package:furhouse_app/common/constants/others.dart';
 import 'package:furhouse_app/common/functions/modal_popup.dart';
 import 'package:furhouse_app/common/functions/exception_code_handler.dart';
 import 'package:furhouse_app/common/functions/form_validation.dart';
+import 'package:furhouse_app/common/functions/confirm_action.dart';
 
 import 'package:furhouse_app/common/widget_templates/settings_list_tile.dart';
 
@@ -28,12 +30,28 @@ class Account extends StatefulWidget {
 }
 
 class _AccountState extends State<Account> {
+  Timer? timer;
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _oldPasswordController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _birthdayController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
+
+  bool isEmailVerified = false;
+
+  @override
+  void initState() {
+    timer = Timer.periodic(
+        const Duration(
+          seconds: 10,
+        ), (timer) {
+      checkEmailVerification();
+    });
+
+    super.initState();
+  }
 
   void _changeEmail(BuildContext context) async {
     var currentUser = Authentication().getCurrentUser();
@@ -316,12 +334,86 @@ class _AccountState extends State<Account> {
     }
   }
 
+  void _verifyEmail(BuildContext context) async {
+    var verifyEmailMessage = await Authentication().verifyEmail();
+
+    if (verifyEmailMessage != "Success") {
+      if (context.mounted) {
+        otherExceptionsHandler(context, verifyEmailMessage);
+      }
+    } else {
+      if (context.mounted) {
+        actionDoneDialog(context, "A verification email has been sent to you!");
+      }
+    }
+  }
+
+  void checkEmailVerification() async {
+    await Authentication().checkIfEmailIsVerified();
+
+    var currentUser = Authentication().getCurrentUser();
+
+    setState(() {
+      isEmailVerified = currentUser?.emailVerified ?? false;
+    });
+
+    if (isEmailVerified) {
+      timer?.cancel();
+    }
+  }
+
+  void _deleteAccount(BuildContext context) async {
+    final confirmed = await confirmActionDialog(
+        context, "Are you sure you want to delete your account?");
+
+    if (confirmed == "no") {
+      return;
+    }
+
+    String? oldPasswordModalResult;
+
+    if (context.mounted) {
+      oldPasswordModalResult = await changePasswordModalPopup(
+          context, _oldPasswordController, false);
+
+      _oldPasswordController.clear();
+    }
+
+    if (oldPasswordModalResult != null && oldPasswordModalResult != "cancel") {
+      // delete account
+      var deleteAccountMessage =
+          await Authentication().deleteAccount(oldPasswordModalResult);
+
+      if (deleteAccountMessage != "Success") {
+        if (context.mounted) {
+          registerExceptionHandler(context, deleteAccountMessage);
+        }
+      } else {
+        if (notificationService != null) {
+          await notificationService?.showLocalNotification(
+            id: currentNotificationID,
+            title: "Deleted account",
+            body: "You have just deleted your account!",
+            payload: "Your account has been deleted",
+          );
+
+          currentNotificationID++;
+        }
+
+        if (context.mounted) _navigateToLanding(context);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var trailingIcon = const Icon(
       CupertinoIcons.chevron_forward,
       color: Colors.white,
     );
+
+    var currentUser = Authentication().getCurrentUser();
+    var isEmailVerified = currentUser?.emailVerified ?? false;
 
     return ListView(
       padding: const EdgeInsets.only(
@@ -458,17 +550,23 @@ class _AccountState extends State<Account> {
         const SizedBox(
           height: 5,
         ),
-        SettingsListTile(
-          onTap: () {},
-          tileTitle: AppLocalizations.of(context)?.verifyEmail ?? "",
-          leadingIcon: const Icon(
-            Icons.mark_email_read_rounded,
-            color: Colors.white,
+        if (!isEmailVerified) ...[
+          SettingsListTile(
+            onTap: () {
+              _verifyEmail(context);
+            },
+            tileTitle: AppLocalizations.of(context)?.verifyEmail ?? "",
+            leadingIcon: const Icon(
+              Icons.mark_email_read_rounded,
+              color: Colors.white,
+            ),
+            trailingIcon: null,
           ),
-          trailingIcon: null,
-        ),
+        ],
         SettingsListTile(
-          onTap: () {},
+          onTap: () {
+            _deleteAccount(context);
+          },
           tileTitle: AppLocalizations.of(context)?.deleteAccount ?? "",
           leadingIcon: const Icon(
             Icons.delete,
@@ -477,5 +575,12 @@ class _AccountState extends State<Account> {
         ),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+
+    super.dispose();
   }
 }

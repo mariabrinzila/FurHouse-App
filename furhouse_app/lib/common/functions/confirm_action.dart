@@ -50,3 +50,34 @@ Future<String?> confirmActionDialog(BuildContext context, String title) async {
     },
   );
 }
+
+Future<void> actionDoneDialog(BuildContext context, String title) async {
+  showCupertinoDialog(
+    context: context,
+    barrierDismissible: true,
+    builder: (context) {
+      return CupertinoAlertDialog(
+        title: Text(
+          title,
+        ),
+        actions: [
+          TextButton(
+            style: TextButton.styleFrom(
+              foregroundColor: darkerBlueColor,
+              textStyle: GoogleFonts.merriweather(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop("ok");
+            },
+            child: Text(
+              AppLocalizations.of(context)?.ok ?? "",
+            ),
+          ),
+        ],
+      );
+    },
+  );
+}

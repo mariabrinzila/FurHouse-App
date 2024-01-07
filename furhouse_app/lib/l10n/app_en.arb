@@ -155,7 +155,7 @@
 
   "changeYourPassword": "Change your password",
   "newPassword": "New password",
-  "oldPassword": "Old password",
+  "oldPassword": "Current password",
 
   "changeYourFirstName": "Change your first name",
   "changeYourLastName": "Change your last name"

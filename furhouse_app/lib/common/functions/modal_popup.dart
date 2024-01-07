@@ -7,6 +7,161 @@ import 'package:intl/intl.dart';
 import 'package:furhouse_app/common/constants/colors.dart';
 import 'package:furhouse_app/common/constants/picker_values.dart';
 
+Future<String?> submitEmailModalPopup(
+    BuildContext context, TextEditingController textEditingController) async {
+  return await showCupertinoModalPopup<String>(
+    context: context,
+    builder: (context) {
+      return _submitEmailPopupBuilder(context, textEditingController);
+    },
+  );
+}
+
+Widget _submitEmailPopupBuilder(
+    BuildContext context, TextEditingController textEditingController) {
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Container(
+        height: 135,
+        margin: const EdgeInsets.only(
+          left: 5,
+          right: 5,
+        ),
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 234, 238, 241).withOpacity(
+            0.9,
+          ),
+          borderRadius: const BorderRadius.all(
+            Radius.circular(
+              15,
+            ),
+          ),
+        ),
+        child: SafeArea(
+          top: false,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              DefaultTextStyle(
+                style: GoogleFonts.roboto(
+                  color: Colors.black,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+                child: const Text(
+                  "Please submit the email associated with your account",
+                ),
+              ),
+              const SizedBox(
+                height: 7,
+              ),
+              const Divider(
+                color: Colors.black,
+                height: 10,
+              ),
+              CupertinoActionSheetAction(
+                onPressed: () {},
+                child: SizedBox(
+                  height: 45,
+                  child: CupertinoTextField(
+                    placeholder: "Your email",
+                    controller: textEditingController,
+                    prefix: Container(
+                      margin: const EdgeInsets.only(
+                        left: 10,
+                        right: 5,
+                      ),
+                      child: Icon(
+                        CupertinoIcons.envelope_fill,
+                        color: darkBlueColor,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      const SizedBox(
+        height: 7,
+      ),
+      Container(
+        margin: const EdgeInsets.only(
+          left: 5,
+          right: 5,
+        ),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+            minimumSize: const Size.fromHeight(
+              60,
+            ),
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(
+                  15,
+                ),
+              ),
+            ),
+            textStyle: GoogleFonts.roboto(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          onPressed: () {
+            Navigator.pop(context, textEditingController.text);
+          },
+          child: const Text(
+            style: TextStyle(
+              color: Colors.black,
+            ),
+            "Submit changes",
+          ),
+        ),
+      ),
+      const SizedBox(
+        height: 7,
+      ),
+      Container(
+        margin: const EdgeInsets.only(
+          left: 5,
+          right: 5,
+        ),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+            minimumSize: const Size.fromHeight(
+              60,
+            ),
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(
+                  15,
+                ),
+              ),
+            ),
+            textStyle: GoogleFonts.roboto(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          onPressed: () {
+            Navigator.pop(context, "cancel");
+          },
+          child: const Text(
+            style: TextStyle(
+              color: Colors.black,
+            ),
+            "Cancel",
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
 Future<String?> sortOptionModalPopup(BuildContext context) async {
   return await showCupertinoModalPopup<String>(
     context: context,

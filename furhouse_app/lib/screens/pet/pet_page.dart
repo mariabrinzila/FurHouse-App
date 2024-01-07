@@ -120,6 +120,16 @@ class _PetPageState extends State<PetPage> {
 
     var currentUser = Authentication().getCurrentUser();
     var userEmail = currentUser != null ? (currentUser.email ?? "") : "";
+    var isEmailVerified = currentUser?.emailVerified ?? false;
+
+    if (!isEmailVerified) {
+      if (context.mounted) {
+        actionDoneDialog(context,
+            "Your email must be verified to adopt a pet! Go to Settings -> Account to verify your email.");
+      }
+
+      return;
+    }
 
     final message = await Pets().updateAdoptPet(
       widget.petObject.petId,

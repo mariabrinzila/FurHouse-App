@@ -230,6 +230,14 @@ class _AddPetTabState extends State<AddPetTab> {
 
     var currentUser = Authentication().getCurrentUser();
     String currentUserEmail = currentUser?.email ?? "";
+    var isEmailVerified = currentUser?.emailVerified ?? false;
+
+    if (!isEmailVerified) {
+      actionDoneDialog(context,
+          "Your email must be verified to add a pet! Go to Settings -> Account to verify your email.");
+
+      return;
+    }
 
     PetVM pet = PetVM(
       name: nameController.text,

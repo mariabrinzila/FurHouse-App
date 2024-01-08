@@ -343,6 +343,7 @@ class _AddPetTabState extends State<AddPetTab> {
               childWidget: PetPage(
                 petObject: pet,
                 petPhotoURL: petPhotoURL,
+                fromSettings: false,
               ),
             ),
           ),

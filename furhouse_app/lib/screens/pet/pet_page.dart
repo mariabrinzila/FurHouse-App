@@ -22,11 +22,13 @@ import 'package:furhouse_app/services/pets.dart';
 class PetPage extends StatefulWidget {
   final PetVM petObject;
   final String petPhotoURL;
+  final bool fromSettings;
 
   const PetPage({
     super.key,
     required this.petObject,
     required this.petPhotoURL,
+    required this.fromSettings,
   });
 
   @override
@@ -173,6 +175,7 @@ class _PetPageState extends State<PetPage> {
     var addedDate = DateFormat.yMMMMd().format(date);
 
     var currentUser = Authentication().getCurrentUser();
+    var adoptButton = true;
 
     Widget submitButtons = SizedBox(
       width: 200,
@@ -210,6 +213,8 @@ class _PetPageState extends State<PetPage> {
     if (currentUser != null &&
         currentUser.email != null &&
         currentUser.email == widget.petObject.userEmail) {
+      adoptButton = false;
+
       submitButtons = Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -433,7 +438,10 @@ class _PetPageState extends State<PetPage> {
                 const SizedBox(
                   height: 20,
                 ),
-                submitButtons,
+                if (!widget.fromSettings ||
+                    (widget.fromSettings && !adoptButton)) ...[
+                  submitButtons,
+                ],
               ],
             ),
           ),

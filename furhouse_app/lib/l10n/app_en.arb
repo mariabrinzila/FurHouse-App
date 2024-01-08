@@ -158,5 +158,8 @@
   "oldPassword": "Current password",
 
   "changeYourFirstName": "Change your first name",
-  "changeYourLastName": "Change your last name"
+  "changeYourLastName": "Change your last name",
+
+  "manageUsers": "Manage users",
+  "statistics": "Statistics"
 }

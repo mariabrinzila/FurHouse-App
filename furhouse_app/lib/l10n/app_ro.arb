@@ -158,5 +158,8 @@
   "oldPassword": "Parola curentă",
 
   "changeYourFirstName": "Schimbați-vă prenumele",
-  "changeYourLastName": "Schimbați-vă numele"
+  "changeYourLastName": "Schimbați-vă numele",
+
+  "manageUsers": "Gestionați userii",
+  "statistics": "Statistici"
 }

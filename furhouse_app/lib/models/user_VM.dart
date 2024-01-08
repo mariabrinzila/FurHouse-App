@@ -1,4 +1,5 @@
 class UserVM {
+  late String key;
   final String firstName;
   final String lastName;
   final String email;
@@ -14,4 +15,8 @@ class UserVM {
     required this.password,
     required this.admin,
   });
+
+  set id(String uniqueUserId) {
+    key = uniqueUserId;
+  }
 }

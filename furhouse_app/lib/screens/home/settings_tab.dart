@@ -8,6 +8,8 @@ import 'package:furhouse_app/screens/settings/account/account_theme.dart';
 import 'package:furhouse_app/screens/settings/account/account.dart';
 import 'package:furhouse_app/screens/settings/your_pets/your_pets_theme.dart';
 import 'package:furhouse_app/screens/settings/your_pets/your_pets.dart';
+import 'package:furhouse_app/screens/settings/admin/admin_theme.dart';
+import 'package:furhouse_app/screens/settings/admin/admin.dart';
 
 import 'package:furhouse_app/common/constants/colors.dart';
 import 'package:furhouse_app/common/constants/others.dart';
@@ -196,6 +198,17 @@ class _SettingsTabState extends State<SettingsTab> {
     );
   }
 
+  void _navigateToAdmin(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const AdminTheme(
+          childWidget: Admin(),
+        ),
+      ),
+    );
+  }
+
   void _onLogout(BuildContext context) {
     Authentication().logout();
 
@@ -363,7 +376,9 @@ class _SettingsTabState extends State<SettingsTab> {
           trailingIcon: trailingIcon,
         ),
         SettingsListTile(
-          onTap: () {},
+          onTap: () {
+            _navigateToAdmin(context);
+          },
           tileTitle: AppLocalizations.of(context)?.admin ?? "",
           leadingIcon: const Icon(
             Icons.admin_panel_settings_outlined,

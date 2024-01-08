@@ -12,11 +12,13 @@ import 'package:furhouse_app/models/pet_VM.dart';
 class PetCardButton extends StatelessWidget {
   final PetVM petObject;
   final String petPhotoURL;
+  final bool fromSettings;
 
   const PetCardButton({
     super.key,
     required this.petObject,
     required this.petPhotoURL,
+    required this.fromSettings,
   });
 
   void _navigateToPetPage(BuildContext context) async {
@@ -28,6 +30,7 @@ class PetCardButton extends StatelessWidget {
           childWidget: PetPage(
             petObject: petObject,
             petPhotoURL: petPhotoURL,
+            fromSettings: fromSettings,
           ),
         ),
       ),

@@ -90,6 +90,7 @@ class _HomeContentState extends State<HomeTab> {
       child: PetCardButton(
         petObject: petMap.entries.elementAt(index).value,
         petPhotoURL: petMap.entries.elementAt(index).key,
+        fromSettings: false,
       ),
     );
   }

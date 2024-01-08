@@ -72,6 +72,7 @@ class _YourPetsState extends State<YourPets> {
       child: PetCardButton(
         petObject: petMap.entries.elementAt(index).value,
         petPhotoURL: petMap.entries.elementAt(index).key,
+        fromSettings: true,
       ),
     );
   }

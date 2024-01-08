@@ -158,5 +158,8 @@
   "oldPassword": "Contraseña actual",
 
   "changeYourFirstName": "Cambia tu nombre",
-  "changeYourLastName": "Cambia tu apellido"
+  "changeYourLastName": "Cambia tu apellido",
+
+  "manageUsers": "Administrar usuarios",
+  "statistics": "Estadísticas"
 }

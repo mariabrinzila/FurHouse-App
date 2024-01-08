@@ -7,10 +7,10 @@ import 'package:furhouse_app/screens/home/home.dart';
 import 'package:furhouse_app/common/constants/colors.dart';
 import 'package:furhouse_app/common/constants/others.dart';
 
-class YourPetsTheme extends StatelessWidget {
+class AdminTheme extends StatelessWidget {
   final Widget childWidget;
 
-  const YourPetsTheme({
+  const AdminTheme({
     super.key,
     required this.childWidget,
   });

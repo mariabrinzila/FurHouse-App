@@ -5,7 +5,10 @@ import 'package:furhouse_app/common/constants/colors.dart';
 
 class SettingsListTile extends StatelessWidget {
   final void Function() onTap;
+
   final String tileTitle;
+  final bool isTileEnabled;
+
   final Icon leadingIcon;
   final Icon? trailingIcon;
 
@@ -13,6 +16,7 @@ class SettingsListTile extends StatelessWidget {
     super.key,
     required this.onTap,
     required this.tileTitle,
+    required this.isTileEnabled,
     required this.leadingIcon,
     this.trailingIcon,
   });
@@ -26,6 +30,7 @@ class SettingsListTile extends StatelessWidget {
         ),
       ),
       child: ListTile(
+        enabled: isTileEnabled,
         tileColor: darkBlueColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(

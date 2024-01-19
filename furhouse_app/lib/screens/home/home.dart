@@ -46,9 +46,6 @@ class _HomeState extends State<Home> {
         TabStyle(
           iconData: CupertinoIcons.add_circled_solid,
         ),
-        /*TabStyle(
-          iconData: CupertinoIcons.search_circle_fill,
-        ),*/
         TabStyle(
           iconData: CupertinoIcons.settings,
         ),

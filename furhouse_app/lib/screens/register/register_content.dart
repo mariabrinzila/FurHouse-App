@@ -14,7 +14,7 @@ import 'package:furhouse_app/common/widget_templates/elevated_button_style.dart'
 
 import 'package:furhouse_app/models/user_VM.dart';
 
-import 'package:furhouse_app/services/authentication.dart';
+import 'package:furhouse_app/services/users.dart';
 
 class RegisterContent extends StatelessWidget {
   final TextEditingController _firstNameController = TextEditingController();
@@ -64,7 +64,7 @@ class RegisterContent extends StatelessWidget {
       admin: false,
     );
 
-    final message = await Authentication().register(user);
+    final message = await Users().register(user);
 
     if (message == "Success") {
       if (context.mounted) {

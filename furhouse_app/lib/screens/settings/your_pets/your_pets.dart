@@ -12,11 +12,14 @@ import 'package:furhouse_app/common/widget_templates/pet_card_button.dart';
 import 'package:furhouse_app/models/pet_VM.dart';
 
 import 'package:furhouse_app/services/pets.dart';
-import 'package:furhouse_app/services/authentication.dart';
+import 'package:furhouse_app/services/users.dart';
 
 class YourPets extends StatefulWidget {
+  final String userEmail;
+
   const YourPets({
     super.key,
+    required this.userEmail,
   });
 
   @override
@@ -48,10 +51,7 @@ class _YourPetsState extends State<YourPets> {
 
   Future<Map<String, PetVM>> _getAddedPets() async {
     try {
-      var currentUser = Authentication().getCurrentUser();
-      String currentUserEmail = currentUser?.email ?? "";
-
-      var pets = await Pets().readAddedPets(currentUserEmail);
+      var pets = await Pets().readAddedPets(widget.userEmail);
 
       return pets;
     } catch (e) {
@@ -79,10 +79,7 @@ class _YourPetsState extends State<YourPets> {
 
   Future<Map<String, PetVM>> _getAdoptedPets() async {
     try {
-      var currentUser = Authentication().getCurrentUser();
-      String currentUserEmail = currentUser?.email ?? "";
-
-      var pets = await Pets().readAdoptedPets(currentUserEmail);
+      var pets = await Pets().readAdoptedPets(widget.userEmail);
 
       return pets;
     } catch (e) {

@@ -160,6 +160,9 @@
   "changeYourFirstName": "Cambia tu nombre",
   "changeYourLastName": "Cambia tu apellido",
 
-  "manageUsers": "Administrar usuarios",
-  "statistics": "Estadísticas"
+  "userInformation": "Informacion del usuario",
+  "statistics": "Estadísticas",
+  "addedPetsLC": "mascotas agregadas",
+  "adoptedPetsLC": "mascotas adoptadas",
+  "makeAdmin": "Hacer administrador"
 }

@@ -1,11 +1,10 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:furhouse_app/main_display.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'package:furhouse_app/main_display.dart';
 import 'package:furhouse_app/common/constants/colors.dart';
 import 'package:furhouse_app/common/constants/others.dart';
 
@@ -16,7 +15,7 @@ import 'package:furhouse_app/common/functions/confirm_action.dart';
 
 import 'package:furhouse_app/common/widget_templates/settings_list_tile.dart';
 
-import 'package:furhouse_app/services/authentication.dart';
+import 'package:furhouse_app/services/users.dart';
 
 class Account extends StatefulWidget {
   const Account({
@@ -54,7 +53,7 @@ class _AccountState extends State<Account> {
   }
 
   void _changeEmail(BuildContext context) async {
-    var currentUser = Authentication().getCurrentUser();
+    var currentUser = Users().getCurrentUser();
     String currentUserEmail = currentUser?.email ?? "";
 
     var emailModalResult = await changeEmailModalPopup(
@@ -82,7 +81,7 @@ class _AccountState extends State<Account> {
       }
 
       // update first name in the database
-      var updateFieldMessage = await Authentication()
+      var updateFieldMessage = await Users()
           .updateUserEmail(emailModalResult, oldPasswordModalResult);
 
       if (updateFieldMessage != "Success") {
@@ -141,7 +140,7 @@ class _AccountState extends State<Account> {
       }
 
       // update first name in the database
-      var updateFieldMessage = await Authentication()
+      var updateFieldMessage = await Users()
           .updatePassword(passwordModalResult, oldPasswordModalResult);
 
       if (updateFieldMessage != "Success") {
@@ -166,11 +165,11 @@ class _AccountState extends State<Account> {
   }
 
   void _changeBirthday(BuildContext context) async {
-    var currentUser = Authentication().getCurrentUser();
+    var currentUser = Users().getCurrentUser();
     String currentUserEmail = currentUser?.email ?? "";
 
-    var getBirthdayMessage = await Authentication()
-        .getInformationForUser(currentUserEmail, "birthday");
+    var getBirthdayMessage =
+        await Users().getInformationForUser(currentUserEmail, "birthday");
 
     if (getBirthdayMessage.contains("Success")) {
       var getBirthdayArray = getBirthdayMessage.split(":");
@@ -192,7 +191,7 @@ class _AccountState extends State<Account> {
 
           // update first name in the database
           var updateFieldMessage =
-              await Authentication().updateBirthday(birthdayModalResult);
+              await Users().updateBirthday(birthdayModalResult);
 
           if (updateFieldMessage != "Success") {
             if (context.mounted) {
@@ -222,12 +221,12 @@ class _AccountState extends State<Account> {
   }
 
   void _changeFirstName(BuildContext context) async {
-    var currentUser = Authentication().getCurrentUser();
+    var currentUser = Users().getCurrentUser();
     String currentUserEmail = currentUser?.email ?? "";
 
     // get the user's current first name from the database
-    var getFirstNameMessage = await Authentication()
-        .getInformationForUser(currentUserEmail, "first_name");
+    var getFirstNameMessage =
+        await Users().getInformationForUser(currentUserEmail, "first_name");
 
     if (getFirstNameMessage.contains("Success")) {
       var getFirstNameArray = getFirstNameMessage.split(":");
@@ -249,7 +248,7 @@ class _AccountState extends State<Account> {
 
           // update first name in the database
           var updateFieldMessage =
-              await Authentication().updateFirstName(firstNameModalResult);
+              await Users().updateFirstName(firstNameModalResult);
 
           if (updateFieldMessage != "Success") {
             if (context.mounted) {
@@ -279,11 +278,11 @@ class _AccountState extends State<Account> {
   }
 
   void _changeLastName(BuildContext context) async {
-    var currentUser = Authentication().getCurrentUser();
+    var currentUser = Users().getCurrentUser();
     String currentUserEmail = currentUser?.email ?? "";
 
-    var getLastNameMessage = await Authentication()
-        .getInformationForUser(currentUserEmail, "last_name");
+    var getLastNameMessage =
+        await Users().getInformationForUser(currentUserEmail, "last_name");
 
     if (getLastNameMessage.contains("Success")) {
       var getLastNameArray = getLastNameMessage.split(":");
@@ -305,7 +304,7 @@ class _AccountState extends State<Account> {
 
           // update first name in the database
           var updateFieldMessage =
-              await Authentication().updateLastName(lastNameModalResult);
+              await Users().updateLastName(lastNameModalResult);
 
           if (updateFieldMessage != "Success") {
             if (context.mounted) {
@@ -335,7 +334,7 @@ class _AccountState extends State<Account> {
   }
 
   void _verifyEmail(BuildContext context) async {
-    var verifyEmailMessage = await Authentication().verifyEmail();
+    var verifyEmailMessage = await Users().verifyEmail();
 
     if (verifyEmailMessage != "Success") {
       if (context.mounted) {
@@ -349,9 +348,9 @@ class _AccountState extends State<Account> {
   }
 
   void checkEmailVerification() async {
-    await Authentication().checkIfEmailIsVerified();
+    await Users().checkIfEmailIsVerified();
 
-    var currentUser = Authentication().getCurrentUser();
+    var currentUser = Users().getCurrentUser();
 
     setState(() {
       isEmailVerified = currentUser?.emailVerified ?? false;
@@ -382,7 +381,7 @@ class _AccountState extends State<Account> {
     if (oldPasswordModalResult != null && oldPasswordModalResult != "cancel") {
       // delete account
       var deleteAccountMessage =
-          await Authentication().deleteAccount(oldPasswordModalResult);
+          await Users().deleteAccount(oldPasswordModalResult);
 
       if (deleteAccountMessage != "Success") {
         if (context.mounted) {
@@ -412,7 +411,12 @@ class _AccountState extends State<Account> {
       color: Colors.white,
     );
 
-    var currentUser = Authentication().getCurrentUser();
+    var trailingIconAction = const Icon(
+      Icons.donut_large,
+      color: Colors.white,
+    );
+
+    var currentUser = Users().getCurrentUser();
     var isEmailVerified = currentUser?.emailVerified ?? false;
 
     return ListView(
@@ -464,6 +468,7 @@ class _AccountState extends State<Account> {
             _changeEmail(context);
           },
           tileTitle: AppLocalizations.of(context)?.email ?? "",
+          isTileEnabled: true,
           leadingIcon: const Icon(
             Icons.email,
             color: Colors.white,
@@ -475,6 +480,7 @@ class _AccountState extends State<Account> {
             _changePassword(context);
           },
           tileTitle: AppLocalizations.of(context)?.password ?? "",
+          isTileEnabled: true,
           leadingIcon: const Icon(
             Icons.password,
             color: Colors.white,
@@ -486,6 +492,7 @@ class _AccountState extends State<Account> {
             _changeBirthday(context);
           },
           tileTitle: AppLocalizations.of(context)?.birthday ?? "",
+          isTileEnabled: true,
           leadingIcon: const Icon(
             Icons.calendar_month,
             color: Colors.white,
@@ -497,6 +504,7 @@ class _AccountState extends State<Account> {
             _changeFirstName(context);
           },
           tileTitle: AppLocalizations.of(context)?.firstName ?? "",
+          isTileEnabled: true,
           leadingIcon: const Icon(
             Icons.person,
             color: Colors.white,
@@ -508,6 +516,7 @@ class _AccountState extends State<Account> {
             _changeLastName(context);
           },
           tileTitle: AppLocalizations.of(context)?.lastName ?? "",
+          isTileEnabled: true,
           leadingIcon: const Icon(
             Icons.person,
             color: Colors.white,
@@ -556,11 +565,12 @@ class _AccountState extends State<Account> {
               _verifyEmail(context);
             },
             tileTitle: AppLocalizations.of(context)?.verifyEmail ?? "",
+            isTileEnabled: true,
             leadingIcon: const Icon(
               Icons.mark_email_read_rounded,
               color: Colors.white,
             ),
-            trailingIcon: null,
+            trailingIcon: trailingIconAction,
           ),
         ],
         SettingsListTile(
@@ -568,10 +578,12 @@ class _AccountState extends State<Account> {
             _deleteAccount(context);
           },
           tileTitle: AppLocalizations.of(context)?.deleteAccount ?? "",
+          isTileEnabled: true,
           leadingIcon: const Icon(
             Icons.delete,
             color: Colors.white,
           ),
+          trailingIcon: trailingIconAction,
         ),
       ],
     );

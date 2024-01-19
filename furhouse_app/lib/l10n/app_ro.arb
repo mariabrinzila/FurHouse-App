@@ -160,6 +160,9 @@
   "changeYourFirstName": "Schimbați-vă prenumele",
   "changeYourLastName": "Schimbați-vă numele",
 
-  "manageUsers": "Gestionați userii",
-  "statistics": "Statistici"
+  "userInformation": "Informații despre user",
+  "statistics": "Statistici",
+  "addedPetsLC": "animale adăugate",
+  "adoptedPetsLC": "animale adoptate",
+  "makeAdmin": "Faceți admin"
 }

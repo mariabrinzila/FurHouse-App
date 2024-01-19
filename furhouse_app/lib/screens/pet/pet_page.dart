@@ -16,7 +16,7 @@ import 'package:furhouse_app/common/widget_templates/pet_information_container.d
 
 import 'package:furhouse_app/models/pet_VM.dart';
 
-import 'package:furhouse_app/services/authentication.dart';
+import 'package:furhouse_app/services/users.dart';
 import 'package:furhouse_app/services/pets.dart';
 
 class PetPage extends StatefulWidget {
@@ -120,7 +120,7 @@ class _PetPageState extends State<PetPage> {
       return;
     }
 
-    var currentUser = Authentication().getCurrentUser();
+    var currentUser = Users().getCurrentUser();
     var userEmail = currentUser != null ? (currentUser.email ?? "") : "";
     var isEmailVerified = currentUser?.emailVerified ?? false;
 
@@ -174,7 +174,7 @@ class _PetPageState extends State<PetPage> {
     var date = DateTime.parse(widget.petObject.dateAdded);
     var addedDate = DateFormat.yMMMMd().format(date);
 
-    var currentUser = Authentication().getCurrentUser();
+    var currentUser = Users().getCurrentUser();
     var adoptButton = true;
 
     Widget submitButtons = SizedBox(

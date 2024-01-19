@@ -14,12 +14,15 @@ import 'package:furhouse_app/screens/settings/admin/admin.dart';
 import 'package:furhouse_app/common/constants/colors.dart';
 import 'package:furhouse_app/common/constants/others.dart';
 
+import 'package:furhouse_app/common/functions/exception_code_handler.dart';
 import 'package:furhouse_app/common/functions/modal_popup.dart';
 
 import 'package:furhouse_app/common/widget_templates/settings_list_tile.dart';
 
+import 'package:furhouse_app/models/user_VM.dart';
+
 import 'package:furhouse_app/services/notifications.dart';
-import 'package:furhouse_app/services/authentication.dart';
+import 'package:furhouse_app/services/users.dart';
 
 class SettingsTab extends StatefulWidget {
   const SettingsTab({
@@ -39,13 +42,44 @@ class _SettingsTabState extends State<SettingsTab> {
     color: Colors.white,
   );
 
+  bool? isUserAdmin;
+
   @override
   void initState() {
     if (notificationService == null) {
       switchTileValue = false;
     }
 
+    _getUserInfo().then((value) {
+      setState(() {
+        isUserAdmin = value?.admin;
+      });
+    });
+
     super.initState();
+  }
+
+  Future<UserVM?> _getUserInfo() async {
+    try {
+      var currentUser = Users().getCurrentUser();
+      String currentUserEmail = currentUser?.email ?? "";
+
+      var user = await Users().readUser(currentUserEmail);
+
+      if (user.length > 1) {
+        if (context.mounted) {
+          otherExceptionsHandler(context, "Unknown error");
+
+          return null;
+        }
+      }
+
+      return user[0];
+    } catch (e) {
+      otherExceptionsHandler(context, e.toString());
+
+      return null;
+    }
   }
 
   void _onSwitchTileChangeValue(bool newValue) {
@@ -188,11 +222,16 @@ class _SettingsTabState extends State<SettingsTab> {
   }
 
   void _navigateToYourPets(BuildContext context) {
+    var currentUser = Users().getCurrentUser();
+    String currentUserEmail = currentUser?.email ?? "";
+
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const YourPetsTheme(
-          childWidget: YourPets(),
+        builder: (context) => YourPetsTheme(
+          childWidget: YourPets(
+            userEmail: currentUserEmail,
+          ),
         ),
       ),
     );
@@ -210,15 +249,29 @@ class _SettingsTabState extends State<SettingsTab> {
   }
 
   void _onLogout(BuildContext context) {
-    Authentication().logout();
+    Users().logout();
 
     _navigateToLanding(context);
   }
 
   @override
   Widget build(BuildContext context) {
+    if (isUserAdmin == null) {
+      return Center(
+        child: CupertinoActivityIndicator(
+          color: darkerBlueColor,
+          radius: 30,
+        ),
+      );
+    }
+
     var trailingIcon = const Icon(
       CupertinoIcons.chevron_forward,
+      color: Colors.white,
+    );
+
+    var trailingIconAction = const Icon(
+      Icons.donut_large,
       color: Colors.white,
     );
 
@@ -300,6 +353,7 @@ class _SettingsTabState extends State<SettingsTab> {
             _onLanguageChange(context);
           },
           tileTitle: AppLocalizations.of(context)?.language ?? "",
+          isTileEnabled: true,
           leadingIcon: const Icon(
             Icons.language_rounded,
             color: Colors.white,
@@ -311,6 +365,7 @@ class _SettingsTabState extends State<SettingsTab> {
             _onThemeChange(context);
           },
           tileTitle: AppLocalizations.of(context)?.theme ?? "",
+          isTileEnabled: true,
           leadingIcon: const Icon(
             Icons.color_lens_outlined,
             color: Colors.white,
@@ -358,6 +413,7 @@ class _SettingsTabState extends State<SettingsTab> {
             _navigateToAccount(context);
           },
           tileTitle: AppLocalizations.of(context)?.account ?? "",
+          isTileEnabled: true,
           leadingIcon: const Icon(
             Icons.settings,
             color: Colors.white,
@@ -369,32 +425,38 @@ class _SettingsTabState extends State<SettingsTab> {
             _navigateToYourPets(context);
           },
           tileTitle: AppLocalizations.of(context)?.yourPets ?? "",
+          isTileEnabled: true,
           leadingIcon: const Icon(
             Icons.pets_outlined,
             color: Colors.white,
           ),
           trailingIcon: trailingIcon,
         ),
-        SettingsListTile(
-          onTap: () {
-            _navigateToAdmin(context);
-          },
-          tileTitle: AppLocalizations.of(context)?.admin ?? "",
-          leadingIcon: const Icon(
-            Icons.admin_panel_settings_outlined,
-            color: Colors.white,
+        if (isUserAdmin == true) ...[
+          SettingsListTile(
+            onTap: () {
+              _navigateToAdmin(context);
+            },
+            tileTitle: AppLocalizations.of(context)?.admin ?? "",
+            isTileEnabled: true,
+            leadingIcon: const Icon(
+              Icons.admin_panel_settings_outlined,
+              color: Colors.white,
+            ),
+            trailingIcon: trailingIcon,
           ),
-          trailingIcon: trailingIcon,
-        ),
+        ],
         SettingsListTile(
           onTap: () {
             _onLogout(context);
           },
           tileTitle: AppLocalizations.of(context)?.logout ?? "",
+          isTileEnabled: true,
           leadingIcon: const Icon(
             Icons.logout_outlined,
             color: Colors.white,
           ),
+          trailingIcon: trailingIconAction,
         ),
       ],
     );

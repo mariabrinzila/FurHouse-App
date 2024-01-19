@@ -411,6 +411,44 @@ class Pets {
     }
   }
 
+  Future<int?> readNumberOfAddedPets(String userEmail) async {
+    try {
+      await init();
+
+      var query =
+          "SELECT COUNT(*) FROM $_table WHERE user_email = '$userEmail'";
+
+      final total = Sqflite.firstIntValue(
+        await _database.rawQuery(query),
+      );
+
+      await closeDatabase();
+
+      return total;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<int?> readNumberOfAdoptedPets(String userEmail) async {
+    try {
+      await init();
+
+      var query =
+          "SELECT COUNT(*) FROM $_table WHERE adopted_by = '$userEmail'";
+
+      final total = Sqflite.firstIntValue(
+        await _database.rawQuery(query),
+      );
+
+      await closeDatabase();
+
+      return total;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   closeDatabase() async {
     await _database.close();
   }

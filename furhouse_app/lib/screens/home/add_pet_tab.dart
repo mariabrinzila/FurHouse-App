@@ -24,7 +24,7 @@ import 'package:furhouse_app/common/widget_templates/elevated_button_style.dart'
 
 import 'package:furhouse_app/models/pet_VM.dart';
 
-import 'package:furhouse_app/services/authentication.dart';
+import 'package:furhouse_app/services/users.dart';
 import 'package:furhouse_app/services/pets.dart';
 
 // TO DO: clear text editing controllers when the form is submitted (when you go back, they should be empty)
@@ -228,7 +228,7 @@ class _AddPetTabState extends State<AddPetTab> {
       return;
     }
 
-    var currentUser = Authentication().getCurrentUser();
+    var currentUser = Users().getCurrentUser();
     String currentUserEmail = currentUser?.email ?? "";
     var isEmailVerified = currentUser?.emailVerified ?? false;
 

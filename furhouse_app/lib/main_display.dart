@@ -5,7 +5,7 @@ import 'package:furhouse_app/main_theme.dart';
 import 'package:furhouse_app/screens/landing/landing.dart';
 import 'package:furhouse_app/screens/home/home.dart';
 
-import 'package:furhouse_app/services/authentication.dart';
+import 'package:furhouse_app/services/users.dart';
 
 // ignore: must_be_immutable
 class MainDisplay extends StatelessWidget {
@@ -17,7 +17,7 @@ class MainDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var currentUser = Authentication().getCurrentUser();
+    var currentUser = Users().getCurrentUser();
 
     if (currentUser != null) {
       widgetToDisplay = const Home(

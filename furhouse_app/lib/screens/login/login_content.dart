@@ -12,7 +12,7 @@ import 'package:furhouse_app/common/widget_templates/cupertino_text_field_style.
 import 'package:furhouse_app/common/widget_templates/outlined_button_style.dart';
 import 'package:furhouse_app/common/widget_templates/elevated_button_style.dart';
 
-import 'package:furhouse_app/services/authentication.dart';
+import 'package:furhouse_app/services/users.dart';
 
 class LoginContent extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -29,7 +29,7 @@ class LoginContent extends StatelessWidget {
 
     if (userEmail == null || userEmail == "cancel") return;
 
-    var resetPasswordMessage = await Authentication().resetPassword(userEmail);
+    var resetPasswordMessage = await Users().resetPassword(userEmail);
 
     if (resetPasswordMessage != "Success") {
       if (context.mounted) {
@@ -53,7 +53,7 @@ class LoginContent extends StatelessWidget {
   }
 
   void _onLogin(BuildContext context) async {
-    final message = await Authentication().login(
+    final message = await Users().login(
       email: _emailController.text,
       password: _passwordController.text,
     );
